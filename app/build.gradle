@@ -1,0 +1,157 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        applicationId "com.jingyu.app"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        //studio 3.0.0 开始，如果 build.gradle 文件自定义有 productFlavors 配置的话，需要添加定义 flavorDimensions（风味维度）。否则，编译会报错
+        flavorDimensions "defaultFlavor"
+    }
+
+    /** 多渠道打包 */
+    productFlavors {
+        _0company {
+            manifestPlaceholders = [CHANNEL_VALUE: "_0company"]
+        }
+        _ali {
+            manifestPlaceholders = [CHANNEL_VALUE: "_ali"]
+        }
+        _tencent {
+            manifestPlaceholders = [CHANNEL_VALUE: "_tencent"]
+        }
+        _360 {
+            manifestPlaceholders = [CHANNEL_VALUE: "_360"]
+        }
+        _xiaomi {
+            manifestPlaceholders = [CHANNEL_VALUE: "_xiaomi"]
+        }
+        _baidu {
+            manifestPlaceholders = [CHANNEL_VALUE: "_baidu"]
+        }
+        _huawei {
+            manifestPlaceholders = [CHANNEL_VALUE: "_huawei"]
+        }
+    }
+
+    signingConfigs {
+        //开发App时经常遇到Release版和Debug版共存问题，由于默认的签名不同，经常要卸载Debug版安装Release版，这里使用同一个签名
+        config {
+            storeFile file("testapp.jks")
+            storePassword "qwe123456"
+            keyAlias "yijian"
+            keyPassword "qwe123456"
+
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    lintOptions {
+        // checkReleaseBuilds false
+        // disable 'MissingTranslation' //防止在发布的时候出现因 MissingTranslation导致Build Failed!
+        abortOnError false //防止因为没有国际化导致编译失败
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"// 不显示Log
+
+            minifyEnabled false //混淆 以及 移除没有用到的代码 和 资源文件
+            shrinkResources false // 移除无用的resource文件
+            zipAlignEnabled false  // zip对齐优化
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"// 显示Log
+
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.productFlavors[0].name}-" + rootProject.getName() +
+                    "-${variant.buildType.name}" +
+                    "-${releaseTime()}" +
+                    "-v${defaultConfig.versionName}" +
+                    "-${defaultConfig.versionCode}" +
+                    ".apk"
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    /** aar */
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dexOptions {
+        maxProcessCount 4
+        javaMaxHeapSize "4g"
+    }
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+8"))
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    //google
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    /** gson */
+    compile 'com.google.code.gson:gson:2.8.2'
+    /** glide */
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+
+    /**dex*/
+    compile 'com.android.support:multidex:1.0.2'
+
+    /**版本更新*/
+    compile 'com.allenliu.versionchecklib:library:2.0.1'
+
+    compile 'com.jingyu.java:mytool:0.0.2'
+    compile 'com.jingyu.java:myokhttp:0.0.4'
+
+    compile 'com.jingyu.android:resource:0.0.1'
+    compile 'com.jingyu.android:common:0.0.1'
+
+}

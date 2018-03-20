@@ -1,0 +1,46 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="TransActivity" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- Note that we use the base animation style here (that is no
+             animations) because we really have no idea how this kind of
+             activity will be used. -->
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <!-- 透明的dialog背景-->
+    <style name="TransDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 无边界 ,否则会出现框框的线条 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 悬浮在activity上 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 默认都是有title -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- 虚线 -->
+    <style name="LinePointH">
+        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/dd_line_gray_e1e1e1_point</item>
+        <!-- <item name="android:layerType">software</item> -->
+        <!-- line.setLayerType(View.LAYER_TYPE_SOFTWARE, null); 或者代码设置 -->
+    </style>
+
+    <!-- radiobutton -->
+    <style name="TabRadioButton">
+        <item name="android:background">#f7f7f8</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+</resources>

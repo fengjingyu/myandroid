@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--title -->
+    <declare-styleable name="Title">
+        <attr name="titleBgColor" format="color|reference" />
+
+        <attr name="leftImg" format="reference" />
+        <attr name="leftText" format="string|reference" />
+        <attr name="leftTextColor" format="color|reference" />
+        <attr name="leftTextSize" format="dimension" />
+
+        <attr name="rightImg" format="reference" />
+        <attr name="rightText" format="string|reference" />
+        <attr name="rightTextColor" format="color|reference" />
+        <attr name="rightTextSize" format="dimension" />
+
+        <attr name="centerText" format="string|reference" />
+        <attr name="centerTextSize" format="dimension" />
+        <attr name="centerTextColor" format="color|reference" />
+
+    </declare-styleable>
+
+</resources>

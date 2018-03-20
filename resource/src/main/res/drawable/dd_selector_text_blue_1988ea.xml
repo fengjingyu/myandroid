@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 文本选择器 -->
+    <item android:color="@color/c_blue_1988ea" android:state_pressed="true" />
+    <item android:color="@color/c_blue_1988ea" android:state_checked="true" />
+    <item android:color="@color/c_black_000000" />
+
+</selector>

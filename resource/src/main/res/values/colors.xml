@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 谷歌的颜色 -->
+    <color name="red">#FFC93437</color>
+    <color name="blue">#FF375BF1</color>
+    <color name="yellow">#FFF7D23E</color>
+    <color name="green">#FF34A350</color>
+
+    <color name="c_trans">#00000000</color>
+    <color name="c_gray_30ebebeb">#30ebebeb</color>
+    <color name="c_white_ffffff">#ffffff</color>
+    <color name="c_black_000000">#000000</color>
+    <color name="c_gray_cccccc">#cccccc</color>
+    <color name="c_gray_333333">#333333</color>
+    <color name="c_gray_bebebe">#bebebe</color>
+    <color name="c_gray_6a6a6a">#6a6a6a</color>
+    <color name="c_gray_666666">#666666</color>
+    <color name="c_gray_a0666666">#a0666666</color>
+    <color name="c_gray_999999">#999999</color>
+    <color name="c_gray_f9f9f9">#f9f9f9</color>
+    <color name="c_gray_f8f8f8">#f8f8f8</color>
+    <color name="c_gray_eeeeee">#eeeeee</color>
+    <color name="c_gray_f0f1f5">#f0f1f5</color>
+
+    <color name="c_gray_bc202020">#bc202020</color>
+    <color name="c_gray_e1e1e1">#e1e1e1</color>
+    <color name="c_gray_ebebeb">#ebebeb</color>
+    <color name="c_red_ff0000">#ff0000</color>
+    <color name="c_green_00ff00">#00ff00</color>
+    <color name="c_blue_0000ff">#0000ff</color>
+    <color name="c_blue_1988ea">#1988ea</color>
+    <color name="c_blue_2b98f6">#2b98f6</color>
+    <color name="c_orange_ff6600">#ff6600</color>
+    <color name="c_orange_f96b05">#f96b05</color>
+    <color name="c_yellow_ffce43">#FFCE43</color>
+    <color name="c_purple_471c87">#471c87</color>
+
+    <color name="c_blue_288de5">#288de5</color>
+    <color name="c_blue_e1f2ff">#e1f2ff</color>
+    <color name="c_red_e60044">#e60044</color>
+    <color name="c_gray_e8e8e8">#E8E8E8</color>
+    <color name="c_gray_d8d8d8">#D8D8D8</color>
+    <color name="c_blue_20aae0">#20aae0</color>
+
+    <color name="c_bg_288DE5">#288DE5</color>
+    <color name="c_round_bg_F9B310">#F96B05</color>
+    <color name="c_index_top_bg_ff9900">#FF9900</color>
+</resources>

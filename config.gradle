@@ -1,0 +1,50 @@
+ext {
+
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "27.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 26,
+            versionCode      : 1,
+            versionName      : '1.0.0',
+    ]
+
+    libsVersion = [
+            supportLibraryVersion = "27.0.2",
+
+            support_v4 = "27.0.2",
+
+            glideVersion = "4.1.1",
+            glideTransformationsVersion = "2.0.2",
+
+            gsonVersion = "2.8.0",
+
+            okhttp3 = "3.9.1",
+
+            multidex = "1.0.2"
+    ]
+
+    dependencies = [
+
+            //base
+            appcompatV7           : "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion",
+            design                : "com.android.support:design:$rootProject.supportLibraryVersion",
+            cardview              : "com.android.support:cardview-v7:$rootProject.supportLibraryVersion",
+            palette               : "com.android.support:palette-v7:$rootProject.supportLibraryVersion",
+            recycleview           : "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion",
+            support_v4            : "com.android.support:support-v4:$rootProject.supportLibraryVersion",
+            annotations           : "com.android.support:support-annotations:$rootProject.supportLibraryVersion",
+
+            //gson
+            gson                  : "com.google.code.gson:gson:$rootProject.gsonVersion",
+
+            //图片处理glide
+            glide                 : "com.github.bumptech.glide:glide:$rootProject.glideVersion",
+
+            //分包
+            multidex              : "com.android.support:multidex:$rootProject.multidex",
+
+    ]
+
+
+}

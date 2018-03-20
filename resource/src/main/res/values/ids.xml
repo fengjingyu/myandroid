@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 备用 -->
+    <item name="id_one" type="id" />
+    <item name="id_two" type="id" />
+    <item name="id_three" type="id" />
+    <item name="id_four" type="id" />
+    <item name="id_five" type="id" />
+    <item name="id_six" type="id" />
+
+</resources>

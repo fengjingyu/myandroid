@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 谷歌的颜色 -->
+    <integer-array name="google_colors">
+        <item>@color/red</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/green</item>
+    </integer-array>
+
+    <!-- 测试备用 -->
+    <string-array name="test">
+        <item>test1</item>
+        <item>test2</item>
+        <item>test3</item>
+        <item>test4</item>
+        <item>test5</item>
+        <item>test6</item>
+        <item>test7</item>
+        <item>test8</item>
+        <item>test9</item>
+        <item>test0</item>
+    </string-array>
+
+</resources>
