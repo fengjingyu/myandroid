@@ -7,16 +7,28 @@ import java.util.List;
 
 /**
  * @author fengjingyu@foxmail.com
- *
  */
 public class ReflectUtil {
 
+    public static <T> Object getValueByName(T target, String name) throws Exception {
+        Field field = target.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        return field.get(target);
+    }
+
+    public static void setValueByFieldName(Object obj, String fieldName, Object value) throws Exception {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        if (field.isAccessible()) {
+            field.set(obj, value);
+        } else {
+            field.setAccessible(true);
+            field.set(obj, value);
+            field.setAccessible(false);
+        }
+    }
+
     /**
      * 创建一个空的对象
-     *
-     * @param clazz
-     * @param <T>
-     * @return
      */
     private static <T> T getInstance(Class<T> clazz) {
         try {
@@ -29,7 +41,6 @@ public class ReflectUtil {
     }
 
     public static <T> T copy(T originModel, T resultModel) {
-
         try {
             if (resultModel == null || originModel == null) {
                 return null;
@@ -49,7 +60,6 @@ public class ReflectUtil {
                     }
                 }
             }
-
             return resultModel;
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,8 +69,6 @@ public class ReflectUtil {
 
     /**
      * 获取字段。包括父类的。
-     *
-     * @return
      */
     public static <T> Field[] getFields(T target) {
         try {
@@ -116,17 +124,4 @@ public class ReflectUtil {
         }
     }
 
-    public static <T> Object getValueByName(T target, String name) {
-
-        try {
-            Field field = target.getClass().getDeclaredField(name);
-            field.setAccessible(true);
-            Object obj = field.get(target);
-            return obj;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }

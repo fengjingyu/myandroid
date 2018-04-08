@@ -16,6 +16,42 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    public static boolean isAllNotBlank(String... strs) {
+        if (strs == null){
+            return false;
+        }
+        for (String str : strs) {
+            if (isBlank(str)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isAnyBlank(String... strs) {
+        if (strs == null){
+            return true;
+        }
+        for (String str : strs) {
+            if (isBlank(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAnyNull(Object... objs) {
+        if (objs == null){
+            return true;
+        }
+        for (Object obj : objs) {
+            if (obj == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 比较两个字符串
      */
