@@ -93,32 +93,41 @@ public class DateUtil {
     /**
      * 得到n天之后是周几
      */
-    public static String getDayWeek(int days) {
+    public static String getWeekDay(int days) {
         Calendar canlendar = Calendar.getInstance();
         canlendar.add(Calendar.DATE, days); // 日期减 如果不够减会将月变动
         SimpleDateFormat sdf = new SimpleDateFormat("E");
         return sdf.format(canlendar.getTime());
     }
 
-    /**
-     * 日期转星期
-     */
-    public static String dateToWeek(String datetime, String pattern) {
-        SimpleDateFormat f = new SimpleDateFormat(pattern);
-        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
-        Calendar cal = Calendar.getInstance(); // 获得一个日历
-        Date datet = null;
+    public static String getWeekday(String date) {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdw = new SimpleDateFormat("E");
+        Date d = null;
         try {
-            datet = f.parse(datetime);
-            cal.setTime(datet);
-        } catch (ParseException e) {
+            d = sd.parse(date);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
-        if (w < 0)
-            w = 0;
-        return weekDays[w];
+        return sdw.format(d);
     }
+
+//    public static String dateToWeek(String datetime, String pattern) {
+//        SimpleDateFormat f = new SimpleDateFormat(pattern);
+//        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+//        Calendar cal = Calendar.getInstance(); // 获得一个日历
+//        Date datet = null;
+//        try {
+//            datet = f.parse(datetime);
+//            cal.setTime(datet);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
+//        if (w < 0)
+//            w = 0;
+//        return weekDays[w];
+//    }
 
     /**
      * 指定日期加上天数后的日期
