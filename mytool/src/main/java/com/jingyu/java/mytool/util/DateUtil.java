@@ -71,6 +71,16 @@ public class DateUtil {
         return false;
     }
 
+    public static Date getDate(Date value, String pattern) {
+        String dateString = format(value, pattern);
+        try {
+            return DateUtil.parse(dateString, pattern);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static long getDaySub(String beginDateStr, String endDateStr, String pattern) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         return getDaySub(format.parse(beginDateStr), format.parse(endDateStr));
@@ -132,7 +142,7 @@ public class DateUtil {
     /**
      * 指定日期加上天数后的日期
      */
-    public static Date plusDay(int days, Date date, String pattern) {
+    public static Date addDay(int days, Date date, String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -143,9 +153,9 @@ public class DateUtil {
     /**
      * 指定日期加上天数后的日期
      */
-    public static Date plusDay(int days, String dateString, String pattern) throws ParseException {
+    public static Date addDay(int days, String dateString, String pattern) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Date date = sdf.parse(dateString);
-        return plusDay(days, date, pattern);
+        return addDay(days, date, pattern);
     }
 }
