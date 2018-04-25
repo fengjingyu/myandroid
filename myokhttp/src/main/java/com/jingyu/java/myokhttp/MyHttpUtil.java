@@ -3,6 +3,7 @@ package com.jingyu.java.myokhttp;
 import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.req.MyReqType;
+import com.jingyu.java.mytool.util.StringUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,22 @@ public class MyHttpUtil {
                 .myReqType(type)
                 .url(url)
                 .paramsMap(paramsMap)
+                .headersMap(headers)
+                .tag(tag)
+                .isDownload(isDownload)
+                .builder();
+    }
+
+    private static MyReqInfo createReqInfo(MyReqType type, String url, String content, String contentType, Map<String, List<String>> headers, String tag, boolean isDownload) {
+        if (StringUtil.isBlank(contentType)) {
+            throw new RuntimeException(url + "--请求contentType为空");
+        }
+
+        return new MyReqInfo.Builder()
+                .myReqType(type)
+                .url(url)
+                .postString(content)
+                .postStringContentType(contentType)
                 .headersMap(headers)
                 .tag(tag)
                 .isDownload(isDownload)
@@ -70,6 +87,18 @@ public class MyHttpUtil {
 
         public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
         }
 
         public static void download(String url, IMyHttpHandler myHttpHandler) {
@@ -120,6 +149,18 @@ public class MyHttpUtil {
 
         public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
         }
 
         public static void download(String url, IMyHttpHandler myHttpHandler) {
