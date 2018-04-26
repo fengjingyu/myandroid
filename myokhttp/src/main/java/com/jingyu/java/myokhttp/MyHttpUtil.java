@@ -13,9 +13,12 @@ import java.util.Map;
  */
 public class MyHttpUtil {
 
-    public static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
+    // 普通表单
+    public static final String FORM = "application/x-www-form-urlencoded; charset=utf-8";
 
-    public static final String TEXT_CONTENT_TYPE = "text/plain; charset=utf-8";
+    public static final String JSON = "application/json; charset=utf-8";
+
+    public static final String TEXT = "text/plain; charset=utf-8";
 
     private MyHttpUtil() {
     }
@@ -57,15 +60,15 @@ public class MyHttpUtil {
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler);
+            post(url, json, JSON, myHttpHandler);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers);
+            post(url, json, JSON, myHttpHandler, headers);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers, tag);
+            post(url, json, JSON, myHttpHandler, headers, tag);
         }
 
         public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
@@ -116,15 +119,15 @@ public class MyHttpUtil {
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler);
+            post(url, json, JSON, myHttpHandler);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers);
+            post(url, json, JSON, myHttpHandler, headers);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers, tag);
+            post(url, json, JSON, myHttpHandler, headers, tag);
         }
 
         public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
@@ -161,7 +164,7 @@ public class MyHttpUtil {
 
     private static MyReqInfo createReqInfo(MyReqType type, String url, String content, String contentType, Map<String, List<String>> headers, String tag, boolean isDownload) {
         if (StringUtil.isBlank(contentType)) {
-            throw new RuntimeException(url + "--请求contentType为空");
+            throw new RuntimeException(url + "--MyReqInfo--contentType为空");
         }
 
         return new MyReqInfo.Builder()
