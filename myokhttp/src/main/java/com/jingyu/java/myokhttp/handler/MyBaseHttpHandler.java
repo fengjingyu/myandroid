@@ -46,12 +46,9 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         return newMyReqInfo;
     }
 
-    /**
-     * 解析是否成功的规则，根据项目的json而定
-     */
+    //TODO 实际项目里需要比对接口业务的状态码; 如果请求一般的浏览网页就无需匹配状态码，默认返回true
     @Override
     public boolean onMatchAppStatusCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
-        //todo 实际项目里需要比对接口业务的状态码; 如果请求一般的浏览网页就无需匹配状态码，默认返回true
         return true;
     }
 

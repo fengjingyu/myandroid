@@ -2,13 +2,14 @@ package com.jingyu.java.myokhttp.resp;
 
 import com.jingyu.java.mytool.Constants;
 import com.jingyu.java.mytool.bean.CloneBean;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author fengjingyu@foxmail.com
- *  http返回的信息
+ * http返回的信息
  */
 public class MyRespInfo extends CloneBean {
 
@@ -73,30 +74,18 @@ public class MyRespInfo extends CloneBean {
     }
 
     public byte[] getDataBytes() {
-        if (dataBytes == null) {
-            dataBytes = new byte[1];
-        }
         return dataBytes;
     }
 
     public void setDataBytes(byte[] dataBytes) {
-        if (dataBytes == null) {
-            dataBytes = new byte[1];
-        }
         this.dataBytes = dataBytes;
     }
 
     public String getDataString() {
-        if (dataString == null) {
-            dataString = "";
-        }
         return dataString;
     }
 
     public void setDataString(String dataString) {
-        if (dataString == null) {
-            dataString = "";
-        }
         this.dataString = dataString;
     }
 
@@ -105,7 +94,7 @@ public class MyRespInfo extends CloneBean {
             dataString = new String(bytes, Constants.ENCODING_UTF8);
         } catch (Exception e) {
             e.printStackTrace();
-            dataString = "";
+            dataString = null;
         }
     }
 
