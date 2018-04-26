@@ -12,6 +12,11 @@ import java.util.Map;
  * @author fengjingyu@foxmail.com
  */
 public class MyHttpUtil {
+
+    private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
+
+    private static final String TEXT_CONTENT_TYPE = "text/plain; charset=utf-8";
+
     private MyHttpUtil() {
     }
 
@@ -23,6 +28,124 @@ public class MyHttpUtil {
 
     public static void setMyHttpClient(MyHttpClient myHttpClient) {
         MyHttpUtil.myHttpClient = myHttpClient;
+    }
+
+    public static class Async {
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, null, null, false), myHttpHandler);
+        }
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, headers, null, false), myHttpHandler);
+        }
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers, tag);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
+        }
+
+        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, params, null, null, true), myHttpHandler);
+        }
+
+        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, params, headers, null, true), myHttpHandler);
+        }
+    }
+
+    public static class Sync {
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, null, null, false), myHttpHandler);
+        }
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, headers, null, false), myHttpHandler);
+        }
+
+        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers);
+        }
+
+        public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            post(url, json, JSON_CONTENT_TYPE, myHttpHandler, headers, tag);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
+        }
+
+        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
+        }
+
+        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, params, null, null, true), myHttpHandler);
+        }
+
+        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, params, headers, null, true), myHttpHandler);
+        }
     }
 
     private static MyReqInfo createReqInfo(MyReqType type, String url, Map<String, Object> paramsMap, Map<String, List<String>> headers, String tag, boolean isDownload) {
@@ -51,131 +174,6 @@ public class MyHttpUtil {
                 .isDownload(isDownload)
                 .builder();
     }
-
-    public static class Async {
-        public static void get(String url) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, null, null, null, false), null);
-        }
-
-        public static void get(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, null, null, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, null, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, headers, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, paramsMap, headers, tag, false), myHttpHandler);
-        }
-
-        public static void post(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, null, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, headers, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
-        }
-
-        public static void download(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, null, null, null, true), myHttpHandler);
-        }
-
-        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, params, null, null, true), myHttpHandler);
-        }
-
-        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, params, headers, null, true), myHttpHandler);
-        }
-    }
-
-    public static class Sync {
-        public static void get(String url) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, null, null, null, false), null);
-        }
-
-        public static void get(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, null, null, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, null, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, headers, null, false), myHttpHandler);
-        }
-
-        public static void get(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, paramsMap, headers, tag, false), myHttpHandler);
-        }
-
-        public static void post(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, null, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, headers, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, Map<String, Object> paramsMap, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, paramsMap, headers, tag, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, null, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, null, false), myHttpHandler);
-        }
-
-        public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, content, contentType, headers, tag, false), myHttpHandler);
-        }
-
-        public static void download(String url, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, null, null, null, true), myHttpHandler);
-        }
-
-        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, params, null, null, true), myHttpHandler);
-        }
-
-        public static void download(String url, Map<String, Object> params, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, params, headers, null, true), myHttpHandler);
-        }
-    }
-
 }
 
 
