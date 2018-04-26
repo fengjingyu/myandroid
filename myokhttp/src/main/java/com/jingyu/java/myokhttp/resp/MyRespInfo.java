@@ -3,6 +3,7 @@ package com.jingyu.java.myokhttp.resp;
 import com.jingyu.java.mytool.Constants;
 import com.jingyu.java.mytool.bean.CloneBean;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,17 +86,8 @@ public class MyRespInfo extends CloneBean {
         return dataString;
     }
 
-    public void setDataString(String dataString) {
-        this.dataString = dataString;
-    }
-
-    public void setDataString(byte[] bytes) {
-        try {
-            dataString = new String(bytes, Constants.ENCODING_UTF8);
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataString = null;
-        }
+    public void setDataString(byte[] bytes) throws UnsupportedEncodingException {
+        dataString = new String(bytes, Constants.ENCODING_UTF8);
     }
 
     public Throwable getThrowable() {
