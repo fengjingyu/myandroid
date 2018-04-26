@@ -7,6 +7,7 @@ import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.req.MyUploadFile;
 import com.jingyu.java.mytool.util.CollectionsUtil;
 import com.jingyu.java.mytool.util.StringUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,7 +17,6 @@ import okhttp3.*;
 
 /**
  * @author fengjingyu@foxmail.com
- *         用的是okhttp库
  */
 public class MyHttpClient {
 

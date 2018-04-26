@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public class MyHttpUtil {
 
-    private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
+    public static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
 
-    private static final String TEXT_CONTENT_TYPE = "text/plain; charset=utf-8";
+    public static final String TEXT_CONTENT_TYPE = "text/plain; charset=utf-8";
 
     private MyHttpUtil() {
     }

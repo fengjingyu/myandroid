@@ -25,7 +25,7 @@ public class MyHttpHandlerController<T> implements Callback {
     /**
      * 可查看如url 返回的json等
      */
-    public static final String TAG_HTTP = "http";
+    public static final String TAG_HTTP = "myhttp";
     public static final String LINE = "@@@@@@";
 
     private MyRespInfo myRespInfo = new MyRespInfo();
@@ -43,7 +43,7 @@ public class MyHttpHandlerController<T> implements Callback {
         myRespInfo.setThrowable(e);
         myRespInfo.setHttpCode(0);
 
-        log(TAG_HTTP, this + LINE + "onFailure--->status code " + myRespInfo.getHttpCode() + ",e--->" + myRespInfo.getThrowable());
+        log(TAG_HTTP, myReqInfo + LINE + "onFailure() exception" + LINE + myRespInfo.getThrowable());
 
         handleFail();
     }
@@ -55,7 +55,7 @@ public class MyHttpHandlerController<T> implements Callback {
         myRespInfo.setThrowable(null);
         myRespInfo.setMyRespType(MyRespType.SUCCESS_WAITING_PARSE);
 
-        log(TAG_HTTP, "返回数据--" + this + LINE + "onSuccess----->status code " + myRespInfo.getHttpCode());
+        log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode  " + myRespInfo.getHttpCode());
         printHeaderInfo(myRespInfo.getRespHeaders());
 
         if (IMyHttpHandler != null) {
@@ -91,13 +91,13 @@ public class MyHttpHandlerController<T> implements Callback {
                     }
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    log(TAG_HTTP, myReqInfo.getUrl() + LINE + "failure（） 异常了" + e1);
+                    log(TAG_HTTP, myReqInfo + LINE + "handleFail()-->onFailure（） 异常了" + e1);
                 } finally {
                     try {
                         end();
                     } catch (Exception e1) {
                         e1.printStackTrace();
-                        log(TAG_HTTP, myReqInfo.getUrl() + LINE + "failure--->end（） 异常了" + e1);
+                        log(TAG_HTTP, myReqInfo + LINE + "handleFail()-->end（） 异常了" + e1);
                     }
                 }
             }
@@ -130,13 +130,13 @@ public class MyHttpHandlerController<T> implements Callback {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log(TAG_HTTP, myReqInfo.getUrl() + LINE + "success（） 异常了" + e);
+                    log(TAG_HTTP, myReqInfo + LINE + "handleSuccess（） 异常了" + e);
                 } finally {
                     try {
                         end();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log(TAG_HTTP, myReqInfo.getUrl() + LINE + "success--->end（） 异常了" + e);
+                        log(TAG_HTTP, myReqInfo + LINE + "handleSuccess-->end（） 异常了" + e);
                     }
                 }
             }
@@ -149,7 +149,7 @@ public class MyHttpHandlerController<T> implements Callback {
             List<String> values = header.getValue();
 
             if (CollectionsUtil.isListAvaliable(values)) {
-                log(TAG_HTTP, "headers--->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
+                log(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
             }
         }
     }
@@ -163,7 +163,7 @@ public class MyHttpHandlerController<T> implements Callback {
     protected T parse() {
         try {
 
-            log(TAG_HTTP, myRespInfo.getDataString());
+            log(TAG_HTTP, "to parse()" + LINE + myReqInfo.getUrl() + "返回的" + myRespInfo.getDataString());
 
             // 如果解析失败一定得返回null或者crash
             T resultBean = IMyHttpHandler.onParse(myReqInfo, myRespInfo);
@@ -172,7 +172,7 @@ public class MyHttpHandlerController<T> implements Callback {
                 runOnSpecifiedThread(new Runnable() {
                     @Override
                     public void run() {
-                        log(TAG_HTTP, "解析数据失败" + LINE + this + LINE + myReqInfo + LINE + myRespInfo.getDataString());
+                        log(TAG_HTTP, "解析数据失败" + LINE + myReqInfo + LINE + myRespInfo.getDataString());
                     }
                 });
             }
@@ -184,7 +184,7 @@ public class MyHttpHandlerController<T> implements Callback {
             runOnSpecifiedThread(new Runnable() {
                 @Override
                 public void run() {
-                    log(TAG_HTTP, "解析数据异常" + LINE + this + LINE + myReqInfo + LINE + myRespInfo.getDataString() + e);
+                    log(TAG_HTTP, "解析数据异常" + LINE + myReqInfo + LINE + myRespInfo.getDataString() + e);
                 }
             });
             return null;
@@ -204,6 +204,6 @@ public class MyHttpHandlerController<T> implements Callback {
     }
 
     public void log(String tag, String msg) {
-        System.out.println(tag + msg);
+        System.out.println(tag + "::" + msg);
     }
 }
