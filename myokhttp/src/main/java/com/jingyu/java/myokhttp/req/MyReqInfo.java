@@ -108,7 +108,7 @@ public class MyReqInfo extends CloneBean {
      *
      * @return ?abc=123
      */
-    public String buildGetParams(Map<String, Object> params) {
+    public String buildUrlParams(Map<String, Object> params) {
 
         if (CollectionsUtil.isMapAvaliable(params)) {
             StringBuilder sb = new StringBuilder();

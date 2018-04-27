@@ -104,9 +104,22 @@ public class MyHttpClient {
         return false;
     }
 
+    /**
+     * // post  在请求体里添加string 同时也可在 url?后面拼接参数
+     * // post: 如果contenttype是表单key=value&key2=value2, url?key=dog,
+     * //      则springmvc的注解 @RequestParam String key 获取的是 dog,value
+     * //      则springmvc的注解 @RequestBody String content 获取的是 key=dog&key=value&key2=value2
+     * //post: 如果contenttype是application/json 如{"a":"b"} ,url?key=dog
+     * //      则springmvc的注解 @RequestParam String key 获取的是dog
+     * //      则springmvc的注解 @RequestBody String conent 获取的是{"a":"b"}
+     */
     private boolean isPostString(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (StringUtil.isAvaliable(myReqInfo.getPostStringContentType())) {
-            // requestBuilder.post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json));
+        if (StringUtil.isAvaliable(myReqInfo.getPostString())) {
+
+            if (!myReqInfo.getParamsMap().isEmpty()) {
+                requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
+            }
+
             requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getPostStringContentType()), myReqInfo.getPostString()));
             return true;
         }
@@ -187,7 +200,7 @@ public class MyHttpClient {
     private boolean isGet(MyReqInfo myReqInfo, Request.Builder builder) {
         if (myReqInfo.isGet()) {
 
-            builder.get().url(myReqInfo.getUrl() + myReqInfo.buildGetParams(myReqInfo.getParamsMap()));
+            builder.get().url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
 
             return true;
         }
