@@ -28,13 +28,14 @@ public class MyHttpHandlerController<T> implements Callback {
     public static final String TAG_HTTP = "myhttp";
     public static final String LINE = "@@@@@@";
 
-    private MyRespInfo myRespInfo = new MyRespInfo();
+    private MyRespInfo myRespInfo;
     private MyReqInfo myReqInfo;
     private IMyHttpHandler<T> iMyHttpHandler;
 
     public MyHttpHandlerController(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
         this.myReqInfo = myReqInfo;
         this.iMyHttpHandler = iMyHttpHandler;
+        this.myRespInfo = new MyRespInfo();
     }
 
     @Override
@@ -42,44 +43,8 @@ public class MyHttpHandlerController<T> implements Callback {
         myRespInfo.setMyRespType(MyRespType.FAILURE);
         myRespInfo.setThrowable(e);
         myRespInfo.setHttpCode(0);
-        log(TAG_HTTP, myReqInfo + LINE + "onFailure() exception" + LINE + myRespInfo.getThrowable());
+        log(TAG_HTTP, myReqInfo + LINE + "onFailure()" + LINE + myRespInfo.getThrowable());
 
-        handleFailure();
-    }
-
-    @Override
-    public void onResponse(Call call, final Response response) throws IOException {
-        myRespInfo.setHttpCode(response.code());
-        myRespInfo.setRespHeaders(headers2Map(response.headers()));
-        myRespInfo.setThrowable(null);
-
-        log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode  " + myRespInfo.getHttpCode());
-        printHeaderInfo(myRespInfo.getRespHeaders());
-
-        if (iMyHttpHandler != null) {
-            long totalSize = response.body().contentLength();
-            InputStream inputStream = response.body().byteStream();
-            if (myReqInfo.isDownload()) {
-                iMyHttpHandler.onDownload(myReqInfo, myRespInfo, inputStream, totalSize);
-                handleSuccess(null, true);
-            } else {
-                // 只能读一次，否则异常
-                // byte[] bytes = response.body().bytes();
-                byte[] bytes = IOUtil.getBytes(inputStream);
-                myRespInfo.setDataBytes(bytes);
-                myRespInfo.setDataString(bytes);
-                handleSuccess(parse(), false);
-            }
-        } else {
-            handleSuccess(null, false);
-        }
-    }
-
-    private Map<String, List<String>> headers2Map(Headers headers) {
-        return headers.toMultimap();
-    }
-
-    protected void handleFailure() {
         runOnSpecifiedThread(new Runnable() {
             @Override
             public void run() {
@@ -89,56 +54,78 @@ public class MyHttpHandlerController<T> implements Callback {
                     }
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    log(TAG_HTTP, myReqInfo + LINE + "handleFailure()-->onFailure（） 异常了" + e1);
+                    log(TAG_HTTP, myReqInfo + LINE + "onFailure（） 异常了" + e1);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e1) {
                         e1.printStackTrace();
-                        log(TAG_HTTP, myReqInfo + LINE + "handleFailure()-->handleFinally（） 异常了" + e1);
+                        log(TAG_HTTP, myReqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e1);
                     }
                 }
             }
         });
     }
 
-    protected void handleSuccess(final T resultBean, final boolean isDownload) {
+    @Override
+    public void onResponse(Call call, final Response response) {
+        myRespInfo.setHttpCode(response.code());
+        myRespInfo.setRespHeaders(headers2Map(response.headers()));
+        myRespInfo.setThrowable(null);
+        log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode = " + myRespInfo.getHttpCode());
+        printHeaderInfo(myRespInfo.getRespHeaders());
+
+        final long totalSize = response.body().contentLength();
+        final InputStream inputStream = response.body().byteStream();
+        // 如果是下载文件,则不解析
+        final T resultBean = myReqInfo.isDownload() ? null : parse(inputStream);
+
         runOnSpecifiedThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (iMyHttpHandler != null && !isDownload) {
-                        if (resultBean != null) {
-
-                            // http请求成功，解析成功，接下来判断状态码
-                            if (iMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
-                                myRespInfo.setMyRespType(MyRespType.SUCCESS);
-                                // 项目的该接口的状态码正确
-                                iMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
-                            } else {
-                                // http请求成功，解析成功，项目的该接口的状态码有误
-                                myRespInfo.setMyRespType(MyRespType.APP_CODE_EXCEPTION);
-                                iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
-                            }
+                    if (iMyHttpHandler != null) {
+                        // 有传入回调iMyHttpHandler; 如果没有传入回调iMyHttpHandler, 则直接调用finally{ }
+                        if (myReqInfo.isDownload()) {
+                            // 下载文件
+                            myRespInfo.setMyRespType(MyRespType.DOWNLOAD);
+                            iMyHttpHandler.onDownload(myReqInfo, myRespInfo, inputStream, totalSize);
                         } else {
-                            // http请求成功，但是解析失败或者没解析
-                            myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
-                            iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
+                            if (resultBean != null) {
+                                // 解析成功
+                                if (iMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
+                                    // 项目接口的状态码正确
+                                    myRespInfo.setMyRespType(MyRespType.SUCCESS);
+                                    iMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
+                                } else {
+                                    // 项目接口的状态码有误
+                                    myRespInfo.setMyRespType(MyRespType.APP_CODE_EXCEPTION);
+                                    iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
+                                }
+                            } else {
+                                // http请求成功，但是解析失败或者没解析
+                                myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
+                                iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
+                            }
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log(TAG_HTTP, myReqInfo + LINE + "handleSuccess（） 异常了" + e);
+                    log(TAG_HTTP, myReqInfo + LINE + "onResponse（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log(TAG_HTTP, myReqInfo + LINE + "handleSuccess-->handleFinally（） 异常了" + e);
+                        log(TAG_HTTP, myReqInfo + LINE + "onResponse-->handleFinally（） 异常了" + e);
                     }
                 }
             }
         });
+    }
+
+    private Map<String, List<String>> headers2Map(Headers headers) {
+        return headers.toMultimap();
     }
 
     protected void printHeaderInfo(Map<String, List<String>> headers) {
@@ -158,10 +145,14 @@ public class MyHttpHandlerController<T> implements Callback {
         }
     }
 
-    protected T parse() {
+    protected T parse(InputStream inputStream) {
         try {
+            // 只能读一次，否则异常
+            byte[] bytes = IOUtil.getBytes(inputStream);
+            myRespInfo.setDataBytes(bytes);
+            myRespInfo.setDataString(bytes);
 
-            log(TAG_HTTP, "to parse()" + LINE + myReqInfo.getUrl() + "返回的" + myRespInfo.getDataString());
+            log(TAG_HTTP, "to parse()" + LINE + myReqInfo.getUrl() + "返回的数据: " + myRespInfo.getDataString());
 
             // 如果解析失败一定得返回null或者crash
             T resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo);
