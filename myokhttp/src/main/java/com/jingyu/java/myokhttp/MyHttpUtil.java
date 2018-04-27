@@ -13,13 +13,6 @@ import java.util.Map;
  */
 public class MyHttpUtil {
 
-    // 普通表单
-    public static final String FORM = "application/x-www-form-urlencoded; charset=utf-8";
-
-    public static final String JSON = "application/json; charset=utf-8";
-
-    public static final String TEXT = "text/plain; charset=utf-8";
-
     private MyHttpUtil() {
     }
 
@@ -60,15 +53,15 @@ public class MyHttpUtil {
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
-            post(url, json, JSON, myHttpHandler);
+            post(url, json, HttpConstants.JSON, myHttpHandler);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            post(url, json, JSON, myHttpHandler, headers);
+            post(url, json, HttpConstants.JSON, myHttpHandler, headers);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            post(url, json, JSON, myHttpHandler, headers, tag);
+            post(url, json, HttpConstants.JSON, myHttpHandler, headers, tag);
         }
 
         public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
@@ -119,15 +112,15 @@ public class MyHttpUtil {
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler) {
-            post(url, json, JSON, myHttpHandler);
+            post(url, json, HttpConstants.JSON, myHttpHandler);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers) {
-            post(url, json, JSON, myHttpHandler, headers);
+            post(url, json, HttpConstants.JSON, myHttpHandler, headers);
         }
 
         public static void post(String url, String json, IMyHttpHandler myHttpHandler, Map<String, List<String>> headers, String tag) {
-            post(url, json, JSON, myHttpHandler, headers, tag);
+            post(url, json, HttpConstants.JSON, myHttpHandler, headers, tag);
         }
 
         public static void post(String url, String content, String contentType, IMyHttpHandler myHttpHandler) {
