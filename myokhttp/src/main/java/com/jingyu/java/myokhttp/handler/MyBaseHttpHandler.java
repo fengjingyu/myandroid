@@ -48,32 +48,32 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
 
     //TODO 实际项目里需要比对接口业务的状态码; 如果请求一般的浏览网页就无需匹配状态码，默认返回true
     @Override
-    public boolean onMatchAppStatusCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
         return true;
     }
 
     @Override
-    public void onUploadFileProgress(long bytesWritten, long totalSize) {
+    public void onUploadProgress(long bytesWritten, long totalSize) {
 
     }
 
     @Override
-    public void onDownloadInfo(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+    public void onSuccessForDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
 
     }
 
     @Override
-    public void onSuccessButParseWrong(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+    public void onParseException(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
 
     }
 
     @Override
-    public void onSuccessButCodeWrong(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public void onAppCodeException(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
 
     }
 
     @Override
-    public void onSuccessAll(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
 
     }
 
@@ -83,7 +83,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     }
 
     @Override
-    public void onEnd(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+    public void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
 
     }
 }

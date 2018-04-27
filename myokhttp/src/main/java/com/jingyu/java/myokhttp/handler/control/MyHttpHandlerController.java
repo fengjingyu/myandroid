@@ -23,7 +23,7 @@ import okhttp3.Response;
  */
 public class MyHttpHandlerController<T> implements Callback {
     /**
-     * 可查看如url 返回的json等
+     * 可查看如url 返回的数据等
      */
     public static final String TAG_HTTP = "myhttp";
     public static final String LINE = "@@@@@@";
@@ -62,7 +62,7 @@ public class MyHttpHandlerController<T> implements Callback {
             long totalSize = response.body().contentLength();
             InputStream inputStream = response.body().byteStream();
             if (myReqInfo.isDownload()) {
-                IMyHttpHandler.onDownloadInfo(myReqInfo, myRespInfo, inputStream, totalSize);
+                IMyHttpHandler.onSuccessForDownload(myReqInfo, myRespInfo, inputStream, totalSize);
                 handleSuccess(null, true);
             } else {
                 // 只能读一次，否则异常
@@ -113,19 +113,19 @@ public class MyHttpHandlerController<T> implements Callback {
                         if (resultBean != null) {
 
                             // http请求成功，解析成功，接下来判断状态码
-                            if (IMyHttpHandler.onMatchAppStatusCode(myReqInfo, myRespInfo, resultBean)) {
+                            if (IMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
                                 myRespInfo.setMyRespType(MyRespType.SUCCESS_ALL);
                                 // 项目的该接口的状态码正确
-                                IMyHttpHandler.onSuccessAll(myReqInfo, myRespInfo, resultBean);
+                                IMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
                             } else {
                                 // http请求成功，解析成功，项目的该接口的状态码有误
                                 myRespInfo.setMyRespType(MyRespType.SUCCESS_BUT_CODE_WRONG);
-                                IMyHttpHandler.onSuccessButCodeWrong(myReqInfo, myRespInfo, resultBean);
+                                IMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
                             }
                         } else {
                             // http请求成功，但是解析失败或者没解析
                             myRespInfo.setMyRespType(MyRespType.SUCCESS_BUT_PARSE_WRONG);
-                            IMyHttpHandler.onSuccessButParseWrong(myReqInfo, myRespInfo);
+                            IMyHttpHandler.onParseException(myReqInfo, myRespInfo);
                         }
                     }
                 } catch (Exception e) {
@@ -156,7 +156,7 @@ public class MyHttpHandlerController<T> implements Callback {
 
     protected void end() {
         if (IMyHttpHandler != null) {
-            IMyHttpHandler.onEnd(myReqInfo, myRespInfo);
+            IMyHttpHandler.onFinally(myReqInfo, myRespInfo);
         }
     }
 

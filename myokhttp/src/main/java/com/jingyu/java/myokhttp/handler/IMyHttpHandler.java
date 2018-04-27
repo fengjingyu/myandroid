@@ -2,13 +2,12 @@ package com.jingyu.java.myokhttp.handler;
 
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
-import com.sun.istack.internal.Nullable;
 
 import java.io.InputStream;
 
 /**
  * @author fengjingyu@foxmail.com
- *         http回调
+ * http回调
  */
 public interface IMyHttpHandler<T> {
     /**
@@ -22,49 +21,48 @@ public interface IMyHttpHandler<T> {
     /**
      * 文件上传进度
      */
-    void onUploadFileProgress(long bytesWritten, long totalSize);
+    void onUploadProgress(long bytesWritten, long totalSize);
 
     /**
-     * 下载的回调,如果isDownload是true,则回调 onDownloadInfo/onFailure , onEnd
+     * 下载的回调,如果ReqInfo.isDownload是true,则回调 onSuccessForDownload/onFailure , onFinally
      * 如果是异步请求：则在异步的线程里回调
      */
-    void onDownloadInfo(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
+    void onSuccessForDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
 
     /**
-     * 如果解析失败：一定得返回null,回调onSuccessButParseWrong()
-     * 如果解析成功: 继续回调onMatchAppStatusCode()
+     * 如果解析失败：一定得返回null,回调onParseException()
+     * 如果解析成功: 继续回调onMatchAppCode()
      * 如果是异步请求：则在异步的线程里回调
      */
-    @Nullable
     T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
 
     /**
      * 对返回状态码的一个判断，每个项目的认定操作成功的状态码或结构可能不同，在这里统一判断
      * <p>
      * 如果调用到这个方法，表示解析一定是成功的；如果解析失败，是不会调用这个方法的
-     * false:回调onSuccessButCodeWrong()
-     * true: 回调onSuccessAll()
+     * false:回调onAppCodeException()
+     * true: 回调onSuccess()
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    boolean onMatchAppStatusCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
 
     /**
      * http 请求成功，解析失败
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onSuccessButParseWrong(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    void onParseException(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
 
     /**
      * http 请求成功，解析成功，项目业务逻辑的状态码有误
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onSuccessButCodeWrong(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    void onAppCodeException(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
 
     /**
      * http请求成功，解析成功，状态码成功，回调该方法
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onSuccessAll(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
 
     /**
      * http请求失败，回调该方法
@@ -77,6 +75,6 @@ public interface IMyHttpHandler<T> {
      * <p>
      * 可以关闭dialog
      */
-    void onEnd(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
 
 }
