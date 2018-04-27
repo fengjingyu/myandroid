@@ -58,7 +58,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     }
 
     @Override
-    public void onSuccessForDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+    public void onDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
 
     }
 

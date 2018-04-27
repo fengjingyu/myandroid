@@ -24,10 +24,10 @@ public interface IMyHttpHandler<T> {
     void onUploadProgress(long bytesWritten, long totalSize);
 
     /**
-     * 下载的回调,如果ReqInfo.isDownload是true,则回调 onSuccessForDownload/onFailure , onFinally
+     * 下载的回调,如果ReqInfo.isDownload是true,则回调 onDownload/onFailure , onFinally
      * 如果是异步请求：则在异步的线程里回调
      */
-    void onSuccessForDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
+    void onDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
 
     /**
      * 如果解析失败：一定得返回null,回调onParseException()
