@@ -193,7 +193,7 @@ public class MyHttpHandlerController<T> implements Callback {
 
     /**
      * 在指定的线程运行
-     * 比如：在android使用okhttp库时，回调是在子线程的，这里可以统一处理到主线程回调
+     * 比如：在android使用okhttp库时，回调是在子线程的，这里可以统一处理在主线程回调
      */
     public void runOnSpecifiedThread(Runnable runnable) {
         //Handler mHandler = new Handler(Looper.getMainLooper());

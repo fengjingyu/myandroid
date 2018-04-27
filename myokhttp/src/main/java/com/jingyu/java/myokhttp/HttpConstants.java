@@ -7,4 +7,6 @@ public class HttpConstants {
     public static final String JSON = "application/json; charset=utf-8";
     // 文本
     public static final String TEXT = "text/plain; charset=utf-8";
+
+    public static final String OCTET_STREAM = "application/octet-stream";
 }

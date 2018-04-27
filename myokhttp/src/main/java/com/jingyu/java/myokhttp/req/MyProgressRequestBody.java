@@ -16,12 +16,12 @@ import okio.Sink;
  */
 public class MyProgressRequestBody extends RequestBody {
     private RequestBody requestBody;
-    private IMyHttpHandler IMyHttpHandler;
+    private IMyHttpHandler iMyHttpHandler;
     private ProgressSink progressSink;
 
-    public MyProgressRequestBody(RequestBody requestBody, IMyHttpHandler IMyHttpHandler) {
+    public MyProgressRequestBody(RequestBody requestBody, IMyHttpHandler iMyHttpHandler) {
         this.requestBody = requestBody;
-        this.IMyHttpHandler = IMyHttpHandler;
+        this.iMyHttpHandler = iMyHttpHandler;
     }
 
     @Override
@@ -47,13 +47,13 @@ public class MyProgressRequestBody extends RequestBody {
         }
 
         /**
-         * 上传时调用该方法,在其中调用回调函数将上传进度暴露出去,该方法提供了缓冲区的自己大小
+         * 上传时回调该方法,监听进度
          */
         @Override
         public void write(Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             byteWritten += byteCount;
-            IMyHttpHandler.onUploadFileProgress(byteWritten, contentLength());
+            iMyHttpHandler.onUploadFileProgress(byteWritten, contentLength());
         }
     }
 

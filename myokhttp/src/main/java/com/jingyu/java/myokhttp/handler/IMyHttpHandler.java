@@ -2,6 +2,7 @@ package com.jingyu.java.myokhttp.handler;
 
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.sun.istack.internal.Nullable;
 
 import java.io.InputStream;
 
@@ -34,6 +35,7 @@ public interface IMyHttpHandler<T> {
      * 如果解析成功: 继续回调onMatchAppStatusCode()
      * 如果是异步请求：则在异步的线程里回调
      */
+    @Nullable
     T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
 
     /**

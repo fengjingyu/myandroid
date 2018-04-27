@@ -1,5 +1,7 @@
 package com.jingyu.java.myokhttp.req;
 
+import com.jingyu.java.myokhttp.HttpConstants;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -36,7 +38,7 @@ public class MyUploadFile {
     }
 
     private MediaType getFileContentType() {
-        return MediaType.parse("application/octet-stream");
+        return MediaType.parse(HttpConstants.OCTET_STREAM);
     }
 
     public long length() {
