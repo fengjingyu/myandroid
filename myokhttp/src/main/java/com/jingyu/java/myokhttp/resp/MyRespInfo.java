@@ -97,8 +97,4 @@ public class MyRespInfo extends CloneBean {
     public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
-
-    public boolean isSuccessAll() {
-        return MyRespType.SUCCESS_ALL == myRespType;
-    }
 }

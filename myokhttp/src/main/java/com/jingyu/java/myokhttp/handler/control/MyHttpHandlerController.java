@@ -52,7 +52,6 @@ public class MyHttpHandlerController<T> implements Callback {
         myRespInfo.setHttpCode(response.code());
         myRespInfo.setRespHeaders(headers2Map(response.headers()));
         myRespInfo.setThrowable(null);
-        myRespInfo.setMyRespType(MyRespType.SUCCESS_WAITING_PARSE);
 
         log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode  " + myRespInfo.getHttpCode());
         printHeaderInfo(myRespInfo.getRespHeaders());
@@ -113,17 +112,17 @@ public class MyHttpHandlerController<T> implements Callback {
 
                             // http请求成功，解析成功，接下来判断状态码
                             if (iMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
-                                myRespInfo.setMyRespType(MyRespType.SUCCESS_ALL);
+                                myRespInfo.setMyRespType(MyRespType.SUCCESS);
                                 // 项目的该接口的状态码正确
                                 iMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
                             } else {
                                 // http请求成功，解析成功，项目的该接口的状态码有误
-                                myRespInfo.setMyRespType(MyRespType.SUCCESS_BUT_CODE_WRONG);
+                                myRespInfo.setMyRespType(MyRespType.APP_CODE_EXCEPTION);
                                 iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
                             }
                         } else {
                             // http请求成功，但是解析失败或者没解析
-                            myRespInfo.setMyRespType(MyRespType.SUCCESS_BUT_PARSE_WRONG);
+                            myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
                             iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
                         }
                     }
