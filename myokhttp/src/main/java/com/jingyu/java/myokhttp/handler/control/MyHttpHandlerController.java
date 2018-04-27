@@ -52,15 +52,15 @@ public class MyHttpHandlerController<T> implements Callback {
                     if (iMyHttpHandler != null) {
                         iMyHttpHandler.onFailure(myReqInfo, myRespInfo);
                     }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    log(TAG_HTTP, myReqInfo + LINE + "onFailure（） 异常了" + e1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log(TAG_HTTP, myReqInfo + LINE + "onFailure（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                        log(TAG_HTTP, myReqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log(TAG_HTTP, myReqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e);
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class MyHttpHandlerController<T> implements Callback {
                                     iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
                                 }
                             } else {
-                                // http请求成功，但是解析失败或者没解析
+                                // 解析失败
                                 myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
                                 iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
                             }
