@@ -8,5 +8,5 @@ public class HttpConstants {
     // 文本
     public static final String TEXT = "text/plain; charset=utf-8";
 
-    public static final String OCTET_STREAM = "application/octet-stream";
+    public static final String OCTET_STREAM = "application/octet-stream; charset=utf-8";
 }

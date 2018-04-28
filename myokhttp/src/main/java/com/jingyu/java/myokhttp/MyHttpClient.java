@@ -118,7 +118,8 @@ public class MyHttpClient {
             if (!myReqInfo.getParamsMap().isEmpty()) {
                 requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
             }
-
+            // myReqInfo.getPostStringContentType()可以为空
+            // 有一个会默认设置, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
             requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getPostStringContentType()), myReqInfo.getPostString()));
             return true;
         }
