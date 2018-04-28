@@ -44,16 +44,10 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         // 只能读一次，否则异常
         try {
             myRespInfo.setDataBytes(IOUtil.getBytes(inputStream));
-            String data = new String(myRespInfo.getDataBytes(), Constants.ENCODING_UTF8);
-            log(data);
-            return data;
+            return new String(myRespInfo.getDataBytes(), Constants.ENCODING_UTF8);
         } catch (Exception e) {
             throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
         }
-    }
-
-    public void log(String msg) {
-        System.out.println(msg);
     }
 
     public File parse2File(MyReqInfo myReqInfo, InputStream inputStream, File file) {

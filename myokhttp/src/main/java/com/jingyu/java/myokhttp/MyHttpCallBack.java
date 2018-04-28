@@ -1,11 +1,13 @@
 package com.jingyu.java.myokhttp;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
+import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.myokhttp.resp.MyRespType;
@@ -41,7 +43,7 @@ public class MyHttpCallBack<T> implements Callback {
         myRespInfo.setMyRespType(MyRespType.FAILURE);
         myRespInfo.setThrowable(e);
         myRespInfo.setHttpCode(0);
-        log(TAG_HTTP, myReqInfo + LINE + "onFailure()" + LINE + myRespInfo.getThrowable());
+        LogUtil.i(TAG_HTTP, myReqInfo + LINE + "onFailure()" + LINE + myRespInfo.getThrowable());
 
         runOnSpecifiedThread(new Runnable() {
             @Override
@@ -52,13 +54,13 @@ public class MyHttpCallBack<T> implements Callback {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log(TAG_HTTP, myReqInfo + LINE + "onFailure（） 异常了" + e);
+                    LogUtil.i(TAG_HTTP, myReqInfo + LINE + "onFailure（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log(TAG_HTTP, myReqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e);
+                        LogUtil.i(TAG_HTTP, myReqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e);
                     }
                 }
             }
@@ -66,15 +68,18 @@ public class MyHttpCallBack<T> implements Callback {
     }
 
     @Override
-    public void onResponse(Call call, final Response response) {
+    public void onResponse(Call call, Response response) {
         myRespInfo.setHttpCode(response.code());
         myRespInfo.setRespHeaders(response.headers().toMultimap());
         myRespInfo.setThrowable(null);
-        log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode = " + myRespInfo.getHttpCode());
+
+        LogUtil.i(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode = " + myRespInfo.getHttpCode());
         printHeaderInfo(myRespInfo.getRespHeaders());
 
         try {
-            resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, response.body().byteStream(), response.body().contentLength());
+            InputStream inputStream = response.body().byteStream();
+            long totalSize = response.body().contentLength();
+            resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, inputStream, totalSize);
         } catch (Exception e) {
             e.printStackTrace();
             resultBean = null;
@@ -105,13 +110,13 @@ public class MyHttpCallBack<T> implements Callback {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log(TAG_HTTP, myReqInfo + LINE + "onResponse（） 异常了" + e);
+                    LogUtil.i(TAG_HTTP, myReqInfo + LINE + "onResponse（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log(TAG_HTTP, myReqInfo + LINE + "onResponse-->handleFinally（） 异常了" + e);
+                        LogUtil.i(TAG_HTTP, myReqInfo + LINE + "onResponse-->handleFinally（） 异常了" + e);
                     }
                 }
             }
@@ -122,7 +127,7 @@ public class MyHttpCallBack<T> implements Callback {
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             List<String> values = header.getValue();
             if (CollectionsUtil.isListAvaliable(values)) {
-                log(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
+                LogUtil.i(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
             }
         }
     }
@@ -135,7 +140,6 @@ public class MyHttpCallBack<T> implements Callback {
 
     /**
      * 在指定的线程运行
-     * 比如：在android使用okhttp库时，回调是在子线程的，这里可以统一处理在主线程回调
      */
     public void runOnSpecifiedThread(Runnable runnable) {
         //android
@@ -144,9 +148,5 @@ public class MyHttpCallBack<T> implements Callback {
         if (runnable != null) {
             runnable.run();
         }
-    }
-
-    public void log(String tag, String msg) {
-        System.out.println(tag + "::" + msg);
     }
 }
