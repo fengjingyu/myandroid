@@ -77,9 +77,11 @@ public class MyHttpCallBack<T> implements Callback {
         printHeaderInfo(myRespInfo.getRespHeaders());
 
         try {
-            InputStream inputStream = response.body().byteStream();
-            long totalSize = response.body().contentLength();
-            resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, inputStream, totalSize);
+            if (iMyHttpHandler != null) {
+                InputStream inputStream = response.body().byteStream();
+                long totalSize = response.body().contentLength();
+                resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, inputStream, totalSize);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             resultBean = null;

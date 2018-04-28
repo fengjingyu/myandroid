@@ -53,7 +53,9 @@ public class MyProgressRequestBody extends RequestBody {
         public void write(Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             byteWritten += byteCount;
-            iMyHttpHandler.onUploadProgress(byteWritten, contentLength());
+            if (iMyHttpHandler != null) {
+                iMyHttpHandler.onUploadProgress(byteWritten, contentLength());
+            }
         }
     }
 
