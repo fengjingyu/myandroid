@@ -1,4 +1,4 @@
-package com.jingyu.java.myokhttp.handler.control;
+package com.jingyu.java.myokhttp;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import okhttp3.Response;
 /**
  * @author fengjingyu@foxmail.com
  */
-public class MyHttpHandlerController<T> implements Callback {
+public class MyHttpCallBack<T> implements Callback {
     /**
      * 可查看如url 返回的数据等
      */
@@ -30,7 +30,7 @@ public class MyHttpHandlerController<T> implements Callback {
     private IMyHttpHandler<T> iMyHttpHandler;
     private T resultBean;
 
-    public MyHttpHandlerController(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
+    public MyHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
         this.myReqInfo = myReqInfo;
         this.iMyHttpHandler = iMyHttpHandler;
         this.myRespInfo = new MyRespInfo();

@@ -1,7 +1,6 @@
 package com.jingyu.java.myokhttp;
 
 import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.handler.control.MyHttpHandlerController;
 import com.jingyu.java.myokhttp.req.MyProgressRequestBody;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.req.MyUploadFile;
@@ -31,24 +30,24 @@ public class MyHttpClient {
     }
 
     public void httpSync(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        MyHttpHandlerController myHttpHandlerController = getHttpHandlerController(myReqInfo, iMyHttpHandler);
+        MyHttpCallBack myHttpCallBack = getHttpCallBack(myReqInfo, iMyHttpHandler);
         Call call = null;
         try {
             call = okHttpClient.newCall(getRequest(myReqInfo, iMyHttpHandler));
             Response response = call.execute();
             if (response != null && response.isSuccessful()) {
-                myHttpHandlerController.onResponse(call, response);
+                myHttpCallBack.onResponse(call, response);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            myHttpHandlerController.onFailure(call, e);
+            myHttpCallBack.onFailure(call, e);
         }
     }
 
     public void httpAsync(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
         try {
             Request request = getRequest(myReqInfo, iMyHttpHandler);
-            okHttpClient.newCall(request).enqueue(getHttpHandlerController(myReqInfo, iMyHttpHandler));
+            okHttpClient.newCall(request).enqueue(getHttpCallBack(myReqInfo, iMyHttpHandler));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,8 +228,8 @@ public class MyHttpClient {
         return new MyProgressRequestBody(multipartBody, iMyHttpHandler);
     }
 
-    protected MyHttpHandlerController getHttpHandlerController(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        return new MyHttpHandlerController(myReqInfo, iMyHttpHandler);
+    protected MyHttpCallBack getHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+        return new MyHttpCallBack(myReqInfo, iMyHttpHandler);
     }
 
 }
