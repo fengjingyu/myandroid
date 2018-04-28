@@ -1,6 +1,7 @@
 package com.jingyu.java.myokhttp.handler;
 
 import com.jingyu.java.myokhttp.MyHttpCallBack;
+import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.mytool.Constants;
@@ -64,7 +65,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getParamsMap());
 
         MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).paramsMap(newParams).builder();
-        System.out.println("请求参数：" + newMyReqInfo);
+        LogUtil.i(MyHttpCallBack.TAG_HTTP, "请求参数：" + newMyReqInfo);
         return newMyReqInfo;
     }
 

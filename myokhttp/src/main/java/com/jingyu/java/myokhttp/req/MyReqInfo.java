@@ -95,7 +95,7 @@ public class MyReqInfo extends CloneBean {
     private static final String QUESTION = "?";
 
     /**
-     * 构建get方式的参数串（未拼接ur）
+     * 构建url的参数串
      *
      * @return ?abc=123
      */
