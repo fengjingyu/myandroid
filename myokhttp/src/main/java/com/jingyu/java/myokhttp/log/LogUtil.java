@@ -1,7 +1,7 @@
 package com.jingyu.java.myokhttp.log;
 
 public class LogUtil {
-    private static ILog log;
+    private static ILog log = new LogImpl();
 
     public static ILog getILog() {
         return log;
