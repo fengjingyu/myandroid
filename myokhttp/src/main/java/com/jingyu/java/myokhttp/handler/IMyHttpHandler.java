@@ -24,17 +24,11 @@ public interface IMyHttpHandler<T> {
     void onUploadProgress(long bytesWritten, long totalSize);
 
     /**
-     * 下载的回调,如果ReqInfo.isDownload是true,则回调 onDownload/onFailure , onFinally
-     * 如果是异步请求：则在异步的线程里回调
-     */
-    void onDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
-
-    /**
      * 如果解析失败：一定得返回null,回调onParseException()
      * 如果解析成功: 继续回调onMatchAppCode()
      * 如果是异步请求：则在异步的线程里回调
      */
-    T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
 
     /**
      * 对返回状态码的一个判断，每个项目的认定操作成功的状态码或结构可能不同，在这里统一判断
