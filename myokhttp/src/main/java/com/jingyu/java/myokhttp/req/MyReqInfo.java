@@ -41,10 +41,6 @@ public class MyReqInfo extends CloneBean {
      * 标识
      */
     private final Object tag;
-    /**
-     * 是否是下载
-     */
-    private final boolean isDownload;
 
     private MyReqInfo(Builder builder) {
         this.myReqType = builder.myReqType;
@@ -54,7 +50,6 @@ public class MyReqInfo extends CloneBean {
         this.postStringContentType = builder.postStringContentType;
         this.postString = builder.postString;
         this.tag = builder.tag;
-        this.isDownload = builder.isDownload;
     }
 
     public MyReqType getMyReqType() {
@@ -83,10 +78,6 @@ public class MyReqInfo extends CloneBean {
 
     public Object getTag() {
         return tag;
-    }
-
-    public boolean isDownload() {
-        return isDownload;
     }
 
     public boolean isGet() {
@@ -140,7 +131,6 @@ public class MyReqInfo extends CloneBean {
                 ", postStringContentType='" + postStringContentType + '\'' +
                 ", postString='" + postString + '\'' +
                 ", tag=" + tag +
-                ", isDownload=" + isDownload +
                 '}';
     }
 
@@ -174,10 +164,6 @@ public class MyReqInfo extends CloneBean {
          * 标识
          */
         private Object tag;
-        /**
-         * 是否是下载
-         */
-        private boolean isDownload;
 
         public Builder() {
         }
@@ -190,7 +176,6 @@ public class MyReqInfo extends CloneBean {
             this.postStringContentType = myReqInfo.getPostStringContentType();
             this.postString = myReqInfo.getPostString();
             this.tag = myReqInfo.getTag();
-            this.isDownload = myReqInfo.isDownload();
         }
 
         public Builder myReqType(MyReqType myReqType) {
@@ -230,11 +215,6 @@ public class MyReqInfo extends CloneBean {
 
         public Builder postString(String postString) {
             this.postString = postString;
-            return this;
-        }
-
-        public Builder isDownload(boolean isDownload) {
-            this.isDownload = isDownload;
             return this;
         }
 
