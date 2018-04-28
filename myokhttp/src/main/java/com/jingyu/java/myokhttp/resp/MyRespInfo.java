@@ -1,9 +1,7 @@
 package com.jingyu.java.myokhttp.resp;
 
-import com.jingyu.java.mytool.Constants;
 import com.jingyu.java.mytool.bean.CloneBean;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,19 +23,16 @@ public class MyRespInfo extends CloneBean {
 
     private byte[] dataBytes;
 
-    private String dataString;
-
     /**
      * throwable null为success，非空为fail
      */
     private Throwable throwable;
 
-    public MyRespInfo(MyRespType myRespType, int httpCode, Map<String, List<String>> respHeaders, byte[] dataBytes, String dataString, Throwable throwable) {
+    public MyRespInfo(MyRespType myRespType, int httpCode, Map<String, List<String>> respHeaders, byte[] dataBytes, Throwable throwable) {
         this.myRespType = myRespType;
         this.httpCode = httpCode;
         this.respHeaders = respHeaders;
         this.dataBytes = dataBytes;
-        this.dataString = dataString;
         this.throwable = throwable;
     }
 
@@ -80,14 +75,6 @@ public class MyRespInfo extends CloneBean {
 
     public void setDataBytes(byte[] dataBytes) {
         this.dataBytes = dataBytes;
-    }
-
-    public String getDataString() {
-        return dataString;
-    }
-
-    public void setDataString(byte[] bytes) throws UnsupportedEncodingException {
-        dataString = new String(bytes, Constants.ENCODING_UTF8);
     }
 
     public Throwable getThrowable() {

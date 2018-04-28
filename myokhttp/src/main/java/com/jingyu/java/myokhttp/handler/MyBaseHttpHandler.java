@@ -1,8 +1,12 @@
 package com.jingyu.java.myokhttp.handler;
 
+import com.jingyu.java.myokhttp.handler.control.MyHttpHandlerController;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.mytool.Constants;
+import com.jingyu.java.mytool.util.IOUtil;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +25,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         if (headers == null) {
             headers = new HashMap<>();
         }
-        //headers.put("_p", Arrays.asList("1"));
+        //headers.put("key", Arrays.asList("1"));
         return headers;
     }
 
@@ -30,10 +34,28 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         if (paramsMap == null) {
             paramsMap = new HashMap<>();
         }
-        //paramsMap.put("testKey0", "java");
-        //paramsMap.put("testKey3", "c");
-        //paramsMap.put("testKey6", "c++");
+        //paramsMap.put("key1", "java");
+        //paramsMap.put("key2", "c");
+        //paramsMap.put("key3", "c++");
         return paramsMap;
+    }
+
+    public String parse2String(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream) {
+        // 只能读一次，否则异常
+        try {
+            myRespInfo.setDataBytes(IOUtil.getBytes(inputStream));
+            return new String(myRespInfo.getDataBytes(), Constants.ENCODING_UTF8);
+        } catch (Exception e) {
+            throw new RuntimeException(myReqInfo.getUrl() + MyHttpHandlerController.LINE + e);
+        }
+    }
+
+    public File parse2File(MyReqInfo myReqInfo, InputStream inputStream, File file) {
+        if (IOUtil.inputStream2File(inputStream, file)) {
+            return file;
+        } else {
+            throw new RuntimeException("inputStream2file异常 " + MyHttpHandlerController.LINE + "file = " + file + MyHttpHandlerController.LINE + myReqInfo.getUrl());
+        }
     }
 
     @Override
@@ -54,11 +76,6 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
 
     @Override
     public void onUploadProgress(long bytesWritten, long totalSize) {
-
-    }
-
-    @Override
-    public void onDownload(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
 
     }
 

@@ -1,7 +1,6 @@
 package com.jingyu.java.myokhttp.handler.control;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.myokhttp.resp.MyRespType;
 import com.jingyu.java.mytool.util.CollectionsUtil;
-import com.jingyu.java.mytool.util.IOUtil;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -30,6 +28,7 @@ public class MyHttpHandlerController<T> implements Callback {
     private MyRespInfo myRespInfo;
     private MyReqInfo myReqInfo;
     private IMyHttpHandler<T> iMyHttpHandler;
+    private T resultBean;
 
     public MyHttpHandlerController(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
         this.myReqInfo = myReqInfo;
@@ -74,9 +73,12 @@ public class MyHttpHandlerController<T> implements Callback {
         log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode = " + myRespInfo.getHttpCode());
         printHeaderInfo(myRespInfo.getRespHeaders());
 
-        final long totalSize = response.body().contentLength();
-        final InputStream inputStream = response.body().byteStream();
-        final T resultBean = parse(inputStream, totalSize);
+        try {
+            resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, response.body().byteStream(), response.body().contentLength());
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultBean = null;
+        }
 
         runOnSpecifiedThread(new Runnable() {
             @Override
@@ -118,9 +120,7 @@ public class MyHttpHandlerController<T> implements Callback {
 
     protected void printHeaderInfo(Map<String, List<String>> headers) {
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
-
             List<String> values = header.getValue();
-
             if (CollectionsUtil.isListAvaliable(values)) {
                 log(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
             }
@@ -130,41 +130,6 @@ public class MyHttpHandlerController<T> implements Callback {
     protected void handleFinally() {
         if (iMyHttpHandler != null) {
             iMyHttpHandler.onFinally(myReqInfo, myRespInfo);
-        }
-    }
-
-    protected T parse(InputStream inputStream, long totalSize) {
-        try {
-            // 只能读一次，否则异常
-            byte[] bytes = IOUtil.getBytes(inputStream);
-            myRespInfo.setDataBytes(bytes);
-            myRespInfo.setDataString(bytes);
-
-            log(TAG_HTTP, "to parse()" + LINE + myReqInfo.getUrl() + "返回的数据: " + myRespInfo.getDataString());
-
-            // 如果解析失败一定得返回null或者crash
-            T resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, inputStream, totalSize);
-
-            if (resultBean == null) {
-                runOnSpecifiedThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        log(TAG_HTTP, "解析数据失败" + LINE + myReqInfo + LINE + myRespInfo.getDataString());
-                    }
-                });
-            }
-
-            return resultBean;
-
-        } catch (final Exception e) {
-            e.printStackTrace();
-            runOnSpecifiedThread(new Runnable() {
-                @Override
-                public void run() {
-                    log(TAG_HTTP, "解析数据异常" + LINE + myReqInfo + LINE + myRespInfo.getDataString() + e);
-                }
-            });
-            return null;
         }
     }
 
