@@ -15,7 +15,6 @@ import com.jingyu.java.mytool.util.IOUtil;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
@@ -70,15 +69,14 @@ public class MyHttpHandlerController<T> implements Callback {
     @Override
     public void onResponse(Call call, final Response response) {
         myRespInfo.setHttpCode(response.code());
-        myRespInfo.setRespHeaders(headers2Map(response.headers()));
+        myRespInfo.setRespHeaders(response.headers().toMultimap());
         myRespInfo.setThrowable(null);
         log(TAG_HTTP, "onResponse()" + LINE + myReqInfo.getUrl() + LINE + "httpCode = " + myRespInfo.getHttpCode());
         printHeaderInfo(myRespInfo.getRespHeaders());
 
         final long totalSize = response.body().contentLength();
         final InputStream inputStream = response.body().byteStream();
-        // 如果是下载文件,则不解析
-        final T resultBean = myReqInfo.isDownload() ? null : parse(inputStream);
+        final T resultBean = parse(inputStream, totalSize);
 
         runOnSpecifiedThread(new Runnable() {
             @Override
@@ -86,27 +84,21 @@ public class MyHttpHandlerController<T> implements Callback {
                 try {
                     if (iMyHttpHandler != null) {
                         // 有传入回调iMyHttpHandler; 如果没有传入回调iMyHttpHandler, 则直接调用finally{ }
-                        if (myReqInfo.isDownload()) {
-                            // 下载文件
-                            myRespInfo.setMyRespType(MyRespType.DOWNLOAD);
-                            iMyHttpHandler.onDownload(myReqInfo, myRespInfo, inputStream, totalSize);
-                        } else {
-                            if (resultBean != null) {
-                                // 解析成功
-                                if (iMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
-                                    // 项目接口的状态码正确
-                                    myRespInfo.setMyRespType(MyRespType.SUCCESS);
-                                    iMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
-                                } else {
-                                    // 项目接口的状态码有误
-                                    myRespInfo.setMyRespType(MyRespType.APP_CODE_EXCEPTION);
-                                    iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
-                                }
+                        if (resultBean != null) {
+                            // 解析成功
+                            if (iMyHttpHandler.onMatchAppCode(myReqInfo, myRespInfo, resultBean)) {
+                                // 项目接口的状态码正确
+                                myRespInfo.setMyRespType(MyRespType.SUCCESS);
+                                iMyHttpHandler.onSuccess(myReqInfo, myRespInfo, resultBean);
                             } else {
-                                // 解析失败
-                                myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
-                                iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
+                                // 项目接口的状态码有误
+                                myRespInfo.setMyRespType(MyRespType.APP_CODE_EXCEPTION);
+                                iMyHttpHandler.onAppCodeException(myReqInfo, myRespInfo, resultBean);
                             }
+                        } else {
+                            // 解析失败
+                            myRespInfo.setMyRespType(MyRespType.PARSE_EXCEPTION);
+                            iMyHttpHandler.onParseException(myReqInfo, myRespInfo);
                         }
                     }
                 } catch (Exception e) {
@@ -122,10 +114,6 @@ public class MyHttpHandlerController<T> implements Callback {
                 }
             }
         });
-    }
-
-    private Map<String, List<String>> headers2Map(Headers headers) {
-        return headers.toMultimap();
     }
 
     protected void printHeaderInfo(Map<String, List<String>> headers) {
@@ -145,7 +133,7 @@ public class MyHttpHandlerController<T> implements Callback {
         }
     }
 
-    protected T parse(InputStream inputStream) {
+    protected T parse(InputStream inputStream, long totalSize) {
         try {
             // 只能读一次，否则异常
             byte[] bytes = IOUtil.getBytes(inputStream);
@@ -155,7 +143,7 @@ public class MyHttpHandlerController<T> implements Callback {
             log(TAG_HTTP, "to parse()" + LINE + myReqInfo.getUrl() + "返回的数据: " + myRespInfo.getDataString());
 
             // 如果解析失败一定得返回null或者crash
-            T resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo);
+            T resultBean = iMyHttpHandler.onParse(myReqInfo, myRespInfo, inputStream, totalSize);
 
             if (resultBean == null) {
                 runOnSpecifiedThread(new Runnable() {
