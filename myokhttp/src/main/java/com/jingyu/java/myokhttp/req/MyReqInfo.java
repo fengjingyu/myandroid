@@ -41,10 +41,6 @@ public class MyReqInfo extends CloneBean {
      * 如"application/json"，"text/plain;charset=utf-8"
      */
     private final String contentType;
-    /**
-     * 标识
-     */
-    private final Object tag;
 
     private MyReqInfo(Builder builder) {
         this.myReqType = builder.myReqType;
@@ -54,7 +50,6 @@ public class MyReqInfo extends CloneBean {
         this.bodyMap = builder.bodyMap;
         this.bodyContent = builder.bodyContent;
         this.contentType = builder.contentType;
-        this.tag = builder.tag;
     }
 
     public MyReqType getMyReqType() {
@@ -83,10 +78,6 @@ public class MyReqInfo extends CloneBean {
 
     public String getBodyContent() {
         return bodyContent;
-    }
-
-    public Object getTag() {
-        return tag;
     }
 
     public boolean isGet() {
@@ -140,7 +131,6 @@ public class MyReqInfo extends CloneBean {
                 ", bodyMap=" + bodyMap +
                 ", bodyContent='" + bodyContent + '\'' +
                 ", contentType='" + contentType + '\'' +
-                ", tag=" + tag +
                 '}';
     }
 
@@ -174,10 +164,6 @@ public class MyReqInfo extends CloneBean {
          * "application/json"，"text/plain;charset=utf-8"
          */
         private String contentType;
-        /**
-         * 标识
-         */
-        private Object tag;
 
         public Builder() {
         }
@@ -190,7 +176,6 @@ public class MyReqInfo extends CloneBean {
             this.bodyMap = myReqInfo.getBodyMap();
             this.bodyContent = myReqInfo.getBodyContent();
             this.contentType = myReqInfo.getContentType();
-            this.tag = myReqInfo.getTag();
         }
 
         public Builder myReqType(MyReqType myReqType) {
@@ -238,11 +223,6 @@ public class MyReqInfo extends CloneBean {
             return this;
         }
 
-        public Builder tag(Object tag) {
-            this.tag = tag;
-            return this;
-        }
-
         public MyReqInfo builder() {
             if (myReqType == null) {
                 myReqType = MyReqType.GET;
@@ -258,10 +238,6 @@ public class MyReqInfo extends CloneBean {
 
             if (contentType == null) {
                 contentType = "";
-            }
-
-            if (tag == null) {
-                tag = "";
             }
 
             if (headersMap == null) {

@@ -1,7 +1,6 @@
 package com.jingyu.java.myokhttp.handler;
 
 import com.jingyu.java.myokhttp.MyHttpCallBack;
-import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.mytool.Constants;
@@ -41,6 +40,17 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         return paramsMap;
     }
 
+    @Override
+    public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
+//        Map<String, List<String>> newHeaders = getCommonHeaders(myReqInfo.getTag().toString(), myReqInfo.getHeadersMap());
+//        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getQueryMap());
+//
+//        MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).queryMap(newParams).builder();
+//        LogUtil.i(MyHttpCallBack.TAG_HTTP, "请求参数：" + newMyReqInfo);
+//        return newMyReqInfo;
+        return myReqInfo;
+    }
+
     public String parse2String(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream) {
         // 只能读一次，否则异常
         try {
@@ -57,16 +67,6 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         } else {
             throw new RuntimeException("inputStream2file异常 " + MyHttpCallBack.LINE + "file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());
         }
-    }
-
-    @Override
-    public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
-        Map<String, List<String>> newHeaders = getCommonHeaders(myReqInfo.getTag().toString(), myReqInfo.getHeadersMap());
-        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getQueryMap());
-
-        MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).queryMap(newParams).builder();
-        LogUtil.i(MyHttpCallBack.TAG_HTTP, "请求参数：" + newMyReqInfo);
-        return newMyReqInfo;
     }
 
     //TODO 实际项目里需要比对接口业务的状态码; 如果请求一般的浏览网页就无需匹配状态码，默认返回true
