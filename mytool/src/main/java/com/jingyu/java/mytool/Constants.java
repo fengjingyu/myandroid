@@ -31,8 +31,8 @@ public class Constants {
     /**
      * 编码格式
      */
-    public static final String ENCODING_UTF8 = "utf-8";
-    public static final String ENCODING_GBK = "gbk";
-    public static final String ENCODING_ISO88591 = "ISO-8859-1";
+    public static final String UTF8 = "utf-8";
+    public static final String GBK = "gbk";
+    public static final String ISO88591 = "ISO-8859-1";
 
 }
