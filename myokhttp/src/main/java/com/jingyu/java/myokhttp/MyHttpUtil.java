@@ -31,6 +31,10 @@ public class MyHttpUtil {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, null, queryMap, null, null, null, null), myHttpHandler);
         }
 
+        public static void get(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, null), myHttpHandler);
+        }
+
         public static void get(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, String tag, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, tag), myHttpHandler);
         }
@@ -40,6 +44,10 @@ public class MyHttpUtil {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, null, null, bodyMap, null, null, null), myHttpHandler);
         }
 
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, headers, null, bodyMap, null, null, null), myHttpHandler);
+        }
+
         public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyMap, String tag, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, headers, queryMap, bodyMap, null, null, tag), myHttpHandler);
         }
@@ -47,6 +55,10 @@ public class MyHttpUtil {
         // postString
         public static void post(String url, String bodyContent, String contentType, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, null, null, null, bodyContent, contentType, null), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, List<String>> headers, String bodyContent, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, headers, null, null, bodyContent, contentType, null), myHttpHandler);
         }
 
         public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, String bodyContent, String contentType, String tag, IMyHttpHandler myHttpHandler) {
@@ -61,6 +73,10 @@ public class MyHttpUtil {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, null, queryMap, null, null, null, null), myHttpHandler);
         }
 
+        public static void get(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, null), myHttpHandler);
+        }
+
         public static void get(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, String tag, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, tag), myHttpHandler);
         }
@@ -70,6 +86,10 @@ public class MyHttpUtil {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, null, null, bodyMap, null, null, null), myHttpHandler);
         }
 
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyMap, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, headers, null, bodyMap, null, null, null), myHttpHandler);
+        }
+
         public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyMap, String tag, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, headers, queryMap, bodyMap, null, null, tag), myHttpHandler);
         }
@@ -77,6 +97,10 @@ public class MyHttpUtil {
         // postString
         public static void post(String url, String bodyContent, String contentType, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, null, null, null, bodyContent, contentType, null), myHttpHandler);
+        }
+
+        public static void post(String url, Map<String, List<String>> headers, String bodyContent, String contentType, IMyHttpHandler myHttpHandler) {
+            getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, headers, null, null, bodyContent, contentType, null), myHttpHandler);
         }
 
         public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, String bodyContent, String contentType, String tag, IMyHttpHandler myHttpHandler) {
