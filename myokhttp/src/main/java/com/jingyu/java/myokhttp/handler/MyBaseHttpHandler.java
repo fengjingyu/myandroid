@@ -35,9 +35,9 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         if (paramsMap == null) {
             paramsMap = new HashMap<>();
         }
-        //paramsMap.put("key1", "java");
-        //paramsMap.put("key2", "c");
-        //paramsMap.put("key3", "c++");
+        //queryMap.put("key1", "java");
+        //queryMap.put("key2", "c");
+        //queryMap.put("key3", "c++");
         return paramsMap;
     }
 
@@ -62,9 +62,9 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     @Override
     public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
         Map<String, List<String>> newHeaders = getCommonHeaders(myReqInfo.getTag().toString(), myReqInfo.getHeadersMap());
-        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getParamsMap());
+        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getQueryMap());
 
-        MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).paramsMap(newParams).builder();
+        MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).queryMap(newParams).builder();
         LogUtil.i(MyHttpCallBack.TAG_HTTP, "请求参数：" + newMyReqInfo);
         return newMyReqInfo;
     }

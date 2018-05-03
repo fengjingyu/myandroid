@@ -131,11 +131,12 @@ public class MyHttpUtil {
         return new MyReqInfo.Builder()
                 .myReqType(type)
                 .url(url)
-                .paramsMap(paramsMap)
+                .queryMap(paramsMap)
+                .bodyMap()//todo
                 .headersMap(headers)
                 .tag(tag)
-                .postString(postString)
-                .postStringContentType(postStringContentType)
+                .bodyContent(postString)
+                .contentType(postStringContentType)
                 .builder();
     }
 }

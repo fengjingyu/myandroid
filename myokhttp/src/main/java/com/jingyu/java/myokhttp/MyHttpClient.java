@@ -70,6 +70,8 @@ public class MyHttpClient {
 
     private void buildeTypeParamsUrl(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
 
+        requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlQuery(myReqInfo.getQueryMap()));
+
         if (isGet(myReqInfo, requestBuilder)) {
             return;
         }
@@ -84,8 +86,6 @@ public class MyHttpClient {
 
     private boolean isPost(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
         if (myReqInfo.isPost()) {
-
-            requestBuilder.url(myReqInfo.getUrl());
 
             if (isPostString(myReqInfo, requestBuilder)) {
                 return true;
@@ -108,19 +108,14 @@ public class MyHttpClient {
      * // post: 如果contenttype是表单key=value&key2=value2, url?key=dog,
      * //      则springmvc的注解 @RequestParam String key 获取的是 dog,value
      * //      则springmvc的注解 @RequestBody String content 获取的是 key=dog&key=value&key2=value2
-     * //post: 如果contenttype是application/json 如{"a":"b"} ,url?key=dog
+     * // post: 如果contenttype是application/json 如{"a":"b"} ,url?key=dog
      * //      则springmvc的注解 @RequestParam String key 获取的是dog
      * //      则springmvc的注解 @RequestBody String conent 获取的是{"a":"b"}
      */
     private boolean isPostString(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (StringUtil.isAvaliable(myReqInfo.getContent())) {
-
-            if (!myReqInfo.getParamsMap().isEmpty()) {
-                requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
-            }
-            // myReqInfo.getContentType()可以为空
-            // 有一个会默认设置, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
-            requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getContentType()), myReqInfo.getContent()));
+        if (StringUtil.isAvaliable(myReqInfo.getBodyContent())) {
+            // myReqInfo.getContentType()可以为空, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
+            requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getContentType()), myReqInfo.getBodyContent()));
             return true;
         }
         return false;
@@ -131,12 +126,12 @@ public class MyHttpClient {
             return false;
         }
 
-        Map<String, Object> paramsMap = myReqInfo.getParamsMap();
+        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        if (CollectionsUtil.isMapAvaliable(paramsMap)) {
+        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
             FormBody.Builder formBodyBuilder = new FormBody.Builder();
 
-            for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
                 formBodyBuilder.add(entry.getKey(), String.valueOf(entry.getValue()));
             }
             requestBuilder.post(formBodyBuilder.build());
@@ -146,15 +141,14 @@ public class MyHttpClient {
     }
 
     private boolean isPostMultiForm(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
+        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        Map<String, Object> paramsMap = myReqInfo.getParamsMap();
-
-        if (CollectionsUtil.isMapAvaliable(paramsMap)) {
+        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
 
             MultipartBody.Builder multiBuilder = new MultipartBody.Builder();
             multiBuilder.setType(MultipartBody.FORM);
 
-            for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
 
                 if (entry.getValue() == null) {
                     continue;
@@ -184,11 +178,10 @@ public class MyHttpClient {
     }
 
     private boolean isIncludeFile(MyReqInfo myReqInfo) {
+        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        Map<String, Object> paramsMap = myReqInfo.getParamsMap();
-
-        if (CollectionsUtil.isMapAvaliable(paramsMap)) {
-            for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
+            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
                 if (entry.getValue() instanceof File) {
                     return true;
                 }
@@ -197,11 +190,9 @@ public class MyHttpClient {
         return false;
     }
 
-    private boolean isGet(MyReqInfo myReqInfo, Request.Builder builder) {
+    private boolean isGet(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
         if (myReqInfo.isGet()) {
-
-            builder.get().url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
-
+            requestBuilder.get();
             return true;
         }
         return false;

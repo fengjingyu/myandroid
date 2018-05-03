@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * @author fengjingyu@foxmail.com
- *         http请求的信息
+ * http请求的信息
  */
 public class MyReqInfo extends CloneBean {
     /**
@@ -26,17 +26,21 @@ public class MyReqInfo extends CloneBean {
      */
     private final Map<String, List<String>> headersMap;
     /**
-     * http的请求参数
+     * url?key=value&key1=value1
      */
-    private final Map<String, Object> paramsMap;
+    private final Map<String, Object> queryMap;
+    /**
+     * 请求体的内容 key=value(含file)
+     */
+    private final Map<String, Object> bodyMap;
+    /**
+     * 请求体的内容
+     */
+    private final String bodyContent;
     /**
      * 如"application/json"，"text/plain;charset=utf-8"
      */
     private final String contentType;
-    /**
-     * 请求体的内容
-     */
-    private final String content;
     /**
      * 标识
      */
@@ -46,9 +50,10 @@ public class MyReqInfo extends CloneBean {
         this.myReqType = builder.myReqType;
         this.url = builder.url;
         this.headersMap = builder.headersMap;
-        this.paramsMap = builder.paramsMap;
+        this.queryMap = builder.queryMap;
+        this.bodyMap = builder.bodyMap;
+        this.bodyContent = builder.bodyContent;
         this.contentType = builder.contentType;
-        this.content = builder.content;
         this.tag = builder.tag;
     }
 
@@ -64,16 +69,20 @@ public class MyReqInfo extends CloneBean {
         return headersMap;
     }
 
-    public Map<String, Object> getParamsMap() {
-        return paramsMap;
+    public Map<String, Object> getQueryMap() {
+        return queryMap;
+    }
+
+    public Map<String, Object> getBodyMap() {
+        return bodyMap;
     }
 
     public String getContentType() {
         return contentType;
     }
 
-    public String getContent() {
-        return content;
+    public String getBodyContent() {
+        return bodyContent;
     }
 
     public Object getTag() {
@@ -99,14 +108,14 @@ public class MyReqInfo extends CloneBean {
      *
      * @return ?abc=123
      */
-    public String buildUrlParams(Map<String, Object> params) {
+    public String buildUrlQuery(Map<String, Object> queryMap) {
 
-        if (CollectionsUtil.isMapAvaliable(params)) {
+        if (CollectionsUtil.isMapAvaliable(queryMap)) {
             StringBuilder sb = new StringBuilder();
 
             sb.append(QUESTION);
 
-            for (Map.Entry<String, Object> entry : params.entrySet()) {
+            for (Map.Entry<String, Object> entry : queryMap.entrySet()) {
                 if (entry.getValue() == null) {
                     continue;
                 }
@@ -127,9 +136,10 @@ public class MyReqInfo extends CloneBean {
                 "myReqType=" + myReqType +
                 ", url='" + url + '\'' +
                 ", headersMap=" + headersMap +
-                ", paramsMap=" + paramsMap +
+                ", queryMap=" + queryMap +
+                ", bodyMap=" + bodyMap +
+                ", bodyContent='" + bodyContent + '\'' +
                 ", contentType='" + contentType + '\'' +
-                ", content='" + content + '\'' +
                 ", tag=" + tag +
                 '}';
     }
@@ -149,17 +159,21 @@ public class MyReqInfo extends CloneBean {
          */
         private Map<String, List<String>> headersMap;
         /**
-         * http的请求参数
+         * url?key=value&key1=value1
          */
-        private Map<String, Object> paramsMap;
+        private Map<String, Object> queryMap;
         /**
-         * postString的ContentType, 如"application/json"，"text/plain;charset=utf-8"
+         * 请求体内容 key=value(含file)
+         */
+        private Map<String, Object> bodyMap;
+        /**
+         * 请求体内容
+         */
+        private String bodyContent;
+        /**
+         * "application/json"，"text/plain;charset=utf-8"
          */
         private String contentType;
-        /**
-         * postString的内容
-         */
-        private String content;
         /**
          * 标识
          */
@@ -172,9 +186,10 @@ public class MyReqInfo extends CloneBean {
             this.myReqType = myReqInfo.getMyReqType();
             this.url = myReqInfo.getUrl();
             this.headersMap = myReqInfo.getHeadersMap();
-            this.paramsMap = myReqInfo.getParamsMap();
+            this.queryMap = myReqInfo.getQueryMap();
+            this.bodyMap = myReqInfo.getBodyMap();
+            this.bodyContent = myReqInfo.getBodyContent();
             this.contentType = myReqInfo.getContentType();
-            this.content = myReqInfo.getContent();
             this.tag = myReqInfo.getTag();
         }
 
@@ -203,18 +218,23 @@ public class MyReqInfo extends CloneBean {
             return this;
         }
 
-        public Builder paramsMap(Map<String, Object> paramsMap) {
-            this.paramsMap = paramsMap;
+        public Builder queryMap(Map<String, Object> queryMap) {
+            this.queryMap = queryMap;
             return this;
         }
 
-        public Builder postStringContentType(String postStringContentType) {
-            this.contentType = postStringContentType;
+        public Builder bodyMap(Map<String, Object> bodyMap) {
+            this.bodyMap = bodyMap;
             return this;
         }
 
-        public Builder postString(String postString) {
-            this.content = postString;
+        public Builder bodyContent(String bodyContent) {
+            this.bodyContent = bodyContent;
+            return this;
+        }
+
+        public Builder contentType(String contentType) {
+            this.contentType = contentType;
             return this;
         }
 
@@ -232,8 +252,8 @@ public class MyReqInfo extends CloneBean {
                 url = "";
             }
 
-            if (content == null) {
-                content = "";
+            if (bodyContent == null) {
+                bodyContent = "";
             }
 
             if (contentType == null) {
@@ -248,8 +268,12 @@ public class MyReqInfo extends CloneBean {
                 headersMap = new HashMap<>();
             }
 
-            if (paramsMap == null) {
-                paramsMap = new HashMap<>();
+            if (queryMap == null) {
+                queryMap = new HashMap<>();
+            }
+
+            if (bodyMap == null) {
+                bodyMap = new HashMap<>();
             }
 
             return new MyReqInfo(this);
