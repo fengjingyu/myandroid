@@ -390,7 +390,7 @@ public class StringUtil {
 
     public static final String encodeURL(String str) {
         try {
-            return URLEncoder.encode(str, Constants.ENCODING_UTF8);
+            return URLEncoder.encode(str, Constants.UTF8);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -398,7 +398,7 @@ public class StringUtil {
 
     public static final String decodeURL(String str) {
         try {
-            return URLDecoder.decode(str, Constants.ENCODING_UTF8);
+            return URLDecoder.decode(str, Constants.UTF8);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
