@@ -45,7 +45,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
         // 只能读一次，否则异常
         try {
             myRespInfo.setDataBytes(IOUtil.getBytes(inputStream));
-            return new String(myRespInfo.getDataBytes(), Constants.ENCODING_UTF8);
+            return new String(myRespInfo.getDataBytes(), Constants.UTF8);
         } catch (Exception e) {
             throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
         }

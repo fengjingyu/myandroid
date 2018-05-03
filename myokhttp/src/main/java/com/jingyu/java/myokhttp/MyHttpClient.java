@@ -113,14 +113,14 @@ public class MyHttpClient {
      * //      则springmvc的注解 @RequestBody String conent 获取的是{"a":"b"}
      */
     private boolean isPostString(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (StringUtil.isAvaliable(myReqInfo.getPostString())) {
+        if (StringUtil.isAvaliable(myReqInfo.getContent())) {
 
             if (!myReqInfo.getParamsMap().isEmpty()) {
                 requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlParams(myReqInfo.getParamsMap()));
             }
-            // myReqInfo.getPostStringContentType()可以为空
+            // myReqInfo.getContentType()可以为空
             // 有一个会默认设置, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
-            requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getPostStringContentType()), myReqInfo.getPostString()));
+            requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getContentType()), myReqInfo.getContent()));
             return true;
         }
         return false;

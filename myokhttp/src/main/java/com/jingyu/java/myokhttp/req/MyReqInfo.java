@@ -30,13 +30,13 @@ public class MyReqInfo extends CloneBean {
      */
     private final Map<String, Object> paramsMap;
     /**
-     * postString的ContentType, 如"application/json"，"text/plain;charset=utf-8"
+     * 如"application/json"，"text/plain;charset=utf-8"
      */
-    private final String postStringContentType;
+    private final String contentType;
     /**
-     * postString的内容
+     * 请求体的内容
      */
-    private final String postString;
+    private final String content;
     /**
      * 标识
      */
@@ -47,8 +47,8 @@ public class MyReqInfo extends CloneBean {
         this.url = builder.url;
         this.headersMap = builder.headersMap;
         this.paramsMap = builder.paramsMap;
-        this.postStringContentType = builder.postStringContentType;
-        this.postString = builder.postString;
+        this.contentType = builder.contentType;
+        this.content = builder.content;
         this.tag = builder.tag;
     }
 
@@ -68,12 +68,12 @@ public class MyReqInfo extends CloneBean {
         return paramsMap;
     }
 
-    public String getPostStringContentType() {
-        return postStringContentType;
+    public String getContentType() {
+        return contentType;
     }
 
-    public String getPostString() {
-        return postString;
+    public String getContent() {
+        return content;
     }
 
     public Object getTag() {
@@ -128,8 +128,8 @@ public class MyReqInfo extends CloneBean {
                 ", url='" + url + '\'' +
                 ", headersMap=" + headersMap +
                 ", paramsMap=" + paramsMap +
-                ", postStringContentType='" + postStringContentType + '\'' +
-                ", postString='" + postString + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", content='" + content + '\'' +
                 ", tag=" + tag +
                 '}';
     }
@@ -155,11 +155,11 @@ public class MyReqInfo extends CloneBean {
         /**
          * postString的ContentType, 如"application/json"，"text/plain;charset=utf-8"
          */
-        private String postStringContentType;
+        private String contentType;
         /**
          * postString的内容
          */
-        private String postString;
+        private String content;
         /**
          * 标识
          */
@@ -173,8 +173,8 @@ public class MyReqInfo extends CloneBean {
             this.url = myReqInfo.getUrl();
             this.headersMap = myReqInfo.getHeadersMap();
             this.paramsMap = myReqInfo.getParamsMap();
-            this.postStringContentType = myReqInfo.getPostStringContentType();
-            this.postString = myReqInfo.getPostString();
+            this.contentType = myReqInfo.getContentType();
+            this.content = myReqInfo.getContent();
             this.tag = myReqInfo.getTag();
         }
 
@@ -209,12 +209,12 @@ public class MyReqInfo extends CloneBean {
         }
 
         public Builder postStringContentType(String postStringContentType) {
-            this.postStringContentType = postStringContentType;
+            this.contentType = postStringContentType;
             return this;
         }
 
         public Builder postString(String postString) {
-            this.postString = postString;
+            this.content = postString;
             return this;
         }
 
@@ -232,12 +232,12 @@ public class MyReqInfo extends CloneBean {
                 url = "";
             }
 
-            if (postString == null) {
-                postString = "";
+            if (content == null) {
+                content = "";
             }
 
-            if (postStringContentType == null) {
-                postStringContentType = "";
+            if (contentType == null) {
+                contentType = "";
             }
 
             if (tag == null) {
