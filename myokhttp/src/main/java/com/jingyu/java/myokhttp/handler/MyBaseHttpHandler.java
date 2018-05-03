@@ -20,34 +20,8 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     public MyBaseHttpHandler() {
     }
 
-    //TODO 统一配置请求头
-    public Map<String, List<String>> getCommonHeaders(String tag, Map<String, List<String>> headers) {
-        if (headers == null) {
-            headers = new HashMap<>();
-        }
-        //headers.put("key", Arrays.asList("1"));
-        return headers;
-    }
-
-    //TODO 统一配置加密参数
-    public Map<String, Object> getCommonEncryptParams(String tag, Map<String, Object> paramsMap) {
-        if (paramsMap == null) {
-            paramsMap = new HashMap<>();
-        }
-        //queryMap.put("key1", "java");
-        //queryMap.put("key2", "c");
-        //queryMap.put("key3", "c++");
-        return paramsMap;
-    }
-
     @Override
     public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
-//        Map<String, List<String>> newHeaders = getCommonHeaders(myReqInfo.getTag().toString(), myReqInfo.getHeadersMap());
-//        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getTag().toString(), myReqInfo.getQueryMap());
-//
-//        MyReqInfo newMyReqInfo = new MyReqInfo.Builder(myReqInfo).headersMap(newHeaders).queryMap(newParams).builder();
-//        LogUtil.i(MyHttpCallBack.TAG_HTTP, "请求参数：" + newMyReqInfo);
-//        return newMyReqInfo;
         return myReqInfo;
     }
 

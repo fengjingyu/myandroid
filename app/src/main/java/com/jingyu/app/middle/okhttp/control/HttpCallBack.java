@@ -2,20 +2,20 @@ package com.jingyu.app.middle.okhttp.control;
 
 import android.os.Handler;
 import android.os.Looper;
-import com.jingyu.android.common.log.Logger;
+
+import com.jingyu.java.myokhttp.MyHttpCallBack;
 import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.handler.control.MyHttpHandlerController;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 
 /**
  * Created by jingyu on 2018/2/21.
  */
 
-public class HttpHandlerControler extends MyHttpHandlerController {
+public class HttpCallBack extends MyHttpCallBack {
 
     Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public HttpHandlerControler(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+    public HttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
         super(myReqInfo, iMyHttpHandler);
     }
 
@@ -24,10 +24,5 @@ public class HttpHandlerControler extends MyHttpHandlerController {
         if (runnable != null) {
             mHandler.post(runnable);
         }
-    }
-
-    @Override
-    public void log(String tag, String msg) {
-        Logger.i(tag, msg);
     }
 }

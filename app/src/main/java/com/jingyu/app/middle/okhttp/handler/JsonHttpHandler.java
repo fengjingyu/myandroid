@@ -8,6 +8,8 @@ import com.jingyu.app.middle.okhttp.IRespMsgCode;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 
+import java.io.InputStream;
+
 /**
  * @author fengjingyu@foxmail.com
  * @description 适用于不需要建模型的接口（如添加收藏等无ui数据的接口）
@@ -25,13 +27,14 @@ public class JsonHttpHandler extends BaseHttpHandler<JsonHttpHandler.MyJsonBean>
     public JsonHttpHandler() {
     }
 
-    /**
-     * 该方法是在子线程中的，解析失败返回null
-     */
     @Override
-    public MyJsonBean onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
-        super.onParse(myReqInfo, myRespInfo);
-        return JsonParse.getJsonParseData(myRespInfo.getDataString(), MyJsonBean.class);
+    public MyJsonBean onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+        try {
+            return JsonParse.getJsonParseData(parse2String(myReqInfo, myRespInfo, inputStream), MyJsonBean.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public class MyJsonBean extends JsonBean implements IRespMsgCode {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.jingyu.android.common.log.Logger;
 import com.jingyu.app.R;
 import com.jingyu.app.middle.MyEnv;
@@ -17,12 +18,14 @@ import com.jingyu.app.middle.MyImg;
 import com.jingyu.app.middle.MyBaseFragment;
 import com.jingyu.app.middle.MySp;
 import com.jingyu.app.middle.okhttp.handler.BaseHttpHandler;
+import com.jingyu.app.middle.okhttp.handler.FileHttpHandler;
 import com.jingyu.app.middle.okhttp.handler.GsonHttpHandler;
 import com.jingyu.app.middle.okhttp.handler.JsonHttpHandler;
 import com.jingyu.app.model.combination.UsersModel;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.mytool.util.IOUtil;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -75,29 +78,28 @@ public class TabFragmentOne extends MyBaseFragment {
         param.put("key2", "value2");
 
         //http-get 可以不处理回调
-        MyHttp.getAsync(url);
+        MyHttp.Async.get(url, null, null);
 
         //http-get + 参数 可以不处理回调
-        MyHttp.getAsync(url, param, null);
-
+        MyHttp.Async.get(url, param, null);
 
         //*****
         //JsonHttpHandler适用于不需要建模型的回调
         //http-get 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
-        MyHttp.getAsync(url, param, new JsonHttpHandler() {
+        MyHttp.Async.get(url, param, new JsonHttpHandler() {
             @Override
-            public void onSuccessAll(MyReqInfo myReqInfo, MyRespInfo myRespInfo, MyJsonBean resultBean) {
-                super.onSuccessAll(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, MyJsonBean resultBean) {
+                super.onSuccess(myReqInfo, myRespInfo, resultBean);
             }
         });
 
         //*****
         //GsonHttpHandler适用于需要建模型的回调
         //http-post 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
-        MyHttp.postAsync(url, param, new GsonHttpHandler<UsersModel>(UsersModel.class) {
+        MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(UsersModel.class) {
             @Override
-            public void onSuccessAll(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
-                super.onSuccessAll(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
+                super.onSuccess(myReqInfo, myRespInfo, resultBean);
             }
         });
 
@@ -105,43 +107,39 @@ public class TabFragmentOne extends MyBaseFragment {
         //*****
         //BaseHttpHandler适用于需要手动解析的回调
         //http-post 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
-        MyHttp.postAsync(url, param, new BaseHttpHandler<UsersModel>(getActivity()) {
+        MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
             @Override
-            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
                 // 也可以手动解析，失败返回null
                 return new UsersModel();
             }
 
             @Override
-            public void onSuccessAll(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
-                super.onSuccessAll(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
+                super.onSuccess(myReqInfo, myRespInfo, resultBean);
             }
         });
 
         //http-post + 参数 处理回调 进度条
-        MyHttp.postAsync(url, param, new GsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
+        MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
             //该方法一般不需要重写，BaseHttpHandler会处理，这里只是示例，强制返回true，代表业务接口的状态码success
             @Override
-            public boolean onMatchAppStatusCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
+            public boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
                 return true;
             }
 
             //该方法一般不需要重写，BaseHttpHandler的子类里会处理解析，这里只是示例，解析失败返回null则会回调onSuccessButParseWrong
             @Override
-            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
-                // 子线程
+            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
                 return new UsersModel();
             }
         });
 
         //文件下载
-        MyHttp.downloadAsync(ip + "android/123.txt", new BaseHttpHandler() {
+        MyHttp.Async.post(ip + "android/123.txt", null, new FileHttpHandler(MyFile.getFileInAppDir(getContext(), "file1")) {
             @Override
-            public void onDownloadInfo(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-                super.onDownloadInfo(myReqInfo, myRespInfo, inputStream, totalSize);
-                // 子线程
-                IOUtil.inputStream2File(inputStream, MyFile.getFileInAppDir(getContext(), "file1"));
-
+            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, File resultBean) {
+                super.onSuccess(myReqInfo, myRespInfo, resultBean);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -155,17 +153,26 @@ public class TabFragmentOne extends MyBaseFragment {
         HashMap<String, Object> map = new HashMap<>();
         File file1 = MyFile.getFileInAppDir(getActivity(), "testfileaaaaaa");
         File file2 = MyFile.getFileInAppDir(getActivity(), "testfilebbbbbb");
-        IOUtil.bytes2File("1234567890ABCDEFGH".getBytes(), file1);
-        IOUtil.bytes2File("0987654321CBA ".getBytes(), file2);
+        IOUtil.bytes2File("1234567890ABCDEFGH".
+
+                getBytes(), file1);
+        IOUtil.bytes2File("0987654321CBA ".
+
+                getBytes(), file2);
         map.put("key1", "value1");
         map.put("file", file1);
         map.put("file2", file2);
         map.put("file3", null);
-        MyHttp.postAsync(ip + "UploadServlet", map, new BaseHttpHandler() {
+        MyHttp.Async.post(ip + "UploadServlet", map, new BaseHttpHandler() {
             @Override
-            public void onUploadFileProgress(long bytesWritten, long totalSize) {
-                super.onUploadFileProgress(bytesWritten, totalSize);
+            public void onUploadProgress(long bytesWritten, long totalSize) {
+                super.onUploadProgress(bytesWritten, totalSize);
                 Logger.i(bytesWritten + "--" + totalSize);
+            }
+
+            @Override
+            public Object onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+                return null;
             }
         });
     }
