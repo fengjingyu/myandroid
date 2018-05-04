@@ -1,7 +1,5 @@
 package com.jingyu.java.myokhttp.handler;
 
-import com.jingyu.java.myokhttp.MyHttpCallBack;
-import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.mytool.lib.gson.GsonUtil;
@@ -22,8 +20,6 @@ public class MyGsonHttpHandler<T> extends MyBaseHttpHandler<T> {
 
     @Override
     public T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        String json = parse2String(myReqInfo, myRespInfo, inputStream);
-        LogUtil.i(MyHttpCallBack.TAG_HTTP, "onParse() gson解析::" + json);
-        return GsonUtil.parseJson(json, clazz);
+        return GsonUtil.parseJson(parse(myReqInfo, myRespInfo, inputStream, totalSize), clazz);
     }
 }

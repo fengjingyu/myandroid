@@ -18,12 +18,7 @@ public class MyFileHttpHandler extends MyBaseHttpHandler<File> {
     }
 
     @Override
-    public boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, File resultBean) {
-        return true;
-    }
-
-    @Override
     public File onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        return parse2File(myReqInfo, inputStream, file);
+        return parse(myReqInfo, myRespInfo, inputStream, totalSize, file);
     }
 }

@@ -24,6 +24,6 @@ public class FileHttpHandler extends BaseHttpHandler<File> {
 
     @Override
     public File onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        return parse2File(myReqInfo, inputStream, file);
+        return parse(myReqInfo, myRespInfo, inputStream, totalSize, file);
     }
 }

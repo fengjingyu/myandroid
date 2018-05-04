@@ -44,7 +44,7 @@ public class MyHttpUtil {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, tag), myHttpHandler);
         }
 
-        // post表单(含file)
+        // post表单(含多文件file)
         public static void post(String url, Map<String, Object> bodyMap, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.POST, url, null, null, bodyMap, null, null, null), myHttpHandler);
         }
@@ -91,7 +91,7 @@ public class MyHttpUtil {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, headers, queryMap, null, null, null, tag), myHttpHandler);
         }
 
-        // post表单(含file)
+        // post表单(含多文件file)
         public static void post(String url, Map<String, Object> bodyMap, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.POST, url, null, null, bodyMap, null, null, null), myHttpHandler);
         }

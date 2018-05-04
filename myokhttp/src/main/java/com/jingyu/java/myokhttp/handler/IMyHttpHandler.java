@@ -1,8 +1,13 @@
 package com.jingyu.java.myokhttp.handler;
 
+import com.jingyu.java.myokhttp.MyHttpCallBack;
+import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.mytool.Constants;
+import com.jingyu.java.mytool.util.IOUtil;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -70,5 +75,26 @@ public interface IMyHttpHandler<T> {
      * 可以关闭dialog
      */
     void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+
+
+    default String parse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+        try {
+            // 只能读一次，否则异常
+            String data = new String(IOUtil.getBytes(inputStream), Constants.UTF8);
+            LogUtil.i(MyHttpCallBack.TAG_HTTP, "parse()::" + data);
+            return data;
+        } catch (Exception e) {
+            throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
+        }
+    }
+
+    default File parse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize, File file) {
+        if (IOUtil.inputStream2File(inputStream, file)) {
+            LogUtil.i(MyHttpCallBack.TAG_HTTP, "parse()::下载文件成功file = " + file.getAbsolutePath());
+            return file;
+        } else {
+            throw new RuntimeException("parse()::下载文件异常file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());
+        }
+    }
 
 }

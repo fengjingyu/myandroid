@@ -14,12 +14,8 @@ import com.jingyu.java.myokhttp.MyHttpCallBack;
 import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
-import com.jingyu.java.mytool.Constants;
-import com.jingyu.java.mytool.util.IOUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -36,24 +32,6 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
 
     //TODO 配置服务端定义的成功状态码
     public static final String REQ_SUCCESS = "1";
-
-    public String parse2String(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream) {
-        // 只能读一次，否则异常
-        try {
-            myRespInfo.setDataBytes(IOUtil.getBytes(inputStream));
-            return new String(myRespInfo.getDataBytes(), Constants.UTF8);
-        } catch (Exception e) {
-            throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
-        }
-    }
-
-    public File parse2File(MyReqInfo myReqInfo, InputStream inputStream, File file) {
-        if (IOUtil.inputStream2File(inputStream, file)) {
-            return file;
-        } else {
-            throw new RuntimeException("inputStream2file异常 " + MyHttpCallBack.LINE + "file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());
-        }
-    }
 
     public BaseHttpHandler(Activity activityContext) {
         super();
@@ -126,17 +104,13 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
             if (StringUtil.equals(((IRespMsgCode) resultBean).getCode(), REQ_SUCCESS)) {
                 return true;
             } else {
-                statusCodeWrongToast(resultBean);
+                Logger.shortToast(((IRespMsgCode) resultBean).getMsg());
                 return false;
             }
         } else {
             Logger.e(MyHttpCallBack.TAG_HTTP, "onMatchAppStatusCode()中的返回结果不是IHttpRespInfo类型", null);
             throw new RuntimeException("onMatchAppStatusCode()中的返回结果不是IHttpRespInfo类型");
         }
-    }
-
-    public void statusCodeWrongToast(T resultBean) {
-        Logger.shortToast(((IRespMsgCode) resultBean).getMsg());
     }
 
     @Override

@@ -29,12 +29,7 @@ public class JsonHttpHandler extends BaseHttpHandler<JsonHttpHandler.MyJsonBean>
 
     @Override
     public MyJsonBean onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        try {
-            return JsonParse.getJsonParseData(parse2String(myReqInfo, myRespInfo, inputStream), MyJsonBean.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return JsonParse.getJsonParseData(parse(myReqInfo, myRespInfo, inputStream, totalSize), MyJsonBean.class);
     }
 
     public class MyJsonBean extends JsonBean implements IRespMsgCode {

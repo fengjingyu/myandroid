@@ -12,27 +12,21 @@ import java.util.Map;
  */
 public class MyRespInfo extends CloneBean {
 
-    /**
-     * 返回的成功失败的类型，目前有5个类型
-     */
     private MyRespType myRespType;
 
     private int httpCode;
 
     private Map<String, List<String>> respHeaders;
 
-    private byte[] dataBytes;
-
     /**
-     * throwable null为success，非空为fail
+     * success 为 null
      */
     private Throwable throwable;
 
-    public MyRespInfo(MyRespType myRespType, int httpCode, Map<String, List<String>> respHeaders, byte[] dataBytes, Throwable throwable) {
+    public MyRespInfo(MyRespType myRespType, int httpCode, Map<String, List<String>> respHeaders, Throwable throwable) {
         this.myRespType = myRespType;
         this.httpCode = httpCode;
         this.respHeaders = respHeaders;
-        this.dataBytes = dataBytes;
         this.throwable = throwable;
     }
 
@@ -67,14 +61,6 @@ public class MyRespInfo extends CloneBean {
             respHeaders = new HashMap<>();
         }
         this.respHeaders = respHeaders;
-    }
-
-    public byte[] getDataBytes() {
-        return dataBytes;
-    }
-
-    public void setDataBytes(byte[] dataBytes) {
-        this.dataBytes = dataBytes;
     }
 
     public Throwable getThrowable() {

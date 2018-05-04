@@ -1,13 +1,7 @@
 package com.jingyu.java.myokhttp.handler;
 
-import com.jingyu.java.myokhttp.MyHttpCallBack;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
-import com.jingyu.java.mytool.Constants;
-import com.jingyu.java.mytool.util.IOUtil;
-
-import java.io.File;
-import java.io.InputStream;
 
 /**
  * @author fengjingyu@foxmail.com
@@ -17,6 +11,7 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     public MyBaseHttpHandler() {
     }
 
+    //TODO 可以统一添加请求头、对参数加密
     @Override
     public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
         return myReqInfo;
@@ -56,23 +51,5 @@ public abstract class MyBaseHttpHandler<T> implements IMyHttpHandler<T> {
     @Override
     public void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
 
-    }
-
-    public String parse2String(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream) {
-        // 只能读一次，否则异常
-        try {
-            myRespInfo.setDataBytes(IOUtil.getBytes(inputStream));
-            return new String(myRespInfo.getDataBytes(), Constants.UTF8);
-        } catch (Exception e) {
-            throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
-        }
-    }
-
-    public File parse2File(MyReqInfo myReqInfo, InputStream inputStream, File file) {
-        if (IOUtil.inputStream2File(inputStream, file)) {
-            return file;
-        } else {
-            throw new RuntimeException("inputStream2file异常 " + MyHttpCallBack.LINE + "file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());
-        }
     }
 }

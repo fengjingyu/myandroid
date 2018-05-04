@@ -9,8 +9,8 @@ dependencies {
     implementation 'com.jingyu.java:mytool:0.0.4'
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -35,7 +35,7 @@ ext {
     siteUrl = 'https://github.com/fengjingyu/myandroid'
     gitUrl = 'https://github.com/fengjingyu/myandroid.git'
 
-    libraryVersion = '0.2.2'
+    libraryVersion = '0.3.0'
 
     developerId = 'jingyu'
     developerName = 'jingyu'
