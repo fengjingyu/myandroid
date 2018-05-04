@@ -26,6 +26,11 @@ public class MyHttpUtil {
     }
 
     public static class Async {
+
+        public static void request(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+            getMyHttpClient().httpAsync(myReqInfo, iMyHttpHandler);
+        }
+
         // get
         public static void get(String url, Map<String, Object> queryMap, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpAsync(createReqInfo(MyReqType.GET, url, null, queryMap, null, null, null, null), myHttpHandler);
@@ -68,6 +73,11 @@ public class MyHttpUtil {
     }
 
     public static class Sync {
+
+        public static void request(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+            getMyHttpClient().httpSync(myReqInfo, iMyHttpHandler);
+        }
+
         // get
         public static void get(String url, Map<String, Object> queryMap, IMyHttpHandler myHttpHandler) {
             getMyHttpClient().httpSync(createReqInfo(MyReqType.GET, url, null, queryMap, null, null, null, null), myHttpHandler);
