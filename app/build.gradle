@@ -149,7 +149,7 @@ dependencies {
     implementation 'com.allenliu.versionchecklib:library:2.0.1'
 
     //implementation 'com.jingyu.java:mytool:0.0.4'
-    //implementation 'com.jingyu.java:myokhttp:0.2.2'
+    //implementation 'com.jingyu.java:myokhttp:0.3.0'
     implementation project(':mytool')
     implementation project(':myokhttp')
 

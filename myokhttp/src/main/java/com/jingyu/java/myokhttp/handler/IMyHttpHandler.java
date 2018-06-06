@@ -7,7 +7,6 @@ import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.mytool.Constants;
 import com.jingyu.java.mytool.util.IOUtil;
 
-import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -29,7 +28,7 @@ public interface IMyHttpHandler<T> {
     void onUploadProgress(long bytesWritten, long totalSize);
 
     /**
-     * 如果解析失败：一定得返回null,回调onParseException()
+     * 如果解析失败：一定得返回null或throw new Exception,回调onParseException()
      * 如果解析成功: 继续回调onMatchAppCode()
      * 如果是异步请求：则在异步的线程里回调
      */
@@ -87,14 +86,4 @@ public interface IMyHttpHandler<T> {
             throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
         }
     }
-
-    default File parse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize, File file) {
-        if (IOUtil.inputStream2File(inputStream, file)) {
-            LogUtil.i(MyHttpCallBack.TAG_HTTP, "parse()::下载文件成功file = " + file.getAbsolutePath());
-            return file;
-        } else {
-            throw new RuntimeException("parse()::下载文件异常file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());
-        }
-    }
-
 }
