@@ -2,7 +2,8 @@ package com.jingyu.java.myokhttp.req;
 
 import java.io.IOException;
 
-import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
+import com.jingyu.java.myokhttp.handler.IHttpHandler;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.Buffer;
@@ -14,14 +15,14 @@ import okio.Sink;
 /**
  * 文件长传进度
  */
-public class MyProgressRequestBody extends RequestBody {
+public class ProgressRequestBody extends RequestBody {
     private RequestBody requestBody;
-    private IMyHttpHandler iMyHttpHandler;
+    private IHttpHandler iHttpHandler;
     private ProgressSink progressSink;
 
-    public MyProgressRequestBody(RequestBody requestBody, IMyHttpHandler iMyHttpHandler) {
+    public ProgressRequestBody(RequestBody requestBody, IHttpHandler iHttpHandler) {
         this.requestBody = requestBody;
-        this.iMyHttpHandler = iMyHttpHandler;
+        this.iHttpHandler = iHttpHandler;
     }
 
     @Override
@@ -53,8 +54,8 @@ public class MyProgressRequestBody extends RequestBody {
         public void write(Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             byteWritten += byteCount;
-            if (iMyHttpHandler != null) {
-                iMyHttpHandler.onUploadProgress(byteWritten, contentLength());
+            if (iHttpHandler != null) {
+                iHttpHandler.onUploadProgress(byteWritten, contentLength());
             }
         }
     }

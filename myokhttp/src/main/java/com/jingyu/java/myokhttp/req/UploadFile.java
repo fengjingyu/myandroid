@@ -9,11 +9,11 @@ import okhttp3.MediaType;
 /**
  * @author fengjingyu@foxmail.com
  */
-public class MyUploadFile {
+public class UploadFile {
 
     private File file;
 
-    public MyUploadFile(File file) {
+    public UploadFile(File file) {
         this.file = file;
     }
 

@@ -1,9 +1,9 @@
 package com.jingyu.java.myokhttp.handler;
 
-import com.jingyu.java.myokhttp.MyHttpCallBack;
+import com.jingyu.java.myokhttp.HttpCallBack;
 import com.jingyu.java.myokhttp.log.LogUtil;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
-import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myokhttp.resp.RespInfo;
 import com.jingyu.java.mytool.Constants;
 import com.jingyu.java.mytool.util.IoUtil;
 
@@ -13,14 +13,14 @@ import java.io.InputStream;
  * @author fengjingyu@foxmail.com
  * http回调
  */
-public interface IMyHttpHandler<T> {
+public interface IHttpHandler<T> {
     /**
      * 发送请求之前
      * <p>
      * 可以showdialog
      * 可以修改MyReqInfo（如添加请求头 加密等)
      */
-    MyReqInfo onReadySendRequest(MyReqInfo myReqInfo);
+    ReqInfo onReadySendRequest(ReqInfo reqInfo);
 
     /**
      * 文件上传进度
@@ -32,7 +32,7 @@ public interface IMyHttpHandler<T> {
      * 如果解析成功: 继续回调onMatchAppCode()
      * 如果是异步请求：则在异步的线程里回调
      */
-    T onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize);
+    T onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize);
 
     /**
      * 对返回状态码的一个判断，每个项目的认定操作成功的状态码或结构可能不同，在这里统一判断
@@ -42,48 +42,48 @@ public interface IMyHttpHandler<T> {
      * true: 回调onSuccess()
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    boolean onMatchAppCode(ReqInfo reqInfo, RespInfo respInfo, T resultBean);
 
     /**
      * http 请求成功，解析失败
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onParseException(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    void onParseException(ReqInfo reqInfo, RespInfo respInfo);
 
     /**
      * http 请求成功，解析成功，项目业务逻辑的状态码有误
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onAppCodeException(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    void onAppCodeException(ReqInfo reqInfo, RespInfo respInfo, T resultBean);
 
     /**
      * http请求成功，解析成功，状态码成功，回调该方法
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean);
+    void onSuccess(ReqInfo reqInfo, RespInfo respInfo, T resultBean);
 
     /**
      * http请求失败，回调该方法
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
-    void onFailure(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    void onFailure(ReqInfo reqInfo, RespInfo respInfo);
 
     /**
      * onSuccess  或 onFailure 的逻辑调用完后都会回调该方法
      * <p>
      * 可以关闭dialog
      */
-    void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo);
+    void onFinally(ReqInfo reqInfo, RespInfo respInfo);
 
 
-    default String parse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+    default String parse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
         try {
             // 只能读一次，否则异常
             String data = new String(IoUtil.getBytes(inputStream), Constants.UTF8);
-            LogUtil.i(MyHttpCallBack.TAG_HTTP, "parse()::" + data);
+            LogUtil.i(HttpCallBack.TAG_HTTP, "parse()::" + data);
             return data;
         } catch (Exception e) {
-            throw new RuntimeException(myReqInfo.getUrl() + MyHttpCallBack.LINE + e);
+            throw new RuntimeException(reqInfo.getUrl() + HttpCallBack.LINE + e);
         }
     }
 }

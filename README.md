@@ -48,8 +48,8 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         
 new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User.class) {
      @Override
-     public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
-         super.onSuccess(myReqInfo, myRespInfo, user);
+     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+         super.onSuccess(reqInfo, respInfo, user);
          System.out.println(user);
      }
 });
@@ -71,8 +71,8 @@ new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User
 ```
 MyHttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new MyStringHttpHandler() {
       @Override
-      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, String resultBean) {
-          super.onSuccess(myReqInfo, myRespInfo, resultBean);
+      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String resultBean) {
+          super.onSuccess(reqInfo, respInfo, resultBean);
           System.out.println(resultBean);
       }
 });
@@ -82,16 +82,16 @@ MyHttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new MyStrin
 ```
 MyHttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new MyStringHttpHandler() {
       @Override
-      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, String resultBean) {
-          super.onSuccess(myReqInfo, myRespInfo, resultBean);
+      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String resultBean) {
+          super.onSuccess(reqInfo, respInfo, resultBean);
           System.out.println(resultBean);
       }
 });
 
 MyHttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new MyStringHttpHandler() {
      @Override
-     public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, String str) {
-         super.onSuccess(myReqInfo, myRespInfo, str);
+     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String str) {
+         super.onSuccess(reqInfo, respInfo, str);
          System.out.println(str);
      }
 });
@@ -101,8 +101,8 @@ MyHttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPu
 ```
 MyHttpUtil.Async.post(url, bodyMap, new MyGsonHttpHandler<User>(User.class) {
      @Override
-     public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
-         super.onSuccess(myReqInfo, myRespInfo, user);
+     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+         super.onSuccess(reqInfo, respInfo, user);
          System.out.println(user);
      }
 });
@@ -112,14 +112,14 @@ MyHttpUtil.Async.post(url, bodyMap, new MyGsonHttpHandler<User>(User.class) {
 ```
 MyHttpUtil.Async.post(url, bodyMap, new MyBaseHttpHandler<User>() {
       @Override
-      public User onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+      public User onParse(MyReqInfo reqInfo, MyRespInfo respInfo, InputStream inputStream, long totalSize) {
           // todo, inputStream
           return new User();
       }
 
       @Override
-      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
-          super.onSuccess(myReqInfo, myRespInfo, user);
+      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+          super.onSuccess(reqInfo, respInfo, user);
       }
 });
 ```
@@ -129,8 +129,8 @@ MyHttpUtil.Async.post(url, bodyMap, new MyBaseHttpHandler<User>() {
 ```
 MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
     @Override
-    public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, File saveFile) {
-        super.onSuccess(myReqInfo, myRespInfo, saveFile);
+    public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, File saveFile) {
+        super.onSuccess(reqInfo, respInfo, saveFile);
         System.out.println(saveFile);
     }
 });
@@ -159,8 +159,8 @@ public class NewHttpCallBack<T> extends MyHttpCallBack<T> {
 
     public static Handler handler = new Handler(Looper.getMainLooper());
 
-    public NewHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
-        super(myReqInfo, iMyHttpHandler);
+    public NewHttpCallBack(MyReqInfo reqInfo, IMyHttpHandler<T> iHttpHandler) {
+        super(reqInfo, iHttpHandler);
     }
 
     @Override
@@ -169,10 +169,10 @@ public class NewHttpCallBack<T> extends MyHttpCallBack<T> {
     }
 }
 
-MyHttpClient myHttpClient = new MyHttpClient() {
+MyHttpClient httpClient = new MyHttpClient() {
     @Override
-    protected MyHttpCallBack getHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        return new NewHttpCallBack(myReqInfo, iMyHttpHandler);
+    protected MyHttpCallBack getHttpCallBack(MyReqInfo reqInfo, IMyHttpHandler iHttpHandler) {
+        return new NewHttpCallBack(reqInfo, iHttpHandler);
     }
 };
 ```

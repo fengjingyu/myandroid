@@ -4,7 +4,7 @@ package com.jingyu.java.myokhttp.resp;
  * @author fengjingyu@foxmail.com
  * http的响应类型
  */
-public enum MyRespType {
+public enum RespType {
 
     /**
      * FAILURE: 网络请求失败

@@ -10,9 +10,9 @@ import java.util.Map;
  * @author fengjingyu@foxmail.com
  * http返回的信息
  */
-public class MyRespInfo extends CloneBean {
+public class RespInfo extends CloneBean {
 
-    private MyRespType myRespType;
+    private RespType respType;
 
     private int httpCode;
 
@@ -23,22 +23,22 @@ public class MyRespInfo extends CloneBean {
      */
     private Throwable throwable;
 
-    public MyRespInfo(MyRespType myRespType, int httpCode, Map<String, List<String>> respHeaders, Throwable throwable) {
-        this.myRespType = myRespType;
+    public RespInfo(RespType respType, int httpCode, Map<String, List<String>> respHeaders, Throwable throwable) {
+        this.respType = respType;
         this.httpCode = httpCode;
         this.respHeaders = respHeaders;
         this.throwable = throwable;
     }
 
-    public MyRespInfo() {
+    public RespInfo() {
     }
 
-    public MyRespType getMyRespType() {
-        return myRespType;
+    public RespType getRespType() {
+        return respType;
     }
 
-    public void setMyRespType(MyRespType myRespType) {
-        this.myRespType = myRespType;
+    public void setRespType(RespType respType) {
+        this.respType = respType;
     }
 
     public int getHttpCode() {

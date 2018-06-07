@@ -13,11 +13,11 @@ import java.util.Map;
  * @author fengjingyu@foxmail.com
  * http请求的信息
  */
-public class MyReqInfo extends CloneBean {
+public class ReqInfo extends CloneBean {
     /**
      * POST  GET
      */
-    private final MyReqType myReqType;
+    private final ReqType reqType;
     /**
      * 接口地址
      */
@@ -47,8 +47,8 @@ public class MyReqInfo extends CloneBean {
      */
     private final Object tag;
 
-    private MyReqInfo(Builder builder) {
-        this.myReqType = builder.myReqType;
+    private ReqInfo(Builder builder) {
+        this.reqType = builder.reqType;
         this.url = builder.url;
         this.headersMap = builder.headersMap;
         this.queryMap = builder.queryMap;
@@ -59,8 +59,8 @@ public class MyReqInfo extends CloneBean {
 
     }
 
-    public MyReqType getMyReqType() {
-        return myReqType;
+    public ReqType getReqType() {
+        return reqType;
     }
 
     public String getUrl() {
@@ -92,11 +92,11 @@ public class MyReqInfo extends CloneBean {
     }
 
     public boolean isGet() {
-        return getMyReqType() == MyReqType.GET;
+        return getReqType() == ReqType.GET;
     }
 
     public boolean isPost() {
-        return getMyReqType() == MyReqType.POST;
+        return getReqType() == ReqType.POST;
     }
 
     private static final String AND = "&";
@@ -134,8 +134,8 @@ public class MyReqInfo extends CloneBean {
 
     @Override
     public String toString() {
-        return "MyReqInfo{" +
-                "myReqType=" + myReqType +
+        return "ReqInfo{" +
+                "reqType=" + reqType +
                 ", url='" + url + '\'' +
                 ", headersMap=" + headersMap +
                 ", queryMap=" + queryMap +
@@ -151,7 +151,7 @@ public class MyReqInfo extends CloneBean {
         /**
          * POST  GET
          */
-        private MyReqType myReqType;
+        private ReqType reqType;
         /**
          * 接口地址
          */
@@ -184,29 +184,29 @@ public class MyReqInfo extends CloneBean {
         public Builder() {
         }
 
-        public Builder(MyReqInfo myReqInfo) {
-            this.myReqType = myReqInfo.getMyReqType();
-            this.url = myReqInfo.getUrl();
-            this.headersMap = myReqInfo.getHeadersMap();
-            this.queryMap = myReqInfo.getQueryMap();
-            this.bodyMap = myReqInfo.getBodyMap();
-            this.bodyContent = myReqInfo.getBodyContent();
-            this.contentType = myReqInfo.getContentType();
-            this.tag = myReqInfo.getTag();
+        public Builder(ReqInfo reqInfo) {
+            this.reqType = reqInfo.getReqType();
+            this.url = reqInfo.getUrl();
+            this.headersMap = reqInfo.getHeadersMap();
+            this.queryMap = reqInfo.getQueryMap();
+            this.bodyMap = reqInfo.getBodyMap();
+            this.bodyContent = reqInfo.getBodyContent();
+            this.contentType = reqInfo.getContentType();
+            this.tag = reqInfo.getTag();
         }
 
-        public Builder myReqType(MyReqType myReqType) {
-            this.myReqType = myReqType;
+        public Builder myReqType(ReqType reqType) {
+            this.reqType = reqType;
             return this;
         }
 
         public Builder get() {
-            this.myReqType = MyReqType.GET;
+            this.reqType = ReqType.GET;
             return this;
         }
 
         public Builder post() {
-            this.myReqType = MyReqType.POST;
+            this.reqType = ReqType.POST;
             return this;
         }
 
@@ -260,9 +260,9 @@ public class MyReqInfo extends CloneBean {
             return this;
         }
 
-        public MyReqInfo builder() {
-            if (myReqType == null) {
-                myReqType = MyReqType.GET;
+        public ReqInfo builder() {
+            if (reqType == null) {
+                reqType = ReqType.GET;
             }
 
             if (url == null) {
@@ -293,7 +293,7 @@ public class MyReqInfo extends CloneBean {
                 tag = "";
             }
 
-            return new MyReqInfo(this);
+            return new ReqInfo(this);
         }
     }
 }

@@ -1,9 +1,9 @@
 package com.jingyu.java.myokhttp;
 
-import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.req.MyProgressRequestBody;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
-import com.jingyu.java.myokhttp.req.MyUploadFile;
+import com.jingyu.java.myokhttp.handler.IHttpHandler;
+import com.jingyu.java.myokhttp.req.ProgressRequestBody;
+import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myokhttp.req.UploadFile;
 import com.jingyu.java.mytool.util.CollectionUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
@@ -17,7 +17,7 @@ import okhttp3.*;
 /**
  * @author fengjingyu@foxmail.com
  */
-public class MyHttpClient {
+public class HttpClient {
 
     private OkHttpClient okHttpClient;
 
@@ -25,58 +25,58 @@ public class MyHttpClient {
         return new OkHttpClient();
     }
 
-    public MyHttpClient() {
+    public HttpClient() {
         okHttpClient = getOkHttpClient();
     }
 
-    public void httpSync(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        MyHttpCallBack myHttpCallBack = getHttpCallBack(myReqInfo, iMyHttpHandler);
+    public void httpSync(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+        HttpCallBack httpCallBack = getHttpCallBack(reqInfo, iHttpHandler);
         Call call = null;
         try {
-            call = okHttpClient.newCall(getRequest(myReqInfo, iMyHttpHandler));
+            call = okHttpClient.newCall(getRequest(reqInfo, iHttpHandler));
             Response response = call.execute();
             if (response != null && response.isSuccessful()) {
-                myHttpCallBack.onResponse(call, response);
+                httpCallBack.onResponse(call, response);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            myHttpCallBack.onFailure(call, e);
+            httpCallBack.onFailure(call, e);
         }
     }
 
-    public void httpAsync(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+    public void httpAsync(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         try {
-            Request request = getRequest(myReqInfo, iMyHttpHandler);
-            okHttpClient.newCall(request).enqueue(getHttpCallBack(myReqInfo, iMyHttpHandler));
+            Request request = getRequest(reqInfo, iHttpHandler);
+            okHttpClient.newCall(request).enqueue(getHttpCallBack(reqInfo, iHttpHandler));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Request getRequest(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        if (iMyHttpHandler != null) {
+    private Request getRequest(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+        if (iHttpHandler != null) {
             // 发送请求之前，这里可以修改请求参数信息
-            myReqInfo = iMyHttpHandler.onReadySendRequest(myReqInfo);
+            reqInfo = iHttpHandler.onReadySendRequest(reqInfo);
         }
 
         Request.Builder requestBuilder = new Request.Builder();
         // 构建请求方式、参数、url
-        buildeTypeParamsUrl(myReqInfo, requestBuilder, iMyHttpHandler);
+        buildeTypeParamsUrl(reqInfo, requestBuilder, iHttpHandler);
         // 构建请求header
-        buildHeader(myReqInfo, requestBuilder);
+        buildHeader(reqInfo, requestBuilder);
         // 返回request
         return requestBuilder.build();
     }
 
-    private void buildeTypeParamsUrl(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
+    private void buildeTypeParamsUrl(ReqInfo reqInfo, Request.Builder requestBuilder, IHttpHandler iHttpHandler) {
 
-        requestBuilder.url(myReqInfo.getUrl() + myReqInfo.buildUrlQuery(myReqInfo.getQueryMap()));
+        requestBuilder.url(reqInfo.getUrl() + reqInfo.buildUrlQuery(reqInfo.getQueryMap()));
 
-        if (isGet(myReqInfo, requestBuilder)) {
+        if (isGet(reqInfo, requestBuilder)) {
             return;
         }
 
-        if (isPost(myReqInfo, requestBuilder, iMyHttpHandler)) {
+        if (isPost(reqInfo, requestBuilder, iHttpHandler)) {
             return;
         }
 
@@ -84,23 +84,23 @@ public class MyHttpClient {
 
     }
 
-    private boolean isPost(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
-        if (myReqInfo.isPost()) {
+    private boolean isPost(ReqInfo reqInfo, Request.Builder requestBuilder, IHttpHandler iHttpHandler) {
+        if (reqInfo.isPost()) {
 
-            if (StringUtil.isNotBlank(myReqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(myReqInfo.getBodyMap())) {
+            if (StringUtil.isNotBlank(reqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(reqInfo.getBodyMap())) {
                 // bodyContent 与 bodyMap 的值冲突了
                 throw new RuntimeException("请求体参数有误");
             }
 
-            if (isPostString(myReqInfo, requestBuilder)) {
+            if (isPostString(reqInfo, requestBuilder)) {
                 return true;
             }
 
-            if (isPostForm(myReqInfo, requestBuilder)) {
+            if (isPostForm(reqInfo, requestBuilder)) {
                 return true;
             }
 
-            if (isPostMultiForm(myReqInfo, requestBuilder, iMyHttpHandler)) {
+            if (isPostMultiForm(reqInfo, requestBuilder, iHttpHandler)) {
                 return true;
             }
 
@@ -117,21 +117,21 @@ public class MyHttpClient {
      * //      则springmvc的注解 @RequestParam String key 获取的是dog
      * //      则springmvc的注解 @RequestBody String conent 获取的是{"a":"b"}
      */
-    private boolean isPostString(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (StringUtil.isNotBlank(myReqInfo.getBodyContent())) {
-            // myReqInfo.getContentType()可以为空, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
-            requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getContentType()), myReqInfo.getBodyContent()));
+    private boolean isPostString(ReqInfo reqInfo, Request.Builder requestBuilder) {
+        if (StringUtil.isNotBlank(reqInfo.getBodyContent())) {
+            // reqInfo.getContentType()可以为空, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
+            requestBuilder.post(RequestBody.create(MediaType.parse(reqInfo.getContentType()), reqInfo.getBodyContent()));
             return true;
         }
         return false;
     }
 
-    private boolean isPostForm(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (isIncludeFile(myReqInfo)) {
+    private boolean isPostForm(ReqInfo reqInfo, Request.Builder requestBuilder) {
+        if (isIncludeFile(reqInfo)) {
             return false;
         }
 
-        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
+        Map<String, Object> bodyMap = reqInfo.getBodyMap();
 
         if (CollectionUtil.isNotEmpty(bodyMap)) {
             FormBody.Builder formBodyBuilder = new FormBody.Builder();
@@ -145,8 +145,8 @@ public class MyHttpClient {
         return true;
     }
 
-    private boolean isPostMultiForm(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
-        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
+    private boolean isPostMultiForm(ReqInfo reqInfo, Request.Builder requestBuilder, IHttpHandler iHttpHandler) {
+        Map<String, Object> bodyMap = reqInfo.getBodyMap();
 
         if (CollectionUtil.isNotEmpty(bodyMap)) {
 
@@ -161,10 +161,10 @@ public class MyHttpClient {
 
                 if (entry.getValue() instanceof File) {
 
-                    MyUploadFile myUploadFile = new MyUploadFile((File) entry.getValue());
+                    UploadFile uploadFile = new UploadFile((File) entry.getValue());
 
-                    if (myUploadFile.isExist()) {
-                        multiBuilder.addFormDataPart(entry.getKey(), myUploadFile.getName(), RequestBody.create(myUploadFile.getMediaType(), myUploadFile.getFile()));
+                    if (uploadFile.isExist()) {
+                        multiBuilder.addFormDataPart(entry.getKey(), uploadFile.getName(), RequestBody.create(uploadFile.getMediaType(), uploadFile.getFile()));
                     } else {
                         continue;
                     }
@@ -175,15 +175,15 @@ public class MyHttpClient {
             }
 
             MultipartBody multipartBody = multiBuilder.build();
-            MyProgressRequestBody myProgressRequestBody = getProgressRequestBody(iMyHttpHandler, multipartBody);
-            requestBuilder.post(myProgressRequestBody);
+            ProgressRequestBody progressRequestBody = getProgressRequestBody(iHttpHandler, multipartBody);
+            requestBuilder.post(progressRequestBody);
         }
 
         return true;
     }
 
-    private boolean isIncludeFile(MyReqInfo myReqInfo) {
-        Map<String, Object> bodyMap = myReqInfo.getBodyMap();
+    private boolean isIncludeFile(ReqInfo reqInfo) {
+        Map<String, Object> bodyMap = reqInfo.getBodyMap();
 
         if (CollectionUtil.isNotEmpty(bodyMap)) {
             for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
@@ -195,8 +195,8 @@ public class MyHttpClient {
         return false;
     }
 
-    private boolean isGet(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (myReqInfo.isGet()) {
+    private boolean isGet(ReqInfo reqInfo, Request.Builder requestBuilder) {
+        if (reqInfo.isGet()) {
             requestBuilder.get();
             return true;
         }
@@ -204,8 +204,8 @@ public class MyHttpClient {
     }
 
 
-    private Request.Builder buildHeader(MyReqInfo myReqInfo, Request.Builder builder) {
-        Map<String, List<String>> headers = myReqInfo.getHeadersMap();
+    private Request.Builder buildHeader(ReqInfo reqInfo, Request.Builder builder) {
+        Map<String, List<String>> headers = reqInfo.getHeadersMap();
 
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
 
@@ -221,12 +221,12 @@ public class MyHttpClient {
         return builder;
     }
 
-    protected MyProgressRequestBody getProgressRequestBody(IMyHttpHandler iMyHttpHandler, MultipartBody multipartBody) {
-        return new MyProgressRequestBody(multipartBody, iMyHttpHandler);
+    protected ProgressRequestBody getProgressRequestBody(IHttpHandler iHttpHandler, MultipartBody multipartBody) {
+        return new ProgressRequestBody(multipartBody, iHttpHandler);
     }
 
-    protected MyHttpCallBack getHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        return new MyHttpCallBack(myReqInfo, iMyHttpHandler);
+    protected HttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+        return new HttpCallBack(reqInfo, iHttpHandler);
     }
 
 }
