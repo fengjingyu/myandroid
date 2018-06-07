@@ -87,6 +87,11 @@ public class MyHttpClient {
     private boolean isPost(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
         if (myReqInfo.isPost()) {
 
+            if (StringUtil.isAvaliable(myReqInfo.getBodyContent()) && CollectionsUtil.isMapAvaliable(myReqInfo.getBodyMap())) {
+                // bodyContent 与 bodyMap 的值冲突了
+                throw new RuntimeException("请求体参数有误");
+            }
+
             if (isPostString(myReqInfo, requestBuilder)) {
                 return true;
             }

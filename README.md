@@ -3,7 +3,7 @@ myokhttp
 
 ## Gradle
 ```
-implementation 'com.jingyu.java:myokhttp:0.3.1'
+implementation 'com.jingyu.java:myokhttp:0.3.2'
 ```
 
 ## Maven
@@ -11,7 +11,7 @@ implementation 'com.jingyu.java:myokhttp:0.3.1'
 <dependency>
   <groupId>com.jingyu.java</groupId>
   <artifactId>myokhttp</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -22,7 +22,7 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .get()
         .headersMap(headerMap)
         .url("http://")
-        .queryMap(new MyMap<String, Object>().myPut("key","value));
+        .queryMap(new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"));
 
 MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .post()
@@ -30,16 +30,22 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .url("http://")
         .queryMap(queryMap)
         .bodyContent(json)
-        .contentType(HttpConstants.JSON);
-        
+        .contentTypeJson();
+
+MyReqInfo.Builder builder = new MyReqInfo.Builder()
+        .post()
+        .headersMap(headerMap)
+        .url("http://")
+        .queryMap(queryMap)
+        .bodyContent("abcdefg123")
+        .contentTypeText();
+
 MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .post()
         .headersMap(headerMap)
         .url("http://")
         .bodyMap(bodyMap);  
         
-MyHttpClient myHttpClient = new MyHttpClient()
-
 new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User.class) {
      @Override
      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
