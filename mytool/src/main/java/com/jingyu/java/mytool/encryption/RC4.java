@@ -12,7 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by xilinch on 2015/5/28.
  */
-public class RC4Helper {
+public class RC4 {
 
     public static String encryByRC4(String keyStr, String data){
         if(StringUtil.isBlank(keyStr) || StringUtil.isBlank(data)){

@@ -1,4 +1,4 @@
-package com.jingyu.java.mytool.file;
+package com.jingyu.java.mytool.tool;
 
 import java.io.File;
 
@@ -21,14 +21,11 @@ public class DirDeleter {
 
     private DeleteListener deleteListener;
 
-    public void setDeleteListener(DeleteListener deleteListener) {
-        this.deleteListener = deleteListener;
-    }
-
     private boolean isDeleteRootDir;
 
-    public DirDeleter(boolean deleteRootDir) {
-        isDeleteRootDir = deleteRootDir;
+    public DirDeleter(boolean isDeleteRootDir, DeleteListener deleteListener) {
+        this.isDeleteRootDir = isDeleteRootDir;
+        this.deleteListener = deleteListener;
     }
 
     private void deleteDir(File dir) {
@@ -52,7 +49,7 @@ public class DirDeleter {
         }
     }
 
-    public void start(final File file) {
+    public void start(File file) {
         // 如果文件不存在
         if (!file.exists()) {
             return;

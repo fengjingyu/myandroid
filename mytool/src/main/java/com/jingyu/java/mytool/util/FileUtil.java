@@ -1,11 +1,11 @@
-package com.jingyu.java.mytool.file;
+package com.jingyu.java.mytool.util;
 
 import java.io.File;
 
 /**
  * @author fengjingyu@foxmail.com
  */
-public class FileCreater {
+public class FileUtil {
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");// （windows:"\r\n"；unix:"\n"）； System.out.println()
     //public static final String PATH_SEPARATOR = System.getProperty("path.separator");// （windows:";"；unix:":"）；File.pathSeparator 环境变量
@@ -13,10 +13,6 @@ public class FileCreater {
 
     public static boolean isFileExist(File file) {
         return file != null && file.exists();
-    }
-
-    private static boolean isStringAvaliable(String str) {
-        return str != null && str.trim().length() > 0;
     }
 
     /**
@@ -39,7 +35,7 @@ public class FileCreater {
      * success 返回 file
      */
     public static File createDir(String dirAbsolutePath) {
-        if (isStringAvaliable(dirAbsolutePath)) {
+        if (StringUtil.isNotBlank(dirAbsolutePath)) {
             return createDir(new File(dirAbsolutePath));
         }
         return null;
@@ -72,7 +68,7 @@ public class FileCreater {
      * success 返回 file
      */
     public static File createFile(String dirAbsolutePath, String fileName) {
-        if (isStringAvaliable(dirAbsolutePath) && isStringAvaliable(fileName)) {
+        if (StringUtil.isNotBlank(dirAbsolutePath) && StringUtil.isNotBlank(fileName)) {
             return createFile(new File(dirAbsolutePath + File.separator + fileName));
         }
         return null;
@@ -83,7 +79,7 @@ public class FileCreater {
      * success 返回 file
      */
     public static File createFile(File dir, String fileName) {
-        if (dir != null && isStringAvaliable(fileName)) {
+        if (dir != null && StringUtil.isNotBlank(fileName)) {
             return createFile(new File(dir, fileName));
         }
         return null;
@@ -112,9 +108,18 @@ public class FileCreater {
     }
 
     public static File deleteAndCreateFile(File dir, String fileName) {
-        if (dir != null && isStringAvaliable(fileName)) {
+        if (dir != null && StringUtil.isNotBlank(fileName)) {
             return deleteAndCreateFile(new File(dir, fileName));
         }
         return null;
+    }
+
+    public static long getFileSize(String filePath) {
+        long size = 0;
+        File file = new File(filePath);
+        if (file.exists()) {
+            size = file.length();
+        }
+        return size;
     }
 }

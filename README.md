@@ -88,7 +88,7 @@ MyHttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new MySt
       }
 });
 
-MyHttpUtil.Async.post(url, bodyMap, new MyStringHttpHandler() {
+MyHttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new MyStringHttpHandler() {
      @Override
      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, String str) {
          super.onSuccess(myReqInfo, myRespInfo, str);

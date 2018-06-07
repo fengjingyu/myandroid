@@ -14,7 +14,7 @@ public class DateUtil {
 
     public static String yyyy_MM_dd_HH_mm_ss_S = "yyyy-MM-dd HH:mm:ss.S";
 
-    public static String CN_yyyy_MM_dd_HH_mm_ss = "yyyy年MM月dd日 HH时mm分ss秒";
+    public static String yyyy_MM_dd_HH_mm_ss_CN = "yyyy年MM月dd日 HH时mm分ss秒";
 
     public static boolean isValidDate(String s, String pattern) {
         DateFormat fmt = new SimpleDateFormat(pattern);
@@ -121,23 +121,6 @@ public class DateUtil {
         }
         return sdw.format(d);
     }
-
-//    public static String dateToWeek(String datetime, String pattern) {
-//        SimpleDateFormat f = new SimpleDateFormat(pattern);
-//        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
-//        Calendar cal = Calendar.getInstance(); // 获得一个日历
-//        Date datet = null;
-//        try {
-//            datet = f.parse(datetime);
-//            cal.setTime(datet);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
-//        if (w < 0)
-//            w = 0;
-//        return weekDays[w];
-//    }
 
     /**
      * 指定日期加上天数后的日期

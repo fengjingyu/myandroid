@@ -3,7 +3,7 @@ package com.jingyu.app.middle;
 import android.content.Context;
 
 import com.jingyu.android.common.util.AndroidFileUtil;
-import com.jingyu.java.mytool.file.FileCreater;
+import com.jingyu.java.mytool.util.FileUtil;
 import java.io.File;
 
 /**
@@ -30,7 +30,7 @@ public class MyFile {
      * app目录内创建文件
      */
     public static File getFileInAppDir(Context context, String filename) {
-        return FileCreater.createFile(getAppDir(context), filename);
+        return FileUtil.createFile(getAppDir(context), filename);
     }
 
     /**
@@ -44,7 +44,7 @@ public class MyFile {
      * photo目录内创建文件
      */
     public static File getFileInPhotoDir(Context context, String filename) {
-        return FileCreater.createFile(getPhotoDir(context), filename);
+        return FileUtil.createFile(getPhotoDir(context), filename);
     }
 
     /**

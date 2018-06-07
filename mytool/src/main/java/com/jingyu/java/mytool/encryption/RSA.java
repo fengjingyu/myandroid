@@ -15,7 +15,7 @@ import javax.crypto.Cipher;
 /**
  * Created by xilinch on 2015/6/1.
  */
-public class RSAHelper {
+public class RSA {
 
     public static final String RSA = "RSA";
     public static final String RSA1 = "RSA/ECB/PKCS1Padding";

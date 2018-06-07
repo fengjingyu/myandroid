@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class ReflectUtil {
 
-    public static <T> Object getValueByName(T target, String name) throws Exception {
-        Field field = target.getClass().getDeclaredField(name);
+    public static Object getValueByFieldName(Object obj, String name) throws Exception {
+        Field field = obj.getClass().getDeclaredField(name);
         field.setAccessible(true);
-        return field.get(target);
+        return field.get(obj);
     }
 
     public static void setValueByFieldName(Object obj, String fieldName, Object value) throws Exception {
@@ -27,9 +27,6 @@ public class ReflectUtil {
         }
     }
 
-    /**
-     * 创建一个空的对象
-     */
     private static <T> T getInstance(Class<T> clazz) {
         try {
             Constructor<T> con = clazz.getConstructor();
@@ -54,7 +51,7 @@ public class ReflectUtil {
                 if (originFieldStrings.contains(field.getName())) {
                     try {
                         field.setAccessible(true);
-                        field.set(resultModel, getValueByName(originModel, field.getName()));
+                        field.set(resultModel, getValueByFieldName(originModel, field.getName()));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -67,12 +64,9 @@ public class ReflectUtil {
         }
     }
 
-    /**
-     * 获取字段。包括父类的。
-     */
-    public static <T> Field[] getFields(T target) {
+    public static Field[] getFields(Object obj) {
         try {
-            Class cls = target.getClass();
+            Class cls = obj.getClass();
             Field[] fields = cls.getDeclaredFields();
             return fields;
         } catch (Exception ex) {
@@ -81,10 +75,9 @@ public class ReflectUtil {
         }
     }
 
-    public static <T> String[] getPropertyNames(T target) {
+    public static String[] getPropertyNames(Object object) {
         try {
-
-            Field[] fields = getFields(target);
+            Field[] fields = getFields(object);
 
             String[] result = new String[fields.length];
 
@@ -100,9 +93,9 @@ public class ReflectUtil {
         }
     }
 
-    public static <T> Object[] getValues(T target) {
+    public static Object[] getPropertyValues(Object obj) {
         try {
-            Field[] fields = getFields(target);
+            Field[] fields = getFields(obj);
 
             int length = fields.length;
 
@@ -111,13 +104,10 @@ public class ReflectUtil {
             for (int i = 0; i < length; i++) {
                 Field field = fields[i];
                 field.setAccessible(true);
-                Object obj = field.get(target);
-
-                values[i] = obj;
+                values[i] = field.get(obj);
             }
 
             return values;
-
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

@@ -1,6 +1,7 @@
 package com.jingyu.java.mytool.lib.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonNull;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.lang.reflect.Type;
@@ -22,6 +23,9 @@ public class GsonUtil {
 
     //----------------------------------------bean2json------------------------------------------
     public static String toJson(Object bean) {
+        if (bean == null) {
+            return getGson().toJson(JsonNull.INSTANCE);
+        }
         return getGson().toJson(bean);
     }
 
@@ -52,4 +56,10 @@ public class GsonUtil {
         }
         return null;
     }
+
+    public static void main(String[] arg) {
+        System.out.println(toJson(null));
+        System.out.println(toJson(new Object()));
+    }
+
 }
