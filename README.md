@@ -1,12 +1,12 @@
 myokhttp
 =======
 
-## gradle
+## Gradle
 ```
 implementation 'com.jingyu.java:myokhttp:0.3.1'
 ```
 
-## maven
+## Maven
 ```
 <dependency>
   <groupId>com.jingyu.java</groupId>
@@ -16,13 +16,13 @@ implementation 'com.jingyu.java:myokhttp:0.3.1'
 </dependency>
 ```
 
-### example
+### Example
 ```
 MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .get()
         .headersMap(headerMap)
         .url("http://")
-        .queryMap(queryMap);
+        .queryMap(new MyMap<String, Object>().myPut("key","value));
 
 MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .post()
@@ -37,24 +37,27 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .headersMap(headerMap)
         .url("http://")
         .bodyMap(bodyMap);  
+        
+MyHttpClient myHttpClient = new MyHttpClient()
 
-new MyHttpClient().httpAsync(builder.builder(), new MyStringHttpHandler() {
-    @Override
-    public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, String resultBean) {
-        super.onSuccess(myReqInfo, myRespInfo, resultBean);
-        System.out.println(resultBean);
-    }
+new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User.class) {
+     @Override
+     public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
+         super.onSuccess(myReqInfo, myRespInfo, user);
+         System.out.println(user);
+     }
 });
 
 ```
 
 ### MyHttpUtil(简化使用)
+
 **同步/异步请求**
 ```
  // 同步请求
  MyHttpUtil.Async.get(url, queryMap, null);
  // 异步请求
- MyHttpUtil.Sync.post(url, bodyMap, null); 
+ MyHttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
  
 ```
 
@@ -94,9 +97,9 @@ MyHttpUtil.Async.post(url, bodyMap, new MyGsonHttpHandler<User>(User.class) {
      @Override
      public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, User user) {
          super.onSuccess(myReqInfo, myRespInfo, user);
-         System.out.println(resultBean);
+         System.out.println(user);
      }
-  });
+});
 ```
 
 **自定义解析**
@@ -130,7 +133,7 @@ MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
 **文件上传,进度监听**
 ```
   HashMap<String, Object> bodyMap = new HashMap<>();
-  map.put("key1", "value1");
+  map.put("key", "value");
   map.put("file", file1);
   map.put("file2", file2);
   map.put("file3", null); //空的file会被过滤
@@ -141,4 +144,29 @@ MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
           Logger.i(bytesWritten + "--" + totalSize);
       }
   });
+```
+
+**回调执行的线程设置**
+```
+//android中,请求是异步发送的,但如果需要把回调统一放到主线程处理
+public class NewHttpCallBack<T> extends MyHttpCallBack<T> {
+
+    public static Handler handler = new Handler(Looper.getMainLooper());
+
+    public NewHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler<T> iMyHttpHandler) {
+        super(myReqInfo, iMyHttpHandler);
+    }
+
+    @Override
+    public void runOnSpecifiedThread(Runnable runnable) {
+        handler.post(runnable);
+    }
+}
+
+MyHttpClient myHttpClient = new MyHttpClient() {
+    @Override
+    protected MyHttpCallBack getHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
+        return new NewHttpCallBack(myReqInfo, iMyHttpHandler);
+    }
+};
 ```
