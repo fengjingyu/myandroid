@@ -24,7 +24,7 @@ import com.jingyu.app.middle.okhttp.handler.JsonHttpHandler;
 import com.jingyu.app.model.combination.UsersModel;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
-import com.jingyu.java.mytool.util.IOUtil;
+import com.jingyu.java.mytool.util.IoUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -153,10 +153,10 @@ public class TabFragmentOne extends MyBaseFragment {
         HashMap<String, Object> map = new HashMap<>();
         File file1 = MyFile.getFileInAppDir(getActivity(), "testfileaaaaaa");
         File file2 = MyFile.getFileInAppDir(getActivity(), "testfilebbbbbb");
-        IOUtil.bytes2File("1234567890ABCDEFGH".
+        IoUtil.bytes2File("1234567890ABCDEFGH".
 
                 getBytes(), file1);
-        IOUtil.bytes2File("0987654321CBA ".
+        IoUtil.bytes2File("0987654321CBA ".
 
                 getBytes(), file2);
         map.put("key1", "value1");

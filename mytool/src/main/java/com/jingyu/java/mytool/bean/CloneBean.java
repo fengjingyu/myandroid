@@ -1,6 +1,6 @@
 package com.jingyu.java.mytool.bean;
 
-import com.jingyu.java.mytool.util.IOUtil;
+import com.jingyu.java.mytool.util.IoUtil;
 
 import java.io.Serializable;
 
@@ -31,6 +31,6 @@ public abstract class CloneBean implements Serializable, Cloneable {
      * 深克隆
      */
     public Object deepClone() {
-        return IOUtil.deepClone(this);
+        return IoUtil.deepClone(this);
     }
 }

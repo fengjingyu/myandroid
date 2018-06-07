@@ -31,71 +31,11 @@ public class DecimalUtil {
     }
 
     /**
-     * 只保留整数部分，且不显示千分符。不四舍五入，以截断方式处理。
-     *
-     * @param doubleNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
-     */
-    public static String decimalFormatForIntNoCommas(double doubleNumber) {
-        DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
-        df.applyPattern("##0");
-        doubleNumber = ((int) (doubleNumber * 100)) / 100.0;
-        String str_earning = df.format(doubleNumber);
-
-        return str_earning;
-    }
-
-    /**
-     * 只保留整数部分，且不显示千分符。不四舍五入，以截断方式处理。
-     *
-     * @param doubleNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
-     */
-    public static String decimalFormatForIntNoCommas(String doubleNumber) {
-        return decimalFormatForIntNoCommas(Double.valueOf(doubleNumber));
-    }
-
-    /**
-     * 只保留整数部分。不四舍五入，以截断方式处理。
-     *
-     * @param doubleNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
-     */
-    public static String decimalFormatForInt(double doubleNumber) {
-        DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
-        df.applyPattern("#,##0");
-        doubleNumber = ((int) (doubleNumber * 100)) / 100.0;
-        String str_earning = df.format(doubleNumber);
-
-        return str_earning;
-    }
-
-    /**
-     * 只保留整数部分。不四舍五入，以截断方式处理。
-     *
-     * @param doubleNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
-     */
-    public static String decimalFormatForInt(String doubleNumber) {
-        return decimalFormatForInt(Double.valueOf(doubleNumber));
-    }
-
-
-    /**
-     * 保留小数点后两位，当小数部分不足两位时，进行补零。不四舍五入，以截断方式处理。
-     *
-     * @param doubleNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
-     */
-    public static String decimalFormat(double doubleNumber) {
-        return decimalFormat(String.valueOf(doubleNumber));
-    }
-
-    /**
-     * 保留小数点后两位，当小数部分不足两位时，进行补零。不四舍五入，以截断方式处理。
-     *
-     * @param stringNumber 源数据
-     * @return String 被格式化后的数据，以字符串方式返回
+     * 保留小数点后两位，当小数部分不足两位时，进行补零。不四舍五入，以截断方式处理
+     * <p>
+     * System.out.println(decimalFormat("1")); // 1.00
+     * System.out.println(decimalFormat("1000001")); // 1,000,001.00
+     * System.out.println(decimalFormat("0.1000001")); // 0.10
      */
     public static String decimalFormat(String stringNumber) {
         double doubleNumber = 0.0d;
@@ -107,7 +47,7 @@ public class DecimalUtil {
         }
 
         DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
-        df.applyPattern("#,##0.00");
+        df.applyPattern(",##0.00");
 
         BigDecimal bigDec_doubleNumber = new BigDecimal(Double.toString(doubleNumber));
         BigDecimal bigDec_100d = new BigDecimal(Double.toString(100.0d));

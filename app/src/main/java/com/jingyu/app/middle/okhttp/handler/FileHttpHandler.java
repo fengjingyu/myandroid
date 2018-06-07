@@ -3,7 +3,7 @@ package com.jingyu.app.middle.okhttp.handler;
 import com.jingyu.java.myokhttp.MyHttpCallBack;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
-import com.jingyu.java.mytool.util.IOUtil;
+import com.jingyu.java.mytool.util.IoUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class FileHttpHandler extends BaseHttpHandler<File> {
 
     @Override
     public File onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        if (IOUtil.inputStream2File(inputStream, file)) {
+        if (IoUtil.inputStream2File(inputStream, file)) {
             return file;
         } else {
             throw new RuntimeException("parse()::下载文件异常file = " + file + MyHttpCallBack.LINE + myReqInfo.getUrl());

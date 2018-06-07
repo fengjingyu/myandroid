@@ -26,7 +26,7 @@ import java.util.Properties;
  * @author fengjingyu@foxmail.com
  *
  */
-public class IOUtil {
+public class IoUtil {
 
     public static String getString(InputStreamReader inputStreamReader) {
         if (inputStreamReader == null) {
