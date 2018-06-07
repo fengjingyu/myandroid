@@ -2,7 +2,7 @@ package com.jingyu.java.myokhttp.req;
 
 import com.jingyu.java.myokhttp.HttpConstants;
 import com.jingyu.java.mytool.bean.CloneBean;
-import com.jingyu.java.mytool.util.CollectionsUtil;
+import com.jingyu.java.mytool.util.CollectionUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.util.HashMap;
@@ -112,7 +112,7 @@ public class MyReqInfo extends CloneBean {
      */
     public String buildUrlQuery(Map<String, Object> queryMap) {
 
-        if (CollectionsUtil.isMapAvaliable(queryMap)) {
+        if (CollectionUtil.isNotEmpty(queryMap)) {
             StringBuilder sb = new StringBuilder();
 
             sb.append(QUESTION);
@@ -124,7 +124,7 @@ public class MyReqInfo extends CloneBean {
                 sb.append(entry.getKey() + EQUAL + entry.getValue() + AND);
             }
 
-            return StringUtil.subStringBeforeLastSimbol(sb.toString(), AND);
+            return StringUtil.subStringBeforeLastStr(sb.toString(), AND);
 
         } else {
             // 无参数

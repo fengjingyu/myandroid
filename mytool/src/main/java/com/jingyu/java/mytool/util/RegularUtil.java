@@ -22,6 +22,11 @@ public class RegularUtil {
     public static final String REGEX_MOBILE = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
 
     /**
+     * 正则表达式：固定电话
+     */
+    public static final String REGEX_FIX_PHONE = "^0\\d{2,3}(\\(\\d{3,4}\\)|\\d{3,4}-|\\s)?\\d{8}$";
+
+    /**
      * 正则表达式：验证邮箱
      */
     public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -30,6 +35,11 @@ public class RegularUtil {
      * 正则表达式：验证汉字
      */
     public static final String REGEX_CHINESE = "^[\u4e00-\u9fa5],{0,}$";
+
+    /**
+     * 正则表达式：验证汉字 + 数字
+     */
+    public static final String REGEX_DIGIT_CHINESE = "^[a-z0-9A-Z\u4e00-\u9fa5]+$";
 
     /**
      * 正则表达式：验证身份证
@@ -130,8 +140,7 @@ public class RegularUtil {
      * 判断字符是否是数值或者中文
      */
     public boolean isDigitOrChinese(String str) {
-        String regex = "^[a-z0-9A-Z\u4e00-\u9fa5]+$";
-        return str.matches(regex);
+        return Pattern.matches(REGEX_DIGIT_CHINESE, str);
     }
 
     public static String delHtml(String str) {
@@ -141,36 +150,10 @@ public class RegularUtil {
     }
 
     /**
-     * 是否是电话号码
-     */
-    public static boolean isPhoneNum(String num) {
-        if (num != null && num.length() == 11) {
-            // if (num.matches("1[34568]\\d{9}")) {
-            // 访问网络获取验证码
-            return true;
-            // }
-        }
-        return false;
-    }
-
-    /**
-     * 检测输入的邮箱是否符合要求.
-     */
-    public static boolean validateEmail(String number) {
-        Pattern p = Pattern
-                .compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
-        Matcher m = p.matcher(number);
-        return m.matches();
-    }
-
-    /**
      * 判断固定电话
      */
-    public static boolean isFixPhoneNumber(String gnumber) {
-        Pattern pattern = Pattern
-                .compile("0\\d{2,3}(\\(\\d{3,4}\\)|\\d{3,4}-|\\s)?\\d{8}");
-        Matcher matcher = pattern.matcher(gnumber);
-        return matcher.matches();
+    public static boolean isFixPhoneNumber(String fixPhone) {
+        return Pattern.matches(REGEX_FIX_PHONE, fixPhone);
     }
 
     /**
@@ -181,7 +164,8 @@ public class RegularUtil {
     public static String encrypPhoneNumber(String number) {
         String newnumber = number;
         if (number.trim().length() == 11) {
-            newnumber = number.substring(0, 3) + "****" + number.substring(number.length() - 4, number.length());
+            // newnumber = number.substring(0, 3) + "****" + number.substring(number.length() - 4, number.length());
+            newnumber.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1****$3");
         } else {
             newnumber = number;
         }
@@ -209,7 +193,6 @@ public class RegularUtil {
      * 加密邮箱
      */
     public static String encrypEmail(String email) {
-
         String newemail = "";
         if (email == null || "".equals(email.trim())) {
             return newemail;
@@ -271,10 +254,6 @@ public class RegularUtil {
         return newauthencardnum;
     }
 
-    /**
-     *
-     * @param version1
-     */
     public static int compareVersion(String version1, String version2) throws Exception {
         if (version1 == null || version2 == null) {
             throw new Exception("参数异常");

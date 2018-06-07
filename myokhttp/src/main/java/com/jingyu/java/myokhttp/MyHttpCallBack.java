@@ -11,7 +11,7 @@ import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.resp.MyRespInfo;
 import com.jingyu.java.myokhttp.resp.MyRespType;
-import com.jingyu.java.mytool.util.CollectionsUtil;
+import com.jingyu.java.mytool.util.CollectionUtil;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -128,7 +128,7 @@ public class MyHttpCallBack<T> implements Callback {
     protected void printHeaderInfo(Map<String, List<String>> headers) {
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             List<String> values = header.getValue();
-            if (CollectionsUtil.isListAvaliable(values)) {
+            if (CollectionUtil.isNotEmpty(values)) {
                 LogUtil.i(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
             }
         }

@@ -3,7 +3,7 @@ myokhttp
 
 ## Gradle
 ```
-implementation 'com.jingyu.java:myokhttp:0.3.2'
+implementation 'com.jingyu.java:myokhttp:0.3.3'
 ```
 
 ## Maven
@@ -11,7 +11,7 @@ implementation 'com.jingyu.java:myokhttp:0.3.2'
 <dependency>
   <groupId>com.jingyu.java</groupId>
   <artifactId>myokhttp</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
   <type>pom</type>
 </dependency>
 ```

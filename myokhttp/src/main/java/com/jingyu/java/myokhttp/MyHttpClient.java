@@ -4,7 +4,7 @@ import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
 import com.jingyu.java.myokhttp.req.MyProgressRequestBody;
 import com.jingyu.java.myokhttp.req.MyReqInfo;
 import com.jingyu.java.myokhttp.req.MyUploadFile;
-import com.jingyu.java.mytool.util.CollectionsUtil;
+import com.jingyu.java.mytool.util.CollectionUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public class MyHttpClient {
     private boolean isPost(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
         if (myReqInfo.isPost()) {
 
-            if (StringUtil.isAvaliable(myReqInfo.getBodyContent()) && CollectionsUtil.isMapAvaliable(myReqInfo.getBodyMap())) {
+            if (StringUtil.isNotBlank(myReqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(myReqInfo.getBodyMap())) {
                 // bodyContent 与 bodyMap 的值冲突了
                 throw new RuntimeException("请求体参数有误");
             }
@@ -118,7 +118,7 @@ public class MyHttpClient {
      * //      则springmvc的注解 @RequestBody String conent 获取的是{"a":"b"}
      */
     private boolean isPostString(MyReqInfo myReqInfo, Request.Builder requestBuilder) {
-        if (StringUtil.isAvaliable(myReqInfo.getBodyContent())) {
+        if (StringUtil.isNotBlank(myReqInfo.getBodyContent())) {
             // myReqInfo.getContentType()可以为空, okhttp默认会设置为"application/octet-stream" or springmvc默认用"application/octet-stream"接收
             requestBuilder.post(RequestBody.create(MediaType.parse(myReqInfo.getContentType()), myReqInfo.getBodyContent()));
             return true;
@@ -133,7 +133,7 @@ public class MyHttpClient {
 
         Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
+        if (CollectionUtil.isNotEmpty(bodyMap)) {
             FormBody.Builder formBodyBuilder = new FormBody.Builder();
 
             for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
@@ -148,7 +148,7 @@ public class MyHttpClient {
     private boolean isPostMultiForm(MyReqInfo myReqInfo, Request.Builder requestBuilder, IMyHttpHandler iMyHttpHandler) {
         Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
+        if (CollectionUtil.isNotEmpty(bodyMap)) {
 
             MultipartBody.Builder multiBuilder = new MultipartBody.Builder();
             multiBuilder.setType(MultipartBody.FORM);
@@ -185,7 +185,7 @@ public class MyHttpClient {
     private boolean isIncludeFile(MyReqInfo myReqInfo) {
         Map<String, Object> bodyMap = myReqInfo.getBodyMap();
 
-        if (CollectionsUtil.isMapAvaliable(bodyMap)) {
+        if (CollectionUtil.isNotEmpty(bodyMap)) {
             for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
                 if (entry.getValue() instanceof File) {
                     return true;
@@ -212,7 +212,7 @@ public class MyHttpClient {
             List<String> values = entry.getValue();
             String key = entry.getKey();
 
-            if (CollectionsUtil.isListAvaliable(values)) {
+            if (CollectionUtil.isNotEmpty(values)) {
                 for (String value : values) {
                     builder.addHeader(key, value);
                 }
