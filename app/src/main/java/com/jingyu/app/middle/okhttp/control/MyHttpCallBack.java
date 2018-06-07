@@ -3,20 +3,20 @@ package com.jingyu.app.middle.okhttp.control;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.jingyu.java.myokhttp.MyHttpCallBack;
-import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
+import com.jingyu.java.myokhttp.HttpCallBack;
+import com.jingyu.java.myokhttp.handler.IHttpHandler;
+import com.jingyu.java.myokhttp.req.ReqInfo;
 
 /**
  * Created by jingyu on 2018/2/21.
  */
 
-public class HttpCallBack extends MyHttpCallBack {
+public class MyHttpCallBack extends HttpCallBack {
 
     Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public HttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-        super(myReqInfo, iMyHttpHandler);
+    public MyHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+        super(reqInfo, iHttpHandler);
     }
 
     @Override

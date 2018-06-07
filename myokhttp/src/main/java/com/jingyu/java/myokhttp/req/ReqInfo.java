@@ -195,7 +195,7 @@ public class ReqInfo extends CloneBean {
             this.tag = reqInfo.getTag();
         }
 
-        public Builder myReqType(ReqType reqType) {
+        public Builder reqType(ReqType reqType) {
             this.reqType = reqType;
             return this;
         }

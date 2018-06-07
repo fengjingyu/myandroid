@@ -8,12 +8,12 @@ import android.view.KeyEvent;
 import com.jingyu.android.common.log.Logger;
 import com.jingyu.app.MainActivity;
 import com.jingyu.app.middle.okhttp.IRespMsgCode;
+import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
 import com.jingyu.app.middle.okhttp.loading.DialogManager;
 import com.jingyu.app.middle.okhttp.loading.HttpLoadingDialog;
-import com.jingyu.java.myokhttp.MyHttpCallBack;
-import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
-import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.myokhttp.handler.IHttpHandler;
+import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myokhttp.resp.RespInfo;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author fengjingyu@foxmail.com
  */
-public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
+public abstract class MyBaseHttpHandler<T> implements IHttpHandler<T> {
 
     private Activity activityContext;
 
@@ -33,18 +33,18 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
     //TODO 配置服务端定义的成功状态码
     public static final String REQ_SUCCESS = "1";
 
-    public BaseHttpHandler(Activity activityContext) {
+    public MyBaseHttpHandler(Activity activityContext) {
         super();
         this.activityContext = activityContext;
         this.isShowDialog = true;
     }
 
-    public BaseHttpHandler(Activity activityContext, boolean isShowDialog) {
+    public MyBaseHttpHandler(Activity activityContext, boolean isShowDialog) {
         this.activityContext = activityContext;
         this.isShowDialog = isShowDialog;
     }
 
-    public BaseHttpHandler() {
+    public MyBaseHttpHandler() {
     }
 
     //TODO 统一配置请求头
@@ -68,7 +68,7 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
     }
 
     @Override
-    public MyReqInfo onReadySendRequest(MyReqInfo myReqInfo) {
+    public ReqInfo onReadySendRequest(ReqInfo reqInfo) {
 //        Logger.d(myReqInfo);
 //        Map<String, List<String>> newHeaders = getCommonHeaders(myReqInfo.getHeadersMap());
 //        Map<String, Object> newParams = getCommonEncryptParams(myReqInfo.getParamsMap());
@@ -77,7 +77,7 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
 //        showDialog();
 //        Logger.d(newMyReqInfo);
 //        return newMyReqInfo;
-        return myReqInfo;
+        return reqInfo;
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
      * 解析是否成功的规则，根据项目的json而定
      */
     @Override
-    public boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public boolean onMatchAppCode(ReqInfo reqInfo, RespInfo respInfo, T resultBean) {
         //TODO 解析规则
         if (resultBean instanceof IRespMsgCode) {
             if (StringUtil.equals(((IRespMsgCode) resultBean).getCode(), REQ_SUCCESS)) {
@@ -114,12 +114,12 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
     }
 
     @Override
-    public void onFailure(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+    public void onFailure(ReqInfo reqInfo, RespInfo respInfo) {
         Logger.shortToast("网络出错啦");
     }
 
     @Override
-    public void onFinally(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+    public void onFinally(ReqInfo myReqInfo, RespInfo myRespInfo) {
         closeDialog(isShowDialog);
     }
 
@@ -152,17 +152,17 @@ public abstract class BaseHttpHandler<T> implements IMyHttpHandler<T> {
     }
 
     @Override
-    public void onParseException(MyReqInfo myReqInfo, MyRespInfo myRespInfo) {
+    public void onParseException(ReqInfo reqInfo, RespInfo respInfo) {
 
     }
 
     @Override
-    public void onAppCodeException(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public void onAppCodeException(ReqInfo reqInfo, RespInfo respInfo, T resultBean) {
 
     }
 
     @Override
-    public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, T resultBean) {
+    public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, T resultBean) {
 
     }
 }

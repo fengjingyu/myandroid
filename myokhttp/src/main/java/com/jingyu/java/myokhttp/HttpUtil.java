@@ -124,7 +124,7 @@ public class HttpUtil {
                                          String bodyContent, String contentType,
                                          String tag) {
         return new ReqInfo.Builder()
-                .myReqType(type)
+                .reqType(type)
                 .url(url)
                 .headersMap(headers)
                 .queryMap(queryMap)

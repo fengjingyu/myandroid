@@ -11,19 +11,20 @@ import android.widget.ImageView;
 
 import com.jingyu.android.common.log.Logger;
 import com.jingyu.app.R;
+import com.jingyu.app.middle.MyBaseFragment;
 import com.jingyu.app.middle.MyEnv;
 import com.jingyu.app.middle.MyFile;
 import com.jingyu.app.middle.MyHttp;
 import com.jingyu.app.middle.MyImg;
-import com.jingyu.app.middle.MyBaseFragment;
 import com.jingyu.app.middle.MySp;
-import com.jingyu.app.middle.okhttp.handler.BaseHttpHandler;
-import com.jingyu.app.middle.okhttp.handler.FileHttpHandler;
-import com.jingyu.app.middle.okhttp.handler.GsonHttpHandler;
-import com.jingyu.app.middle.okhttp.handler.JsonHttpHandler;
+import com.jingyu.app.middle.okhttp.handler.MyBaseHttpHandler;
+import com.jingyu.app.middle.okhttp.handler.MyFileHttpHandler;
+import com.jingyu.app.middle.okhttp.handler.MyGsonHttpHandler;
+import com.jingyu.app.middle.okhttp.handler.MyJsonHttpHandler;
 import com.jingyu.app.model.combination.UsersModel;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
-import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.myokhttp.handler.GsonHttpHandler;
+import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myokhttp.resp.RespInfo;
 import com.jingyu.java.mytool.util.IoUtil;
 
 import java.io.File;
@@ -86,10 +87,10 @@ public class TabFragmentOne extends MyBaseFragment {
         //*****
         //JsonHttpHandler适用于不需要建模型的回调
         //http-get 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
-        MyHttp.Async.get(url, param, new JsonHttpHandler() {
+        MyHttp.Async.get(url, param, new MyJsonHttpHandler() {
             @Override
-            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, MyJsonBean resultBean) {
-                super.onSuccess(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, MyJsonBean resultBean) {
+                super.onSuccess(reqInfo, respInfo, resultBean);
             }
         });
 
@@ -98,8 +99,8 @@ public class TabFragmentOne extends MyBaseFragment {
         //http-post 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
         MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(UsersModel.class) {
             @Override
-            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
-                super.onSuccess(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, UsersModel resultBean) {
+                super.onSuccess(reqInfo, respInfo, resultBean);
             }
         });
 
@@ -107,39 +108,39 @@ public class TabFragmentOne extends MyBaseFragment {
         //*****
         //BaseHttpHandler适用于需要手动解析的回调
         //http-post 假如request成功 一般不需要判断状态码，BaseHttpHandler会统一处理
-        MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
+        MyHttp.Async.post(url, param, new MyGsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
             @Override
-            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+            public UsersModel onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
                 // 也可以手动解析，失败返回null
                 return new UsersModel();
             }
 
             @Override
-            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
-                super.onSuccess(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, UsersModel resultBean) {
+                super.onSuccess(reqInfo, respInfo, resultBean);
             }
         });
 
         //http-post + 参数 处理回调 进度条
-        MyHttp.Async.post(url, param, new GsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
+        MyHttp.Async.post(url, param, new MyGsonHttpHandler<UsersModel>(getActivity(), UsersModel.class) {
             //该方法一般不需要重写，BaseHttpHandler会处理，这里只是示例，强制返回true，代表业务接口的状态码success
             @Override
-            public boolean onMatchAppCode(MyReqInfo myReqInfo, MyRespInfo myRespInfo, UsersModel resultBean) {
+            public boolean onMatchAppCode(ReqInfo reqInfo, RespInfo respInfo, UsersModel resultBean) {
                 return true;
             }
 
             //该方法一般不需要重写，BaseHttpHandler的子类里会处理解析，这里只是示例，解析失败返回null则会回调onSuccessButParseWrong
             @Override
-            public UsersModel onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+            public UsersModel onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
                 return new UsersModel();
             }
         });
 
         //文件下载
-        MyHttp.Async.post(ip + "android/123.txt", null, new FileHttpHandler(MyFile.getFileInAppDir(getContext(), "file1")) {
+        MyHttp.Async.post(ip + "android/123.txt", null, new MyFileHttpHandler(MyFile.getFileInAppDir(getContext(), "file1")) {
             @Override
-            public void onSuccess(MyReqInfo myReqInfo, MyRespInfo myRespInfo, File resultBean) {
-                super.onSuccess(myReqInfo, myRespInfo, resultBean);
+            public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, File resultBean) {
+                super.onSuccess(reqInfo, respInfo, resultBean);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -163,7 +164,7 @@ public class TabFragmentOne extends MyBaseFragment {
         map.put("file", file1);
         map.put("file2", file2);
         map.put("file3", null);
-        MyHttp.Async.post(ip + "UploadServlet", map, new BaseHttpHandler() {
+        MyHttp.Async.post(ip + "UploadServlet", map, new MyBaseHttpHandler() {
             @Override
             public void onUploadProgress(long bytesWritten, long totalSize) {
                 super.onUploadProgress(bytesWritten, totalSize);
@@ -171,7 +172,7 @@ public class TabFragmentOne extends MyBaseFragment {
             }
 
             @Override
-            public Object onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
+            public Object onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
                 return null;
             }
         });

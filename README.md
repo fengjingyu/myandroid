@@ -3,7 +3,7 @@ myokhttp
 
 ## Gradle
 ```
-implementation 'com.jingyu.java:myokhttp:0.3.3'
+implementation 'com.jingyu.java:myokhttp:0.4.0'
 ```
 
 ## Maven
@@ -11,20 +11,20 @@ implementation 'com.jingyu.java:myokhttp:0.3.3'
 <dependency>
   <groupId>com.jingyu.java</groupId>
   <artifactId>myokhttp</artifactId>
-  <version>0.3.3</version>
+  <version>0.4.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 ### Example
 ```
-MyReqInfo.Builder builder = new MyReqInfo.Builder()
+ReqInfo.Builder builder = new ReqInfo.Builder()
         .get()
         .headersMap(headerMap)
         .url("http://")
         .queryMap(new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"));
 
-MyReqInfo.Builder builder = new MyReqInfo.Builder()
+ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .headersMap(headerMap)
         .url("http://")
@@ -32,7 +32,7 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .bodyContent(json)
         .contentTypeJson();
 
-MyReqInfo.Builder builder = new MyReqInfo.Builder()
+ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .headersMap(headerMap)
         .url("http://")
@@ -40,15 +40,15 @@ MyReqInfo.Builder builder = new MyReqInfo.Builder()
         .bodyContent("abcdefg123")
         .contentTypeText();
 
-MyReqInfo.Builder builder = new MyReqInfo.Builder()
+ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .headersMap(headerMap)
         .url("http://")
-        .bodyMap(bodyMap);  
+        .bodyMap(new MyMap<String, Object>().myPut("key","value").myPut("file","file"));
         
-new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User.class) {
+new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.class) {
      @Override
-     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+     public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
          super.onSuccess(reqInfo, respInfo, user);
          System.out.println(user);
      }
@@ -56,22 +56,22 @@ new MyHttpClient().httpAsync(builder.builder(), new MyGsonHttpHandler<User>(User
 
 ```
 
-### MyHttpUtil(简化使用)
+### HttpUtil(简化使用)
 
 **同步/异步请求**
 ```
  // 同步请求
- MyHttpUtil.Async.get(url, queryMap, null);
+ HttpUtil.Async.get(url, queryMap, null);
  // 异步请求
- MyHttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
+ HttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
  
 ```
 
 **json传参**
 ```
-MyHttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new MyStringHttpHandler() {
+HttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new StringHttpHandler() {
       @Override
-      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String resultBean) {
+      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
           super.onSuccess(reqInfo, respInfo, resultBean);
           System.out.println(resultBean);
       }
@@ -80,17 +80,17 @@ MyHttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new MyStrin
 
 **表单传参**
 ```
-MyHttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new MyStringHttpHandler() {
+HttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new StringHttpHandler() {
       @Override
-      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String resultBean) {
+      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
           super.onSuccess(reqInfo, respInfo, resultBean);
           System.out.println(resultBean);
       }
 });
 
-MyHttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new MyStringHttpHandler() {
+HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new StringHttpHandler() {
      @Override
-     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, String str) {
+     public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String str) {
          super.onSuccess(reqInfo, respInfo, str);
          System.out.println(str);
      }
@@ -99,9 +99,9 @@ MyHttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPu
 
 **自动解析**
 ```
-MyHttpUtil.Async.post(url, bodyMap, new MyGsonHttpHandler<User>(User.class) {
+HttpUtil.Async.post(url, bodyMap, new GsonHttpHandler<User>(User.class) {
      @Override
-     public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+     public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
          super.onSuccess(reqInfo, respInfo, user);
          System.out.println(user);
      }
@@ -110,15 +110,15 @@ MyHttpUtil.Async.post(url, bodyMap, new MyGsonHttpHandler<User>(User.class) {
 
 **自定义解析**
 ```
-MyHttpUtil.Async.post(url, bodyMap, new MyBaseHttpHandler<User>() {
+HttpUtil.Async.post(url, bodyMap, new BaseHttpHandler<User>() {
       @Override
-      public User onParse(MyReqInfo reqInfo, MyRespInfo respInfo, InputStream inputStream, long totalSize) {
+      public User onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
           // todo, inputStream
           return new User();
       }
 
       @Override
-      public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, User user) {
+      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
           super.onSuccess(reqInfo, respInfo, user);
       }
 });
@@ -127,9 +127,9 @@ MyHttpUtil.Async.post(url, bodyMap, new MyBaseHttpHandler<User>() {
 
 **下载文件**
 ```
-MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
+HttpUtil.Async.get(url, queryMap, new FileHttpHandler(saveFile) {
     @Override
-    public void onSuccess(MyReqInfo reqInfo, MyRespInfo respInfo, File saveFile) {
+    public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, File saveFile) {
         super.onSuccess(reqInfo, respInfo, saveFile);
         System.out.println(saveFile);
     }
@@ -143,7 +143,7 @@ MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
   map.put("file", file1);
   map.put("file2", file2);
   map.put("file3", null); //空的file会被过滤
-  MyHttpUtil.Async.post(url, bodyMap, new MyStringHttpHandler() {
+  HttpUtil.Async.post(url, bodyMap, new StringHttpHandler() {
       @Override
       public void onUploadProgress(long bytesWritten, long totalSize) {
           super.onUploadProgress(bytesWritten, totalSize);
@@ -155,11 +155,11 @@ MyHttpUtil.Async.get(url, queryMap, new MyFileHttpHandler(saveFile) {
 **回调执行的线程设置**
 ```
 //android中,请求是异步发送的,但如果需要把回调统一放到主线程处理
-public class NewHttpCallBack<T> extends MyHttpCallBack<T> {
+public class NewHttpCallBack<T> extends HttpCallBack<T> {
 
     public static Handler handler = new Handler(Looper.getMainLooper());
 
-    public NewHttpCallBack(MyReqInfo reqInfo, IMyHttpHandler<T> iHttpHandler) {
+    public NewHttpCallBack(ReqInfo reqInfo, IHttpHandler<T> iHttpHandler) {
         super(reqInfo, iHttpHandler);
     }
 
@@ -169,9 +169,9 @@ public class NewHttpCallBack<T> extends MyHttpCallBack<T> {
     }
 }
 
-MyHttpClient httpClient = new MyHttpClient() {
+HttpClient httpClient = new HttpClient() {
     @Override
-    protected MyHttpCallBack getHttpCallBack(MyReqInfo reqInfo, IMyHttpHandler iHttpHandler) {
+    protected HttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         return new NewHttpCallBack(reqInfo, iHttpHandler);
     }
 };

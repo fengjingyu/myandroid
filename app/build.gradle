@@ -148,12 +148,11 @@ dependencies {
     /**版本更新*/
     implementation 'com.allenliu.versionchecklib:library:2.0.1'
 
-    implementation 'com.jingyu.java:mytool:0.0.5'
-    implementation 'com.jingyu.java:myokhttp:0.3.0'
-    //implementation project(':mytool')
-    //implementation project(':myokhttp')
+    //implementation 'com.jingyu.java:mytool:0.0.5'
+    //implementation 'com.jingyu.java:myokhttp:0.4.0'
+    implementation project(':mytool')
+    implementation project(':myokhttp')
 
     implementation 'com.jingyu.android:resource:0.0.1'
     implementation 'com.jingyu.android:common:0.0.1'
-
 }

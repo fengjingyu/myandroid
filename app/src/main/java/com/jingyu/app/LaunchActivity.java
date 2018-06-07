@@ -23,10 +23,10 @@ import com.jingyu.app.middle.MyImg;
 import com.jingyu.app.middle.MySp;
 import com.jingyu.app.middle.MyBaseActivity;
 import com.jingyu.app.middle.MyFile;
-import com.jingyu.java.myokhttp.MyHttpCallBack;
-import com.jingyu.java.myokhttp.MyHttpClient;
-import com.jingyu.java.myokhttp.handler.IMyHttpHandler;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
+import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
+import com.jingyu.java.myokhttp.HttpClient;
+import com.jingyu.java.myokhttp.handler.IHttpHandler;
+import com.jingyu.java.myokhttp.req.ReqInfo;
 
 import java.util.ArrayList;
 
@@ -166,10 +166,10 @@ public class LaunchActivity extends MyBaseActivity {
     }
 
     private void initHttp() {
-        MyHttp.setMyHttpClient(new MyHttpClient() {
+        MyHttp.setMyHttpClient(new HttpClient() {
             @Override
-            protected MyHttpCallBack getHttpCallBack(MyReqInfo myReqInfo, IMyHttpHandler iMyHttpHandler) {
-                return new MyHttpCallBack(myReqInfo, iMyHttpHandler);
+            protected MyHttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+                return new MyHttpCallBack(reqInfo, iHttpHandler);
             }
         });
     }

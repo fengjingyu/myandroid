@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.jingyu.android.common.bean.JsonBean;
 import com.jingyu.android.common.bean.JsonParse;
 import com.jingyu.app.middle.okhttp.IRespMsgCode;
-import com.jingyu.java.myokhttp.req.MyReqInfo;
-import com.jingyu.java.myokhttp.resp.MyRespInfo;
+import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myokhttp.resp.RespInfo;
 
 import java.io.InputStream;
 
@@ -14,22 +14,22 @@ import java.io.InputStream;
  * @author fengjingyu@foxmail.com
  * @description 适用于不需要建模型的接口（如添加收藏等无ui数据的接口）
  */
-public class JsonHttpHandler extends BaseHttpHandler<JsonHttpHandler.MyJsonBean> {
+public class MyJsonHttpHandler extends MyBaseHttpHandler<MyJsonHttpHandler.MyJsonBean> {
 
-    public JsonHttpHandler(Activity activityContext, boolean isShowDialog) {
+    public MyJsonHttpHandler(Activity activityContext, boolean isShowDialog) {
         super(activityContext, isShowDialog);
     }
 
-    public JsonHttpHandler(Activity activity) {
+    public MyJsonHttpHandler(Activity activity) {
         super(activity);
     }
 
-    public JsonHttpHandler() {
+    public MyJsonHttpHandler() {
     }
 
     @Override
-    public MyJsonBean onParse(MyReqInfo myReqInfo, MyRespInfo myRespInfo, InputStream inputStream, long totalSize) {
-        return JsonParse.getJsonParseData(parse(myReqInfo, myRespInfo, inputStream, totalSize), MyJsonBean.class);
+    public MyJsonBean onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
+        return JsonParse.getJsonParseData(parse(reqInfo, respInfo, inputStream, totalSize), MyJsonBean.class);
     }
 
     public class MyJsonBean extends JsonBean implements IRespMsgCode {
