@@ -44,7 +44,7 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .headersMap(headerMap)
         .url("http://")
-        .bodyMap(new MyMap<String, Object>().myPut("key","value").myPut("file","file"));
+        .bodyMap(new MyMap<String, Object>().myPut("key","value").myPut("file",file));
         
 new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.class) {
      @Override
@@ -87,8 +87,11 @@ HttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new String
           System.out.println(resultBean);
       }
 });
+```
 
-HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new StringHttpHandler() {
+**multi表单**
+```
+HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("file",file), new StringHttpHandler() {
      @Override
      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String str) {
          super.onSuccess(reqInfo, respInfo, str);
@@ -99,7 +102,7 @@ HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut(
 
 **自动解析**
 ```
-HttpUtil.Async.post(url, bodyMap, new GsonHttpHandler<User>(User.class) {
+HttpUtil.Async.post(url, null, new GsonHttpHandler<User>(User.class) {
      @Override
      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
          super.onSuccess(reqInfo, respInfo, user);
@@ -110,7 +113,7 @@ HttpUtil.Async.post(url, bodyMap, new GsonHttpHandler<User>(User.class) {
 
 **自定义解析**
 ```
-HttpUtil.Async.post(url, bodyMap, new BaseHttpHandler<User>() {
+HttpUtil.Sync.post(url, null, new BaseHttpHandler<User>() {
       @Override
       public User onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
           // todo, inputStream
