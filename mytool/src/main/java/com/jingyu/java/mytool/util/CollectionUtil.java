@@ -30,7 +30,7 @@ public class CollectionUtil {
     }
 
     public static boolean isNotEmpty(Map map) {
-        return !isNotEmpty(map);
+        return !isEmpty(map);
     }
 
     public static List getList(Object... args) {
