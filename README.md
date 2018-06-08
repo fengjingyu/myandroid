@@ -60,9 +60,9 @@ new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.cla
 
 **同步/异步请求**
 ```
- // 同步请求
- HttpUtil.Async.get(url, new MyMap<String, Object>().myPut("key","value"), null);
  // 异步请求
+ HttpUtil.Async.get(url, new MyMap<String, Object>().myPut("key","value"), null);
+ // 同步请求
  HttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
  
 ```
