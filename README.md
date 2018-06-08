@@ -203,6 +203,7 @@ HttpClient httpClient = new HttpClient() {
               //.addInterceptor()
               .build();
     }
-HttpUtil.setHttpClient(httpClient);
 };
+
+HttpUtil.setHttpClient(httpClient);
 ```
