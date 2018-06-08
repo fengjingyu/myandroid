@@ -20,6 +20,10 @@ implementation 'com.jingyu.java:myokhttp:0.5.0'
 ```
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .get()
+        .url("http://");
+        
+ReqInfo.Builder builder = new ReqInfo.Builder()
+        .get()
         .headersMap(headerMap)
         .url("http://")
         .queryMap(new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"));
@@ -187,8 +191,8 @@ HttpClient httpClient = new HttpClient() {
     }
 
     @Override
-    protected MyHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
-      return new MyHttpCallBack(reqInfo, iHttpHandler);
+    protected NewHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+      return new NewHttpCallBack(reqInfo, iHttpHandler);
     }
 
     @Override
@@ -199,5 +203,6 @@ HttpClient httpClient = new HttpClient() {
               //.addInterceptor()
               .build();
     }
+HttpUtil.setHttpClient(httpClient);
 };
 ```
