@@ -5,7 +5,9 @@ import com.jingyu.java.mytool.bean.CloneBean;
 import com.jingyu.java.mytool.util.CollectionUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +58,6 @@ public class ReqInfo extends CloneBean {
         this.bodyContent = builder.bodyContent;
         this.contentType = builder.contentType;
         this.tag = builder.tag;
-
     }
 
     public ReqType getReqType() {
@@ -220,6 +221,34 @@ public class ReqInfo extends CloneBean {
             return this;
         }
 
+        public Builder setHeader(String name, String value) {
+            if (headersMap == null) {
+                headersMap = new HashMap<>();
+            }
+            headersMap.put(name, Arrays.asList(value));
+            return this;
+        }
+
+        public Builder addHeader(String name, String value) {
+            if (headersMap == null) {
+                headersMap = new HashMap<>();
+            }
+            List<String> values = headersMap.get(name);
+            if (values == null) {
+                values = new LinkedList<>();
+            }
+            values.add(value);
+            return this;
+        }
+
+        public Builder removeHeader(String name) {
+            if (headersMap == null) {
+                headersMap = new HashMap<>();
+            }
+            headersMap.remove(name);
+            return this;
+        }
+
         public Builder queryMap(Map<String, Object> queryMap) {
             this.queryMap = queryMap;
             return this;
@@ -295,5 +324,9 @@ public class ReqInfo extends CloneBean {
 
             return new ReqInfo(this);
         }
+    }
+
+    public Builder newBuilder() {
+        return new ReqInfo.Builder(this);
     }
 }

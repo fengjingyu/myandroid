@@ -11,7 +11,6 @@ public abstract class BaseHttpHandler<T> implements IHttpHandler<T> {
     public BaseHttpHandler() {
     }
 
-    //TODO 可以统一添加请求头、对参数加密
     @Override
     public ReqInfo onReadySendRequest(ReqInfo reqInfo) {
         return reqInfo;

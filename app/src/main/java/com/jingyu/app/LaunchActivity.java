@@ -17,18 +17,21 @@ import com.jingyu.android.common.exception.CrashHandler;
 import com.jingyu.android.common.log.Logger;
 import com.jingyu.android.common.util.ScreenUtil;
 import com.jingyu.android.common.util.SystemUtil;
+import com.jingyu.app.middle.MyBaseActivity;
 import com.jingyu.app.middle.MyEnv;
+import com.jingyu.app.middle.MyFile;
 import com.jingyu.app.middle.MyHttp;
 import com.jingyu.app.middle.MyImg;
 import com.jingyu.app.middle.MySp;
-import com.jingyu.app.middle.MyBaseActivity;
-import com.jingyu.app.middle.MyFile;
 import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
 import com.jingyu.java.myokhttp.HttpClient;
 import com.jingyu.java.myokhttp.handler.IHttpHandler;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 /**
  * 动态权限的问题:初始化从application放到了LaunchActivity
@@ -168,8 +171,26 @@ public class LaunchActivity extends MyBaseActivity {
     private void initHttp() {
         MyHttp.setMyHttpClient(new HttpClient() {
             @Override
-            protected MyHttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+            protected ReqInfo interceptBuildRequest(ReqInfo reqInfo) {
+                return reqInfo.newBuilder()
+                        .addHeader("token", "abcdefg1234567890")
+                        .addHeader("os", "android")
+                        .builder();
+            }
+
+            @Override
+            protected MyHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
                 return new MyHttpCallBack(reqInfo, iHttpHandler);
+            }
+
+            @Override
+            protected OkHttpClient initOkHttpClient() {
+                OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(20, TimeUnit.SECONDS)
+                        //.addInterceptor()
+                        .build();
+                return okHttpClient;
             }
         });
     }

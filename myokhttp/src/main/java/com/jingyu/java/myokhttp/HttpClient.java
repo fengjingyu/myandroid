@@ -21,19 +21,16 @@ public class HttpClient {
 
     private OkHttpClient okHttpClient;
 
-    protected OkHttpClient getOkHttpClient() {
-        return new OkHttpClient();
-    }
-
     public HttpClient() {
-        okHttpClient = getOkHttpClient();
+        okHttpClient = initOkHttpClient();
     }
 
     public void httpSync(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
-        HttpCallBack httpCallBack = getHttpCallBack(reqInfo, iHttpHandler);
+        HttpCallBack httpCallBack = createHttpCallBack(reqInfo, iHttpHandler);
         Call call = null;
         try {
-            call = okHttpClient.newCall(getRequest(reqInfo, iHttpHandler));
+            Request request = getRequest(reqInfo, iHttpHandler);
+            call = okHttpClient.newCall(request);
             Response response = call.execute();
             if (response != null && response.isSuccessful()) {
                 httpCallBack.onResponse(call, response);
@@ -47,18 +44,20 @@ public class HttpClient {
     public void httpAsync(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         try {
             Request request = getRequest(reqInfo, iHttpHandler);
-            okHttpClient.newCall(request).enqueue(getHttpCallBack(reqInfo, iHttpHandler));
+            okHttpClient.newCall(request).enqueue(createHttpCallBack(reqInfo, iHttpHandler));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private Request getRequest(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+        // 构建请求前拦截, 可以对请求头 请求加密等信息做统一修改
+        reqInfo = interceptBuildRequest(reqInfo);
+        // show进度条以及个别请求可能需要配置额外的请求信息
         if (iHttpHandler != null) {
-            // 发送请求之前，这里可以修改请求参数信息
             reqInfo = iHttpHandler.onReadySendRequest(reqInfo);
         }
-
+        // 构建请求
         Request.Builder requestBuilder = new Request.Builder();
         // 构建请求方式、参数、url
         buildeTypeParamsUrl(reqInfo, requestBuilder, iHttpHandler);
@@ -88,8 +87,7 @@ public class HttpClient {
         if (reqInfo.isPost()) {
 
             if (StringUtil.isNotBlank(reqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(reqInfo.getBodyMap())) {
-                // bodyContent 与 bodyMap 的值冲突了
-                throw new RuntimeException("请求体参数有误");
+                throw new RuntimeException("请求体参数有误, bodyContent 与 bodyMap的值重复了");
             }
 
             if (isPostString(reqInfo, requestBuilder)) {
@@ -175,7 +173,7 @@ public class HttpClient {
             }
 
             MultipartBody multipartBody = multiBuilder.build();
-            ProgressRequestBody progressRequestBody = getProgressRequestBody(iHttpHandler, multipartBody);
+            ProgressRequestBody progressRequestBody = createProgressRequestBody(iHttpHandler, multipartBody);
             requestBuilder.post(progressRequestBody);
         }
 
@@ -221,12 +219,20 @@ public class HttpClient {
         return builder;
     }
 
-    protected ProgressRequestBody getProgressRequestBody(IHttpHandler iHttpHandler, MultipartBody multipartBody) {
+    protected ProgressRequestBody createProgressRequestBody(IHttpHandler iHttpHandler, MultipartBody multipartBody) {
         return new ProgressRequestBody(multipartBody, iHttpHandler);
     }
 
-    protected HttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+    protected HttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         return new HttpCallBack(reqInfo, iHttpHandler);
+    }
+
+    protected ReqInfo interceptBuildRequest(ReqInfo reqInfo) {
+        return reqInfo;
+    }
+
+    protected OkHttpClient initOkHttpClient() {
+        return new OkHttpClient();
     }
 
 }

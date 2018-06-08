@@ -174,8 +174,26 @@ public class NewHttpCallBack<T> extends HttpCallBack<T> {
 
 HttpClient httpClient = new HttpClient() {
     @Override
-    protected HttpCallBack getHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
-        return new NewHttpCallBack(reqInfo, iHttpHandler);
+    protected ReqInfo interceptBuildRequest(ReqInfo reqInfo) {
+      // 统一配置请求头
+      return reqInfo.newBuilder()
+              .addHeader("token", "abcdefg1234567890")
+              .addHeader("os", "android")
+              .builder();
+    }
+
+    @Override
+    protected MyHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+      return new MyHttpCallBack(reqInfo, iHttpHandler);
+    }
+
+    @Override
+    protected OkHttpClient initOkHttpClient() {
+      return new OkHttpClient.Builder()
+              .connectTimeout(10, TimeUnit.SECONDS)
+              .readTimeout(20, TimeUnit.SECONDS)
+              //.addInterceptor()
+              .build();
     }
 };
 ```

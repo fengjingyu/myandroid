@@ -15,10 +15,9 @@ import java.io.InputStream;
  */
 public interface IHttpHandler<T> {
     /**
-     * 发送请求之前
+     * 可以show进度条,修改请求头 加密等
      * <p>
-     * 可以showdialog
-     * 可以修改MyReqInfo（如添加请求头 加密等)
+     * 该方法是在httpClient.interceptBuildRequest()之后调用
      */
     ReqInfo onReadySendRequest(ReqInfo reqInfo);
 
@@ -31,6 +30,7 @@ public interface IHttpHandler<T> {
      * 如果解析失败：一定得返回null或throw new Exception,回调onParseException()
      * 如果解析成功: 继续回调onMatchAppCode()
      * 如果是异步请求：则在异步的线程里回调
+     * 如果是同步请求: 则在同步的线程里回调
      */
     T onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize);
 
@@ -72,6 +72,7 @@ public interface IHttpHandler<T> {
      * onSuccess  或 onFailure 的逻辑调用完后都会回调该方法
      * <p>
      * 可以关闭dialog
+     * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
     void onFinally(ReqInfo reqInfo, RespInfo respInfo);
 
