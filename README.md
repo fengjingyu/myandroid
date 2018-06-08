@@ -26,23 +26,19 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
 
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
-        .headersMap(headerMap)
         .url("http://")
         .queryMap(queryMap)
-        .bodyContent(json)
+        .bodyContent("{\"key\":\"value\"}")
         .contentTypeJson();
 
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
-        .headersMap(headerMap)
         .url("http://")
-        .queryMap(queryMap)
         .bodyContent("abcdefg123")
         .contentTypeText();
 
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
-        .headersMap(headerMap)
         .url("http://")
         .bodyMap(new MyMap<String, Object>().myPut("key","value").myPut("file",file));
         
@@ -80,6 +76,14 @@ HttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new StringHtt
 
 **表单传参**
 ```
+HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut("key2","value2"), new StringHttpHandler() {
+      @Override
+      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
+          super.onSuccess(reqInfo, respInfo, resultBean);
+          System.out.println(resultBean);
+      }
+});
+
 HttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new StringHttpHandler() {
       @Override
       public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
