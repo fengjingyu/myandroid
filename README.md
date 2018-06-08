@@ -27,7 +27,6 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .url("http://")
-        .queryMap(queryMap)
         .bodyContent("{\"key\":\"value\"}")
         .contentTypeJson();
 
@@ -40,7 +39,8 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
 ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .url("http://")
-        .bodyMap(new MyMap<String, Object>().myPut("key","value").myPut("file",file));
+        .queryMap(new MyMap<String, Object>().myPut("key","value"))
+        .bodyMap(new MyMap<String, Object>().myPut("key2","value2").myPut("file",file));
         
 new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.class) {
      @Override
@@ -57,7 +57,7 @@ new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.cla
 **同步/异步请求**
 ```
  // 同步请求
- HttpUtil.Async.get(url, queryMap, null);
+ HttpUtil.Async.get(url, new MyMap<String, Object>().myPut("key","value"), null);
  // 异步请求
  HttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
  
@@ -106,7 +106,7 @@ HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut(
 
 **自动解析**
 ```
-HttpUtil.Async.post(url, null, new GsonHttpHandler<User>(User.class) {
+HttpUtil.Async.get(url, null, new GsonHttpHandler<User>(User.class) {
      @Override
      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
          super.onSuccess(reqInfo, respInfo, user);
