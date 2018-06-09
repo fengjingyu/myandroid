@@ -1,6 +1,6 @@
 package com.jingyu.java.myokhttp.handler;
 
-import com.jingyu.java.myokhttp.HttpCallBack;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 import com.jingyu.java.myokhttp.resp.RespInfo;
@@ -23,10 +23,10 @@ public class FileHttpHandler extends BaseHttpHandler<File> {
     @Override
     public File onParse(ReqInfo reqInfo, RespInfo respInfo, InputStream inputStream, long totalSize) {
         if (IoUtil.inputStream2File(inputStream, file)) {
-            LogUtil.i(HttpCallBack.TAG_HTTP, "parse()::下载文件成功file = " + file.getAbsolutePath());
+            LogUtil.i(HttpConst.TAG_HTTP, "parse()::下载文件成功file = " + file.getAbsolutePath());
             return file;
         } else {
-            throw new RuntimeException("parse()::下载文件异常file = " + file + HttpCallBack.LINE + reqInfo.getUrl());
+            throw new RuntimeException("parse()::下载文件异常file = " + file + HttpConst.LINE + reqInfo.getUrl());
         }
     }
 }

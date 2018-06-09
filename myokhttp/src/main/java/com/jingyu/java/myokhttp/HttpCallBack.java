@@ -21,11 +21,6 @@ import okhttp3.Response;
  * @author fengjingyu@foxmail.com
  */
 public class HttpCallBack<T> implements Callback {
-    /**
-     * 可查看如url 返回的数据等
-     */
-    public static final String TAG_HTTP = "myhttp";
-    public static final String LINE = "@@@@@@";
 
     private RespInfo respInfo;
     private ReqInfo reqInfo;
@@ -43,7 +38,7 @@ public class HttpCallBack<T> implements Callback {
         respInfo.setRespType(RespType.FAILURE);
         respInfo.setThrowable(e);
         respInfo.setHttpCode(0);
-        LogUtil.i(TAG_HTTP, reqInfo + LINE + "onFailure()" + LINE + respInfo.getThrowable());
+        LogUtil.i(HttpConst.TAG_HTTP, reqInfo + HttpConst.LINE + "onFailure()" + HttpConst.LINE + respInfo.getThrowable());
 
         runOnSpecifiedThread(new Runnable() {
             @Override
@@ -54,13 +49,13 @@ public class HttpCallBack<T> implements Callback {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.i(TAG_HTTP, reqInfo + LINE + "onFailure（） 异常了" + e);
+                    LogUtil.i(HttpConst.TAG_HTTP, reqInfo + HttpConst.LINE + "onFailure（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        LogUtil.i(TAG_HTTP, reqInfo + LINE + "onFailure()-->handleFinally（） 异常了" + e);
+                        LogUtil.i(HttpConst.TAG_HTTP, reqInfo + HttpConst.LINE + "onFailure()-->handleFinally（） 异常了" + e);
                     }
                 }
             }
@@ -73,7 +68,7 @@ public class HttpCallBack<T> implements Callback {
         respInfo.setRespHeaders(response.headers().toMultimap());
         respInfo.setThrowable(null);
 
-        LogUtil.i(TAG_HTTP, "onResponse()" + LINE + reqInfo.getUrl() + LINE + "httpCode = " + respInfo.getHttpCode());
+        LogUtil.i(HttpConst.TAG_HTTP, "onResponse()" + HttpConst.LINE + reqInfo.getUrl() + HttpConst.LINE + "httpCode = " + respInfo.getHttpCode());
         printHeaderInfo(respInfo.getRespHeaders());
 
         try {
@@ -92,7 +87,7 @@ public class HttpCallBack<T> implements Callback {
             public void run() {
                 try {
                     if (iHttpHandler != null) {
-                        // 有传入回调iMyHttpHandler; 如果没有传入回调iMyHttpHandler, 则直接调用finally{ }
+                        // 有传入回调iHttpHandler; 如果没有传入回调iHttpHandler, 则直接调用finally{ }
                         if (resultBean != null) {
                             // 解析成功
                             if (iHttpHandler.onMatchAppCode(reqInfo, respInfo, resultBean)) {
@@ -112,13 +107,13 @@ public class HttpCallBack<T> implements Callback {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.i(TAG_HTTP, reqInfo + LINE + "onResponse（） 异常了" + e);
+                    LogUtil.i(HttpConst.TAG_HTTP, reqInfo + HttpConst.LINE + "onResponse（） 异常了" + e);
                 } finally {
                     try {
                         handleFinally();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        LogUtil.i(TAG_HTTP, reqInfo + LINE + "onResponse-->handleFinally（） 异常了" + e);
+                        LogUtil.i(HttpConst.TAG_HTTP, reqInfo + HttpConst.LINE + "onResponse-->handleFinally（） 异常了" + e);
                     }
                 }
             }
@@ -129,7 +124,7 @@ public class HttpCallBack<T> implements Callback {
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             List<String> values = header.getValue();
             if (CollectionUtil.isNotEmpty(values)) {
-                LogUtil.i(TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
+                LogUtil.i(HttpConst.TAG_HTTP, "headers-->" + header.getKey() + "=" + Arrays.toString(values.toArray()));
             }
         }
     }

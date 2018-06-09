@@ -1,6 +1,6 @@
 package com.jingyu.java.myokhttp.handler;
 
-import com.jingyu.java.myokhttp.HttpCallBack;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.myokhttp.log.LogUtil;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 import com.jingyu.java.myokhttp.resp.RespInfo;
@@ -81,10 +81,10 @@ public interface IHttpHandler<T> {
         try {
             // 只能读一次，否则异常
             String data = new String(IoUtil.getBytes(inputStream), Constants.UTF8);
-            LogUtil.i(HttpCallBack.TAG_HTTP, "parse()::" + data);
+            LogUtil.i(HttpConst.TAG_HTTP, "parse()::" + data);
             return data;
         } catch (Exception e) {
-            throw new RuntimeException(reqInfo.getUrl() + HttpCallBack.LINE + e);
+            throw new RuntimeException(reqInfo.getUrl() + HttpConst.LINE + e);
         }
     }
 }

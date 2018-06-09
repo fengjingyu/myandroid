@@ -23,7 +23,7 @@ import com.jingyu.app.middle.MyFile;
 import com.jingyu.app.middle.MyHttp;
 import com.jingyu.app.middle.MyImg;
 import com.jingyu.app.middle.MySp;
-import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
+import com.jingyu.app.middle.okhttp.control.MainThreadCallBack;
 import com.jingyu.java.myokhttp.HttpClient;
 import com.jingyu.java.myokhttp.handler.IHttpHandler;
 import com.jingyu.java.myokhttp.req.ReqInfo;
@@ -179,8 +179,8 @@ public class LaunchActivity extends MyBaseActivity {
             }
 
             @Override
-            protected MyHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
-                return new MyHttpCallBack(reqInfo, iHttpHandler);
+            protected MainThreadCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+                return new MainThreadCallBack(reqInfo, iHttpHandler);
             }
 
             @Override

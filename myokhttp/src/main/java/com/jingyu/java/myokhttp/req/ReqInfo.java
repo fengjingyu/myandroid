@@ -1,6 +1,6 @@
 package com.jingyu.java.myokhttp.req;
 
-import com.jingyu.java.myokhttp.HttpConstants;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.mytool.bean.CloneBean;
 import com.jingyu.java.mytool.util.CollectionUtil;
 import com.jingyu.java.mytool.util.StringUtil;
@@ -270,17 +270,17 @@ public class ReqInfo extends CloneBean {
         }
 
         public Builder contentTypeJson() {
-            this.contentType = HttpConstants.JSON;
+            this.contentType = HttpConst.JSON;
             return this;
         }
 
         public Builder contentTypeForm() {
-            this.contentType = HttpConstants.FORM;
+            this.contentType = HttpConst.FORM;
             return this;
         }
 
         public Builder contentTypeText() {
-            this.contentType = HttpConstants.TEXT;
+            this.contentType = HttpConst.TEXT;
             return this;
         }
 

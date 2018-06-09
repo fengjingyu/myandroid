@@ -2,7 +2,7 @@ package com.jingyu.app;
 
 import com.jingyu.java.myokhttp.HttpCallBack;
 import com.jingyu.java.myokhttp.HttpClient;
-import com.jingyu.java.myokhttp.HttpConstants;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.myokhttp.HttpUtil;
 import com.jingyu.java.myokhttp.handler.BaseHttpHandler;
 import com.jingyu.java.myokhttp.handler.FileHttpHandler;
@@ -62,7 +62,7 @@ public class ExampleUnitTest {
             }
         });
 
-        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test2?key=dog&key2=dog2", "key={\"key\":\"value-c\"}", HttpConstants.JSON, new GsonHttpHandler<TestBean>(TestBean.class) {
+        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test2?key=dog&key2=dog2", "key={\"key\":\"value-c\"}", HttpConst.JSON, new GsonHttpHandler<TestBean>(TestBean.class) {
             @Override
             public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, TestBean resultBean) {
                 super.onSuccess(reqInfo, respInfo, resultBean);
@@ -109,7 +109,7 @@ public class ExampleUnitTest {
 
     @Test
     public void test3() {
-        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test3?key=dog", "key2={\"key\":\"value-c\"}", HttpConstants.FORM, new FileHttpHandler(FileUtil.createFile("d://", "testFile.txt")) {
+        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test3?key=dog", "key2={\"key\":\"value-c\"}", HttpConst.FORM, new FileHttpHandler(FileUtil.createFile("d://", "testFile.txt")) {
             @Override
             public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, File resultBean) {
                 super.onSuccess(reqInfo, respInfo, resultBean);
@@ -120,7 +120,7 @@ public class ExampleUnitTest {
 
     @Test
     public void test4() {
-        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test4", "{\"hehe\":\"haha-value--1\"}", HttpConstants.JSON, new StringHttpHandler() {
+        HttpUtil.Sync.post("http://localhost:8080/jsonparam/test4", "{\"hehe\":\"haha-value--1\"}", HttpConst.JSON, new StringHttpHandler() {
             @Override
             public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
                 super.onSuccess(reqInfo, respInfo, resultBean);

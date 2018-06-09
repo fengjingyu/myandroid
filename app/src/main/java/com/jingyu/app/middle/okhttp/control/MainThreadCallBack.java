@@ -11,11 +11,11 @@ import com.jingyu.java.myokhttp.req.ReqInfo;
  * Created by jingyu on 2018/2/21.
  */
 
-public class MyHttpCallBack extends HttpCallBack {
+public class MainThreadCallBack extends HttpCallBack {
 
-    Handler mHandler = new Handler(Looper.getMainLooper());
+    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public MyHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+    public MainThreadCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         super(reqInfo, iHttpHandler);
     }
 

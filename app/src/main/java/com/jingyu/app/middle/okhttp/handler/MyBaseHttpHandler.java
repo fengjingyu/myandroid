@@ -8,9 +8,9 @@ import android.view.KeyEvent;
 import com.jingyu.android.common.log.Logger;
 import com.jingyu.app.MainActivity;
 import com.jingyu.app.middle.okhttp.IRespMsgCode;
-import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
 import com.jingyu.app.middle.okhttp.loading.DialogManager;
 import com.jingyu.app.middle.okhttp.loading.HttpLoadingDialog;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.myokhttp.handler.IHttpHandler;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 import com.jingyu.java.myokhttp.resp.RespInfo;
@@ -108,7 +108,7 @@ public abstract class MyBaseHttpHandler<T> implements IHttpHandler<T> {
                 return false;
             }
         } else {
-            Logger.e(MyHttpCallBack.TAG_HTTP, "onMatchAppStatusCode()中的返回结果不是IHttpRespInfo类型", null);
+            Logger.e(HttpConst.TAG_HTTP, "onMatchAppStatusCode()中的返回结果不是IHttpRespInfo类型", null);
             throw new RuntimeException("onMatchAppStatusCode()中的返回结果不是IHttpRespInfo类型");
         }
     }

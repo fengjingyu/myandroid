@@ -1,6 +1,6 @@
 package com.jingyu.app.middle.okhttp.handler;
 
-import com.jingyu.app.middle.okhttp.control.MyHttpCallBack;
+import com.jingyu.java.myokhttp.HttpConst;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 import com.jingyu.java.myokhttp.resp.RespInfo;
 import com.jingyu.java.mytool.util.IoUtil;
@@ -29,7 +29,7 @@ public class MyFileHttpHandler extends MyBaseHttpHandler<File> {
         if (IoUtil.inputStream2File(inputStream, file)) {
             return file;
         } else {
-            throw new RuntimeException("parse()::下载文件异常file = " + file + MyHttpCallBack.LINE + reqInfo.getUrl());
+            throw new RuntimeException("parse()::下载文件异常file = " + file + HttpConst.LINE + reqInfo.getUrl());
         }
     }
 }

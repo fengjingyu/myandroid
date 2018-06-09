@@ -3,7 +3,7 @@ myokhttp
 
 ## Gradle
 ```
-implementation 'com.jingyu.java:myokhttp:0.5.1'
+implementation 'com.jingyu.java:myokhttp:0.5.2'
 ```
 
 ## Maven
@@ -11,7 +11,7 @@ implementation 'com.jingyu.java:myokhttp:0.5.1'
 <dependency>
   <groupId>com.jingyu.java</groupId>
   <artifactId>myokhttp</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -69,7 +69,7 @@ new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.cla
 
 **json传参**
 ```
-HttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConstants.JSON, new StringHttpHandler() {
+HttpUtil.Sync.post(url, "{\"key\":\"value\"}", HttpConst.JSON, new StringHttpHandler() {
       @Override
       public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
           super.onSuccess(reqInfo, respInfo, resultBean);
@@ -88,7 +88,7 @@ HttpUtil.Async.post(url, new MyMap<String, Object>().myPut("key","value").myPut(
       }
 });
 
-HttpUtil.Async.post(url, "key=value&key2=value2", HttpConstants.FORM, new StringHttpHandler() {
+HttpUtil.Async.post(url, "key=value&key2=value2", HttpConst.FORM, new StringHttpHandler() {
       @Override
       public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
           super.onSuccess(reqInfo, respInfo, resultBean);
@@ -147,7 +147,7 @@ HttpUtil.Async.get(url, queryMap, new FileHttpHandler(saveFile) {
 });
 ```
 
-**文件上传,进度监听**
+**多文件上传,进度监听**
 ```
   HashMap<String, Object> bodyMap = new HashMap<>();
   map.put("key", "value");
@@ -163,20 +163,22 @@ HttpUtil.Async.get(url, queryMap, new FileHttpHandler(saveFile) {
   });
 ```
 
-**回调执行的线程设置**
+**回调执行的设置**
 ```
 //android中,请求是异步发送的,但如果需要把回调统一放到主线程处理
-public class NewHttpCallBack<T> extends HttpCallBack<T> {
+public class MainThreadCallBack extends HttpCallBack {
 
-    public static Handler handler = new Handler(Looper.getMainLooper());
+    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public NewHttpCallBack(ReqInfo reqInfo, IHttpHandler<T> iHttpHandler) {
+    public MainThreadCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
         super(reqInfo, iHttpHandler);
     }
 
     @Override
     public void runOnSpecifiedThread(Runnable runnable) {
-        handler.post(runnable);
+        if (runnable != null) {
+            mHandler.post(runnable);
+        }
     }
 }
 
@@ -191,8 +193,8 @@ HttpClient httpClient = new HttpClient() {
     }
 
     @Override
-    protected NewHttpCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
-      return new NewHttpCallBack(reqInfo, iHttpHandler);
+    protected MainThreadCallBack createHttpCallBack(ReqInfo reqInfo, IHttpHandler iHttpHandler) {
+      return new MainThreadCallBack(reqInfo, iHttpHandler);
     }
 
     @Override

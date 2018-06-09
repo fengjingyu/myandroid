@@ -1,6 +1,11 @@
 package com.jingyu.java.myokhttp;
 
-public class HttpConstants {
+public class HttpConst {
+
+    public static final String TAG_HTTP = "myokhttp";
+
+    public static final String LINE = "@@@@@@";
+
     // 普通表单
     public static final String FORM = "application/x-www-form-urlencoded; charset=utf-8";
     // json格式
