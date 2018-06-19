@@ -33,7 +33,7 @@ ext {
     siteUrl = 'https://github.com/fengjingyu/myandroid'
     gitUrl = 'https://github.com/fengjingyu/myandroid.git'
 
-    libraryVersion = '0.5.2'
+    libraryVersion = '0.5.3'
 
     developerId = 'jingyu'
     developerName = 'jingyu'
