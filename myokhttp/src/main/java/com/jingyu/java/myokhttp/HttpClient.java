@@ -5,7 +5,6 @@ import com.jingyu.java.myokhttp.req.ProgressRequestBody;
 import com.jingyu.java.myokhttp.req.ReqInfo;
 import com.jingyu.java.myokhttp.req.UploadFile;
 import com.jingyu.java.mytool.util.CollectionUtil;
-import com.jingyu.java.mytool.util.IoUtil;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.io.File;
@@ -34,11 +33,7 @@ public class HttpClient {
             call = okHttpClient.newCall(request);
             Response response = call.execute();
             if (response != null) {
-                if (response.isSuccessful()) {
-                    httpCallBack.onResponse(call, response);
-                } else {
-                    httpCallBack.onFailure(call, new IOException(IoUtil.getString(response.body().byteStream())));
-                }
+                httpCallBack.onResponse(call, response);
             }
         } catch (IOException e) {
             e.printStackTrace();

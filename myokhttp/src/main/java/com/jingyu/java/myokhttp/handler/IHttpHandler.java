@@ -51,19 +51,19 @@ public interface IHttpHandler<T> {
     void onParseException(ReqInfo reqInfo, RespInfo respInfo);
 
     /**
-     * http 请求成功，解析成功，项目业务逻辑的状态码有误
+     * http 请求成功，解析成功，http的状态码或业务的状态码有误
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
     void onAppCodeException(ReqInfo reqInfo, RespInfo respInfo, T resultBean);
 
     /**
-     * http请求成功，解析成功，状态码成功，回调该方法
+     * http 请求成功，解析成功，状态码成功(对http的状态码以及业务的状态码进行统一判断)，回调该方法
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
     void onSuccess(ReqInfo reqInfo, RespInfo respInfo, T resultBean);
 
     /**
-     * http请求失败，回调该方法
+     * 网络io异常，回调该方法
      * runOnSpecifiedThread(): 该方法里指定回调的线程
      */
     void onFailure(ReqInfo reqInfo, RespInfo respInfo);
