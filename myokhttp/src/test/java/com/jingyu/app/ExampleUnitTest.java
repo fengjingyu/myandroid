@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,5 +170,22 @@ public class ExampleUnitTest {
             }
         };
         HttpUtil.setHttpClient(httpClient);
+    }
+
+    @Test
+    public void test() {
+        HttpUtil.Sync.post("http://localhost:8080/modelAttr/test", new MyMap<String, Object>().myPut("date", new Date()), new StringHttpHandler() {
+            @Override
+            public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
+                super.onSuccess(reqInfo, respInfo, resultBean);
+                System.out.println(resultBean);
+            }
+
+            @Override
+            public void onFailure(ReqInfo reqInfo, RespInfo respInfo) {
+                super.onFailure(reqInfo, respInfo);
+                System.out.println("failure");
+            }
+        });
     }
 }
