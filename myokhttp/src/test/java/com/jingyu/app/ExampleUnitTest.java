@@ -174,7 +174,18 @@ public class ExampleUnitTest {
 
     @Test
     public void test() {
-        HttpUtil.Sync.post("http://localhost:8080/modelAttr/test", new MyMap<String, Object>().myPut("date", new Date()), new StringHttpHandler() {
+        HttpUtil.Sync.post("http://localhost:8080/test?date=2019-01-30", new MyMap<String, Object>().myPut("date", new Date()), new StringHttpHandler() {
+            @Override
+            public boolean onMatchAppCode(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
+                return respInfo.getHttpCode() == 200;
+            }
+
+            @Override
+            public void onAppCodeException(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
+                super.onAppCodeException(reqInfo, respInfo, resultBean);
+                System.out.println(resultBean);
+            }
+
             @Override
             public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, String resultBean) {
                 super.onSuccess(reqInfo, respInfo, resultBean);
