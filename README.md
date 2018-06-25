@@ -44,7 +44,7 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
         .post()
         .url("http://")
         .queryMap(new MyMap<String, Object>().myPut("key","value"))
-        .bodyMap(new MyMap<String, Object>().myPut("key2","value2").myPut("file",file));
+        .bodyFormMap(new MyMap<String, Object>().myPut("key2","value2").myPut("file",file));
         
 new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.class) {
      @Override
@@ -149,12 +149,12 @@ HttpUtil.Async.get(url, queryMap, new FileHttpHandler(saveFile) {
 
 **多文件上传,进度监听**
 ```
-  HashMap<String, Object> bodyMap = new HashMap<>();
+  HashMap<String, Object> bodyFormMap = new HashMap<>();
   map.put("key", "value");
   map.put("file", file1);
   map.put("file2", file2);
   map.put("file3", null); //空的file会被过滤
-  HttpUtil.Async.post(url, bodyMap, new StringHttpHandler() {
+  HttpUtil.Async.post(url, bodyFormMap, new StringHttpHandler() {
       @Override
       public void onUploadProgress(long bytesWritten, long totalSize) {
           super.onUploadProgress(bytesWritten, totalSize);

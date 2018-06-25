@@ -45,16 +45,16 @@ public class HttpUtil {
         }
 
         // post表单(含多文件file)
-        public static void post(String url, Map<String, Object> bodyMap, IHttpHandler iHttpHandler) {
-            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, null, null, bodyMap, null, null, null), iHttpHandler);
+        public static void post(String url, Map<String, Object> bodyFormMap, IHttpHandler iHttpHandler) {
+            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, null, null, bodyFormMap, null, null, null), iHttpHandler);
         }
 
-        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyMap, IHttpHandler iHttpHandler) {
-            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, headers, null, bodyMap, null, null, null), iHttpHandler);
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyFormMap, IHttpHandler iHttpHandler) {
+            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, headers, null, bodyFormMap, null, null, null), iHttpHandler);
         }
 
-        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyMap, String tag, IHttpHandler iHttpHandler) {
-            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, headers, queryMap, bodyMap, null, null, tag), iHttpHandler);
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyFormMap, String tag, IHttpHandler iHttpHandler) {
+            getHttpClient().httpAsync(createReqInfo(ReqType.POST, url, headers, queryMap, bodyFormMap, null, null, tag), iHttpHandler);
         }
 
         // postString
@@ -92,16 +92,16 @@ public class HttpUtil {
         }
 
         // post表单(含多文件file)
-        public static void post(String url, Map<String, Object> bodyMap, IHttpHandler iHttpHandler) {
-            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, null, null, bodyMap, null, null, null), iHttpHandler);
+        public static void post(String url, Map<String, Object> bodyFormMap, IHttpHandler iHttpHandler) {
+            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, null, null, bodyFormMap, null, null, null), iHttpHandler);
         }
 
-        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyMap, IHttpHandler iHttpHandler) {
-            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, headers, null, bodyMap, null, null, null), iHttpHandler);
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> bodyFormMap, IHttpHandler iHttpHandler) {
+            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, headers, null, bodyFormMap, null, null, null), iHttpHandler);
         }
 
-        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyMap, String tag, IHttpHandler iHttpHandler) {
-            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, headers, queryMap, bodyMap, null, null, tag), iHttpHandler);
+        public static void post(String url, Map<String, List<String>> headers, Map<String, Object> queryMap, Map<String, Object> bodyFormMap, String tag, IHttpHandler iHttpHandler) {
+            getHttpClient().httpSync(createReqInfo(ReqType.POST, url, headers, queryMap, bodyFormMap, null, null, tag), iHttpHandler);
         }
 
         // postString
@@ -120,7 +120,7 @@ public class HttpUtil {
     }
 
     private static ReqInfo createReqInfo(ReqType type, String url, Map<String, List<String>> headers,
-                                         Map<String, Object> queryMap, Map<String, Object> bodyMap,
+                                         Map<String, Object> queryMap, Map<String, Object> bodyFormMap,
                                          String bodyContent, String contentType,
                                          String tag) {
         return new ReqInfo.Builder()
@@ -128,7 +128,7 @@ public class HttpUtil {
                 .url(url)
                 .headersMap(headers)
                 .queryMap(queryMap)
-                .bodyMap(bodyMap)
+                .bodyFormMap(bodyFormMap)
                 .bodyContent(bodyContent)
                 .contentType(contentType)
                 .tag(tag)

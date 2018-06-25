@@ -35,7 +35,7 @@ public class ReqInfo extends CloneBean {
     /**
      * 请求体的内容 key=value(含file)
      */
-    private final Map<String, Object> bodyMap;
+    private final Map<String, Object> bodyFormMap;
     /**
      * 请求体的内容
      */
@@ -54,7 +54,7 @@ public class ReqInfo extends CloneBean {
         this.url = builder.url;
         this.headersMap = builder.headersMap;
         this.queryMap = builder.queryMap;
-        this.bodyMap = builder.bodyMap;
+        this.bodyFormMap = builder.bodyFormMap;
         this.bodyContent = builder.bodyContent;
         this.contentType = builder.contentType;
         this.tag = builder.tag;
@@ -76,8 +76,8 @@ public class ReqInfo extends CloneBean {
         return queryMap;
     }
 
-    public Map<String, Object> getBodyMap() {
-        return bodyMap;
+    public Map<String, Object> getBodyFormMap() {
+        return bodyFormMap;
     }
 
     public String getContentType() {
@@ -140,7 +140,7 @@ public class ReqInfo extends CloneBean {
                 ", url='" + url + '\'' +
                 ", headersMap=" + headersMap +
                 ", queryMap=" + queryMap +
-                ", bodyMap=" + bodyMap +
+                ", bodyFormMap=" + bodyFormMap +
                 ", bodyContent='" + bodyContent + '\'' +
                 ", contentType='" + contentType + '\'' +
                 ", tag=" + tag +
@@ -168,7 +168,7 @@ public class ReqInfo extends CloneBean {
         /**
          * 请求体内容 key=value(含file)
          */
-        private Map<String, Object> bodyMap;
+        private Map<String, Object> bodyFormMap;
         /**
          * 请求体内容
          */
@@ -190,7 +190,7 @@ public class ReqInfo extends CloneBean {
             this.url = reqInfo.getUrl();
             this.headersMap = reqInfo.getHeadersMap();
             this.queryMap = reqInfo.getQueryMap();
-            this.bodyMap = reqInfo.getBodyMap();
+            this.bodyFormMap = reqInfo.getBodyFormMap();
             this.bodyContent = reqInfo.getBodyContent();
             this.contentType = reqInfo.getContentType();
             this.tag = reqInfo.getTag();
@@ -254,8 +254,8 @@ public class ReqInfo extends CloneBean {
             return this;
         }
 
-        public Builder bodyMap(Map<String, Object> bodyMap) {
-            this.bodyMap = bodyMap;
+        public Builder bodyFormMap(Map<String, Object> bodyFormMap) {
+            this.bodyFormMap = bodyFormMap;
             return this;
         }
 
@@ -314,8 +314,8 @@ public class ReqInfo extends CloneBean {
                 queryMap = new HashMap<>();
             }
 
-            if (bodyMap == null) {
-                bodyMap = new HashMap<>();
+            if (bodyFormMap == null) {
+                bodyFormMap = new HashMap<>();
             }
 
             if (tag == null) {

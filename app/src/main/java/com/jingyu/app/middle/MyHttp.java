@@ -121,7 +121,7 @@ public class MyHttp {
     }
 
     private static ReqInfo createReqInfo(ReqType type, String url, Map<String, List<String>> headers,
-                                         Map<String, Object> queryMap, Map<String, Object> bodyMap,
+                                         Map<String, Object> queryMap, Map<String, Object> bodyFormMap,
                                          String bodyContent, String contentType,
                                          String tag) {
         return new ReqInfo.Builder()
@@ -129,7 +129,7 @@ public class MyHttp {
                 .url(url)
                 .headersMap(headers)
                 .queryMap(queryMap)
-                .bodyMap(bodyMap)
+                .bodyFormMap(bodyFormMap)
                 .bodyContent(bodyContent)
                 .contentType(contentType)
                 .tag(tag)

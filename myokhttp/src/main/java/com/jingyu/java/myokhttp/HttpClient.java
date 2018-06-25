@@ -86,8 +86,8 @@ public class HttpClient {
     private boolean isPost(ReqInfo reqInfo, Request.Builder requestBuilder, IHttpHandler iHttpHandler) {
         if (reqInfo.isPost()) {
 
-            if (StringUtil.isNotBlank(reqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(reqInfo.getBodyMap())) {
-                throw new RuntimeException("请求体参数有误, bodyContent 与 bodyMap的值重复了");
+            if (StringUtil.isNotBlank(reqInfo.getBodyContent()) && CollectionUtil.isNotEmpty(reqInfo.getBodyFormMap())) {
+                throw new RuntimeException("请求体参数有误, bodyContent 与 bodyFormMap的值重复了");
             }
 
             if (isPostString(reqInfo, requestBuilder)) {
@@ -129,12 +129,12 @@ public class HttpClient {
             return false;
         }
 
-        Map<String, Object> bodyMap = reqInfo.getBodyMap();
+        Map<String, Object> bodyFormMap = reqInfo.getBodyFormMap();
 
-        if (CollectionUtil.isNotEmpty(bodyMap)) {
+        if (CollectionUtil.isNotEmpty(bodyFormMap)) {
             FormBody.Builder formBodyBuilder = new FormBody.Builder();
 
-            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : bodyFormMap.entrySet()) {
                 formBodyBuilder.add(entry.getKey(), String.valueOf(entry.getValue()));
             }
             requestBuilder.post(formBodyBuilder.build());
@@ -144,14 +144,14 @@ public class HttpClient {
     }
 
     private boolean isPostMultiForm(ReqInfo reqInfo, Request.Builder requestBuilder, IHttpHandler iHttpHandler) {
-        Map<String, Object> bodyMap = reqInfo.getBodyMap();
+        Map<String, Object> bodyFormMap = reqInfo.getBodyFormMap();
 
-        if (CollectionUtil.isNotEmpty(bodyMap)) {
+        if (CollectionUtil.isNotEmpty(bodyFormMap)) {
 
             MultipartBody.Builder multiBuilder = new MultipartBody.Builder();
             multiBuilder.setType(MultipartBody.FORM);
 
-            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : bodyFormMap.entrySet()) {
 
                 if (entry.getValue() == null) {
                     continue;
@@ -181,10 +181,10 @@ public class HttpClient {
     }
 
     private boolean isIncludeFile(ReqInfo reqInfo) {
-        Map<String, Object> bodyMap = reqInfo.getBodyMap();
+        Map<String, Object> bodyFormMap = reqInfo.getBodyFormMap();
 
-        if (CollectionUtil.isNotEmpty(bodyMap)) {
-            for (Map.Entry<String, Object> entry : bodyMap.entrySet()) {
+        if (CollectionUtil.isNotEmpty(bodyFormMap)) {
+            for (Map.Entry<String, Object> entry : bodyFormMap.entrySet()) {
                 if (entry.getValue() instanceof File) {
                     return true;
                 }
