@@ -45,8 +45,18 @@ ReqInfo.Builder builder = new ReqInfo.Builder()
         .url("http://")
         .queryMap(new MyMap<String, Object>().myPut("key","value"))
         .bodyFormMap(new MyMap<String, Object>().myPut("key2","value2").myPut("file",file));
-        
+
+**异步请求**        
 new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.class) {
+     @Override
+     public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
+         super.onSuccess(reqInfo, respInfo, user);
+         System.out.println(user);
+     }
+});
+
+**同步请求**        
+new HttpClient().httpSync(builder.builder(), new GsonHttpHandler<User>(User.class) {
      @Override
      public void onSuccess(ReqInfo reqInfo, RespInfo respInfo, User user) {
          super.onSuccess(reqInfo, respInfo, user);
@@ -62,6 +72,7 @@ new HttpClient().httpAsync(builder.builder(), new GsonHttpHandler<User>(User.cla
 ```
  // 异步请求
  HttpUtil.Async.get(url, new MyMap<String, Object>().myPut("key","value"), null);
+ 
  // 同步请求
  HttpUtil.Sync.post(url, new MyMap<String, Object>().myPut("key","value).myPut("file",file), null);
  
