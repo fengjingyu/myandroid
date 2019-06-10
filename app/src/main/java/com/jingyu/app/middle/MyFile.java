@@ -3,7 +3,8 @@ package com.jingyu.app.middle;
 import android.content.Context;
 
 import com.jingyu.android.common.util.AndroidFileUtil;
-import com.jingyu.java.mytool.util.FileUtil;
+import com.jingyu.java.myhttp.tool.util.FileUtil;
+
 import java.io.File;
 
 /**

@@ -11,8 +11,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common" />
-            <option value="$PROJECT_DIR$/myokhttp" />
-            <option value="$PROJECT_DIR$/mytool" />
             <option value="$PROJECT_DIR$/resource" />
           </set>
         </option>

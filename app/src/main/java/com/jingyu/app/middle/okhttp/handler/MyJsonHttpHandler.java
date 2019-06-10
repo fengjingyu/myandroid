@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.jingyu.android.common.bean.JsonBean;
 import com.jingyu.android.common.bean.JsonParse;
 import com.jingyu.app.middle.okhttp.IRespMsgCode;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.resp.RespInfo;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.resp.RespInfo;
 
 import java.io.InputStream;
 

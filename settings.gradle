@@ -1,1 +1,1 @@
-include ':common', ':resource', ':app', ':mytool', ':myokhttp'
+include ':common', ':resource', ':app'

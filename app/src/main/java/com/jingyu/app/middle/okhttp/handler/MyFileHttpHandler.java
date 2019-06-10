@@ -1,9 +1,9 @@
 package com.jingyu.app.middle.okhttp.handler;
 
-import com.jingyu.java.myokhttp.HttpConst;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.resp.RespInfo;
-import com.jingyu.java.mytool.util.IoUtil;
+import com.jingyu.java.myhttp.HttpConst;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.resp.RespInfo;
+import com.jingyu.java.myhttp.tool.util.IoUtil;
 
 import java.io.File;
 import java.io.InputStream;

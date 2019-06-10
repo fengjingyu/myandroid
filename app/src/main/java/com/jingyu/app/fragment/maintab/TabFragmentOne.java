@@ -22,10 +22,10 @@ import com.jingyu.app.middle.okhttp.handler.MyFileHttpHandler;
 import com.jingyu.app.middle.okhttp.handler.MyGsonHttpHandler;
 import com.jingyu.app.middle.okhttp.handler.MyJsonHttpHandler;
 import com.jingyu.app.model.combination.UsersModel;
-import com.jingyu.java.myokhttp.handler.GsonHttpHandler;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.resp.RespInfo;
-import com.jingyu.java.mytool.util.IoUtil;
+import com.jingyu.java.myhttp.handler.GsonHttpHandler;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.resp.RespInfo;
+import com.jingyu.java.myhttp.tool.util.IoUtil;
 
 import java.io.File;
 import java.io.InputStream;

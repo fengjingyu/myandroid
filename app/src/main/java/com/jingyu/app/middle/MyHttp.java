@@ -1,9 +1,10 @@
 package com.jingyu.app.middle;
 
-import com.jingyu.java.myokhttp.HttpClient;
-import com.jingyu.java.myokhttp.handler.IHttpHandler;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.req.ReqType;
+
+import com.jingyu.java.myhttp.HttpClient;
+import com.jingyu.java.myhttp.handler.IHttpHandler;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.req.ReqType;
 
 import java.util.List;
 import java.util.Map;

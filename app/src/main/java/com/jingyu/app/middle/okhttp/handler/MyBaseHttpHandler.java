@@ -10,10 +10,10 @@ import com.jingyu.app.MainActivity;
 import com.jingyu.app.middle.okhttp.IRespMsgCode;
 import com.jingyu.app.middle.okhttp.loading.DialogManager;
 import com.jingyu.app.middle.okhttp.loading.HttpLoadingDialog;
-import com.jingyu.java.myokhttp.HttpConst;
-import com.jingyu.java.myokhttp.handler.IHttpHandler;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.resp.RespInfo;
+import com.jingyu.java.myhttp.HttpConst;
+import com.jingyu.java.myhttp.handler.IHttpHandler;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.resp.RespInfo;
 import com.jingyu.java.mytool.util.StringUtil;
 
 import java.util.Arrays;
