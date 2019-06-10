@@ -24,9 +24,9 @@ import com.jingyu.app.middle.MyHttp;
 import com.jingyu.app.middle.MyImg;
 import com.jingyu.app.middle.MySp;
 import com.jingyu.app.middle.okhttp.control.MainThreadCallBack;
-import com.jingyu.java.myokhttp.HttpClient;
-import com.jingyu.java.myokhttp.handler.IHttpHandler;
-import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.HttpClient;
+import com.jingyu.java.myhttp.handler.IHttpHandler;
+import com.jingyu.java.myhttp.req.ReqInfo;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;

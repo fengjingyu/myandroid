@@ -3,9 +3,9 @@ package com.jingyu.app.middle.okhttp.control;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.jingyu.java.myokhttp.HttpCallBack;
-import com.jingyu.java.myokhttp.handler.IHttpHandler;
-import com.jingyu.java.myokhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.HttpCallBack;
+import com.jingyu.java.myhttp.handler.IHttpHandler;
+import com.jingyu.java.myhttp.req.ReqInfo;
 
 /**
  * Created by jingyu on 2018/2/21.

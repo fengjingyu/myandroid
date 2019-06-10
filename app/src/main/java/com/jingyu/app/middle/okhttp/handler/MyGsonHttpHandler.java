@@ -3,8 +3,8 @@ package com.jingyu.app.middle.okhttp.handler;
 import android.app.Activity;
 
 import com.jingyu.app.tool.GsonUtil;
-import com.jingyu.java.myokhttp.req.ReqInfo;
-import com.jingyu.java.myokhttp.resp.RespInfo;
+import com.jingyu.java.myhttp.req.ReqInfo;
+import com.jingyu.java.myhttp.resp.RespInfo;
 
 import java.io.InputStream;
 
